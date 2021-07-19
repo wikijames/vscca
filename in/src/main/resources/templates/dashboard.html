@@ -1,0 +1,38 @@
+<!--
+=========================================================
+* Argon Dashboard - v1.2.0
+=========================================================
+* Product Page: https://www.creative-tim.com/product/argon-dashboard
+
+
+* Copyright  Creative Tim (http://www.creative-tim.com)
+* Coded by www.creative-tim.com
+
+
+
+=========================================================
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+-->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Vivek Sushil &amp; Co - Dashboard</title>
+  <div th:insert="head :: head"></div>
+</head>
+<body>
+<div th:insert="nav :: sidenav"></div>
+<!-- Main content -->
+  <div class="main-content" id="panel">
+  		<!-- breadcrumb -->
+	  <div th:insert="breadcrumb :: breadcrumb"></div>
+	  <div class="container-fluid mt--6">
+	  <p>Table Will be here...</p>
+	  <!-- footer -->
+	  <div th:insert="footer :: dashboard-footer"></div>	  
+	  </div>
+  </div>
+  <!-- scripts -->
+	<div th:insert="footer :: dashboard-scripts"></div>
+</body>
+</html>

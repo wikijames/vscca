@@ -11,5 +11,14 @@ public class PageRedirectController {
 	   public String index() {
 		   return "login";
 	   }
+	
+	@RequestMapping(value = "/vscca/dashboard", method = RequestMethod.GET)
+	   public String dashboard() {
+		   return "dashboard.html";
+	   }
+	@RequestMapping(value = "/profile", method = RequestMethod.GET)
+	   public String profile() {
+		   return "profile.html";
+	   }
 
 }
