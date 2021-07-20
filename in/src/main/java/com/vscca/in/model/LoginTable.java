@@ -21,6 +21,9 @@ public class LoginTable {
 	@Column(name="password", length=50, nullable=false, unique=false)
 	private String password;
 	
+	@Column(name="token")
+	private String token;
+	
 	public long getId() {
 		return Id;
 	}
@@ -38,6 +41,12 @@ public class LoginTable {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
 	}
 	
 

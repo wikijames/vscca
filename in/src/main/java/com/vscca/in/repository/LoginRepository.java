@@ -11,5 +11,8 @@ public interface LoginRepository  extends JpaRepository<LoginTable, Long>  {
 	
 	
 	LoginTable findByUserName(String userName);
+	
+	@Query(value="update")
+	LoginTable saveToken(String Token);
 
 }
