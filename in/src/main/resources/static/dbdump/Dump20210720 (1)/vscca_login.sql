@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `vscca` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `vscca`;
 -- MySQL dump 10.13  Distrib 8.0.25, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: vscca
@@ -16,28 +18,30 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `location`
+-- Table structure for table `login`
 --
 
-DROP TABLE IF EXISTS `location`;
+DROP TABLE IF EXISTS `login`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `location` (
+CREATE TABLE `login` (
   `id` bigint NOT NULL,
-  `work_location` varchar(50) NOT NULL,
+  `password` varchar(50) NOT NULL,
+  `user_name` varchar(50) NOT NULL,
+  `token` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `UK_au3f43wosddxg38bnu5ubiyf1` (`work_location`)
+  UNIQUE KEY `UK_mdn86t4w3fej4iei71lv79w6f` (`user_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `location`
+-- Dumping data for table `login`
 --
 
-LOCK TABLES `location` WRITE;
-/*!40000 ALTER TABLE `location` DISABLE KEYS */;
-INSERT INTO `location` VALUES (2,'Dehradun'),(1,'Roorkee');
-/*!40000 ALTER TABLE `location` ENABLE KEYS */;
+LOCK TABLES `login` WRITE;
+/*!40000 ALTER TABLE `login` DISABLE KEYS */;
+INSERT INTO `login` VALUES (1,'123','manu05singh@gmail.com',NULL);
+/*!40000 ALTER TABLE `login` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -49,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-07-20 19:13:35
+-- Dump completed on 2021-07-20 19:37:37

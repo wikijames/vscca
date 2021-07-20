@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `vscca` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `vscca`;
 -- MySQL dump 10.13  Distrib 8.0.25, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: vscca
@@ -16,28 +18,25 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `access`
+-- Table structure for table `hibernate_sequence`
 --
 
-DROP TABLE IF EXISTS `access`;
+DROP TABLE IF EXISTS `hibernate_sequence`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `access` (
-  `id` bigint NOT NULL,
-  `access_type` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UK_t73ut54jwchc7s1h5j1k70jkn` (`access_type`)
+CREATE TABLE `hibernate_sequence` (
+  `next_val` bigint DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `access`
+-- Dumping data for table `hibernate_sequence`
 --
 
-LOCK TABLES `access` WRITE;
-/*!40000 ALTER TABLE `access` DISABLE KEYS */;
-INSERT INTO `access` VALUES (1,'ADMIN'),(2,'MANAGER'),(3,'TEAM MEMBER');
-/*!40000 ALTER TABLE `access` ENABLE KEYS */;
+LOCK TABLES `hibernate_sequence` WRITE;
+/*!40000 ALTER TABLE `hibernate_sequence` DISABLE KEYS */;
+INSERT INTO `hibernate_sequence` VALUES (1);
+/*!40000 ALTER TABLE `hibernate_sequence` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -49,4 +48,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-07-20 19:13:35
+-- Dump completed on 2021-07-20 19:37:37
