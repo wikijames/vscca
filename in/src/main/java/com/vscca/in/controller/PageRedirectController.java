@@ -21,4 +21,5 @@ public class PageRedirectController {
 		   return "profile.html";
 	   }
 
+	
 }

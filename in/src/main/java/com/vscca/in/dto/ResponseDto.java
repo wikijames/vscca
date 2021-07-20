@@ -3,6 +3,7 @@ package com.vscca.in.dto;
 public class ResponseDto {
 	public int success;
 	public String message;
+	public String token;
 	public Object body;
 	public int getSuccess() {
 		return success;
@@ -21,6 +22,12 @@ public class ResponseDto {
 	}
 	public void setBody(Object body) {
 		this.body = body;
+	}
+	public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
 	}
 	
 	
