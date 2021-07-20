@@ -12,13 +12,13 @@ public class PageRedirectController {
 		   return "login";
 	   }
 	
-	@RequestMapping(value = "/vscca/dashboard", method = RequestMethod.GET)
+	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)
 	   public String dashboard() {
-		   return "dashboard.html";
+		   return "dashboard";
 	   }
 	@RequestMapping(value = "/profile", method = RequestMethod.GET)
 	   public String profile() {
-		   return "profile.html";
+		   return "profile";
 	   }
 
 	

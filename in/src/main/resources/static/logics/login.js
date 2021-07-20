@@ -3,25 +3,24 @@ $(document).ready(function(){
     $("#login").click(function(e){
 		e.preventDefault();
 		
-        $.ajax({
-            url: 'http://www.vscca.com/checklogin?user='+encodeURIComponent($("#email").val())+'&pass='+encodeURIComponent($("#password").val()),
-            success:function(data){
-                if(data == "200")
-                {
-                 // success will login to dashboard   
-                }
-                else
-                {
-					window.location = '/vscca/dashboard.html';
-                    alert("Please try again");
-                }
-            }
-        });
+		var settings = {
+		  "url": "http://localhost:8080/vscca/login",
+		  "method": "POST",
+		  "timeout": 0,
+		  "headers": {
+		    "Content-Type": "application/json"
+		  },
+		  "data": JSON.stringify({
+		    "userName": $('#email').val(),
+		    "password": $('#password').val()
+		  }),
+		};
+		
+		$.ajax(settings).done(function (response) {
+		  console.log(response);
+		  window.location = dashboard;
+		});
+		
     });
 
-    $("#logout").click(function() {
-        $("form")[0].reset();
-        $("#first").show();
-        $("#second").hide();
-    });
 });
