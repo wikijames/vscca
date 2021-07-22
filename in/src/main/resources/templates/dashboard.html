@@ -18,21 +18,24 @@
 
 <head>
   <title>Vivek Sushil &amp; Co - Dashboard</title>
-  <div th:insert="head :: head"></div>
+  <div th:insert="fragments/head :: head"></div>
 </head>
 <body>
-<div th:insert="nav :: sidenav"></div>
+<div th:insert="fragments/nav :: sidenav"></div>
 <!-- Main content -->
   <div class="main-content" id="panel">
   		<!-- breadcrumb -->
-	  <div th:insert="breadcrumb :: breadcrumb"></div>
+	  <div th:insert="fragments/breadcrumb :: breadcrumb"></div>
 	  <div class="container-fluid mt--6">
+
 	  <p>Table Will be here...</p>
+	  <div th:insert="fragments/profile :: profile"></div>
+	
 	  <!-- footer -->
-	  <div th:insert="footer :: dashboard-footer"></div>	  
+	  <div th:insert="fragments/footer :: dashboard-footer"></div>	  
 	  </div>
   </div>
   <!-- scripts -->
-	<div th:insert="footer :: dashboard-scripts"></div>
+	<div th:insert="fragments/footer :: dashboard-scripts"></div>
 </body>
 </html>

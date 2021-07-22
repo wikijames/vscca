@@ -1,41 +1,138 @@
-<!--
-=========================================================
-* Argon Dashboard - v1.2.0
-=========================================================
-* Product Page: https://www.creative-tim.com/product/argon-dashboard
-
-
-* Copyright  Creative Tim (http://www.creative-tim.com)
-* Coded by www.creative-tim.com
-
-
-
-=========================================================
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
--->
-<!DOCTYPE html>
-<html>
-
-<head>
-  <title>Vivek Sushil &amp; Co. - Edit Profile</title>
-  <div th:insert="head :: head"></div>
-</head>
-<body>
-<div th:insert="nav :: sidenav"></div>
-<!-- Main content -->
-  <div class="main-content" id="panel">
-  		<!-- breadcrumb -->
-	  <div th:insert="breadcrumb :: breadcrumb"></div>
-	  <div class="container-fluid mt--6">
-	  <!-- Content add start -->
-	  
-	  <!-- Content add end -->
-	  <!-- footer -->
-	  <div th:insert="footer :: dashboard-footer"></div>	  
-	  </div>
-  </div>
-  <!-- scripts -->
-	<div th:insert="footer :: dashboard-scripts"></div>
-	<script th:src="@{/logics/profile.js}"></script>
-</body>
-</html>
+<div th:fragment="profile">
+<!-- Page content -->
+      <div class="row">
+        <div class="col-xl-12 order-xl-1">
+          <div class="card">
+            <div class="card-header">
+              <div class="row align-items-center">
+                <div class="col-8">
+                  <h3 class="mb-0">Edit profile </h3>
+                </div>
+                <div class="col-4 text-right">
+                  <!-- <a href="#!" class="btn btn-sm btn-primary">Settings</a> -->
+                  <a href="#!" class="btn btn-neutral">Save profile</a>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <form>
+                <h6 class="heading-small text-muted mb-4">User information</h6>
+                <div class="pl-lg-4">
+                  <div class="row">
+                    <div class="col-lg-4">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-designation">Access Type</label>
+                        <select id="input-designation" class="form-control">
+                          <option value="">Select Access Type</option>
+                          <option value="Admin">Admin</option>
+                          <option value="CA">Manager</option>
+                          <option value="TeamMember">Team Member</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-workLocation">Work Location</label>
+                        <select id="input-designation" class="form-control">
+                          <option value="">Select work location</option>
+                          <option value="Roorkee">Roorkee</option>
+                          <option value="Dehradun">Dehradun</option>
+                          <option value="Lucknow">Lucknow</option>
+                          <option value="Jaipur">Jaipur</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-first-name">First name</label>
+                        <input type="text" id="input-first-name" class="form-control" placeholder="First name" value="vscca">
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-last-name">Last name</label>
+                        <input type="text" id="input-last-name" class="form-control" placeholder="Last name" value="vscca">
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-email">Email address</label>
+                        <input type="email" id="input-email" class="form-control" placeholder="human@vscca.in">
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-mobile">Mobile</label>
+                        <input type="email" id="input-email" class="form-control" placeholder="Your Mobile No.">
+                      </div>
+                    </div>
+                    
+                  </div>
+                </div>
+                <!---User Role-->
+                <hr class="my-4" />
+                <h6 class="heading-small text-muted mb-4">User Role</h6>
+                <div class="pl-lg-4">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <input type="checkbox" class="" id="responsibility" name="responsibility" value="Responsibility">
+                        <label class="form-control-label" for="responsibility">Responsibility</label><br>
+                        <input type="checkbox" class="" id="execution" name="execution" value="execution">
+                        <label class="form-control-label" for="execution"> Execution</label><br>
+                        <input type="checkbox" class="" id="consulting" name="consulting" value="consulting">
+                        <label class="form-control-label" for="consulting"> consulting</label><br>
+                        <input type="checkbox" class="" id="intimation" name="intimation" value="intimation">
+                        <label class="form-control-label" for="intimation"> Intimation</label><br>
+                      </div>
+                    </div>
+                  </div>
+                  </div>
+                  <hr class="my-4" />
+                <!-- Address -->
+                <h6 class="heading-small text-muted mb-4">Contact information</h6>
+                <div class="pl-lg-4">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-address">Address</label>
+                        <input id="input-address" class="form-control" placeholder="Home Address" value="Address" type="text">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-4">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-city">City</label>
+                        <input type="text" id="input-city" class="form-control" placeholder="City" value="New Delhi">
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-country">Country</label>
+                        <input type="text" id="input-country" class="form-control" placeholder="Country" value="India">
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-country">Postal code</label>
+                        <input type="number" id="input-postal-code" class="form-control" placeholder="Postal code">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr class="my-4" />
+                <!-- Description -->
+                <h6 class="heading-small text-muted mb-4">About me</h6>
+                <div class="pl-lg-4">
+                  <div class="form-group">
+                    <label class="form-control-label">About Me</label>
+                    <textarea rows="4" class="form-control" placeholder="A few words about you ...">Optional Field for more details</textarea>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
