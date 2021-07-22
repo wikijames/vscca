@@ -9,4 +9,7 @@ public interface LoginService {
 	
 LoginTable findByuserName(String username);
 
+LoginTable save(LoginTable loginTable);
+
+
 }

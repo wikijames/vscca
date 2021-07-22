@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `vscca` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `vscca`;
 -- MySQL dump 10.13  Distrib 8.0.25, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: vscca
@@ -18,28 +16,42 @@ USE `vscca`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `access`
+-- Table structure for table `user_details`
 --
 
-DROP TABLE IF EXISTS `access`;
+DROP TABLE IF EXISTS `user_details`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `access` (
+CREATE TABLE `user_details` (
   `id` bigint NOT NULL,
-  `access_type` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UK_t73ut54jwchc7s1h5j1k70jkn` (`access_type`)
+  `access_type` varchar(255) DEFAULT NULL,
+  `location` varchar(255) DEFAULT NULL,
+  `about_me` varchar(255) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `city` varchar(255) DEFAULT NULL,
+  `consulting` varchar(255) DEFAULT NULL,
+  `country` varchar(255) DEFAULT NULL,
+  `email_id` varchar(255) DEFAULT NULL,
+  `execution` varchar(255) DEFAULT NULL,
+  `first_name` varchar(255) DEFAULT NULL,
+  `intimation` varchar(255) DEFAULT NULL,
+  `is_active` int DEFAULT NULL,
+  `last_name` varchar(255) DEFAULT NULL,
+  `mobile_number` varchar(255) DEFAULT NULL,
+  `postal_code` varchar(255) DEFAULT NULL,
+  `responsibility` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `access`
+-- Dumping data for table `user_details`
 --
 
-LOCK TABLES `access` WRITE;
-/*!40000 ALTER TABLE `access` DISABLE KEYS */;
-INSERT INTO `access` VALUES (1,'ADMIN'),(2,'MANAGER'),(3,'TEAM MEMBER');
-/*!40000 ALTER TABLE `access` ENABLE KEYS */;
+LOCK TABLES `user_details` WRITE;
+/*!40000 ALTER TABLE `user_details` DISABLE KEYS */;
+INSERT INTO `user_details` VALUES (1,NULL,NULL,'good','noida','noida','no','India',NULL,'No','manu','no',1,'singh','7065275354','201021','yes'),(2,'admin','gurgaon','good','noida','noida','no','India',NULL,'No','vivek','no',1,'sharma','7065275354','201021','yes'),(4,'admin','gurgaon','good','noida','noida','no','India',NULL,'No','vivek','no',1,'sharma','7065275354','201021','yes');
+/*!40000 ALTER TABLE `user_details` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -51,4 +63,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-07-20 19:37:37
+-- Dump completed on 2021-07-22 20:08:02

@@ -19,4 +19,11 @@ public class LoginServiceImpl implements LoginService{
 		return loginTable;
 	}
 
+	@Override
+	public LoginTable save(LoginTable loginTable) {
+		// TODO Auto-generated method stub
+		return loginRepository.save(loginTable);
+	}
+
+	
 }

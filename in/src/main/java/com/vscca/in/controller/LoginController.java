@@ -38,6 +38,8 @@ public class LoginController {
 				response.setSuccess(200);
 				response.setMessage("success");
 				response.setToken(jwtToken);
+				loginTable.setToken(jwtToken);
+				loginService.save(loginTable);
 			}
 			else {
 				response.setSuccess(401);
