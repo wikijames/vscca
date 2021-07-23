@@ -2,7 +2,7 @@ $(document).ready(function(){
  // on click Sign In Button checks with the remote server that username =='admin' and password == 'password'
     $("#login").click(function(e){
 		e.preventDefault();
-		
+		console.log('test')
 		var settings = {
 		  "url": "http://localhost:8080/vscca/login",
 		  "method": "POST",
