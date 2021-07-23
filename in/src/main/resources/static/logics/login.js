@@ -18,9 +18,14 @@ $(document).ready(function(){
 		
 		$.ajax(settings).done(function (response) {
 		  console.log(response);
-		  window.location = 'dashboard';
-		});
+			if(response.success == 200){
+				window.location = 'dashboard';
+			}else{
+				
+				alert('try again');
+			}
 		
     });
 
+});
 });
