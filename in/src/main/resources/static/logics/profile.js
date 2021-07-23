@@ -70,7 +70,13 @@ $(document).ready(function(){
 		}; 
 
 		$.ajax(settings).done(function (response) {
-		  console.log(response);
+
+			console.log(response);		  
+			if(response.status == 200 ){
+				alert('profile has been added succesfully');
+			}else{
+				alert('something went wrong.'+ data);
+			}
 		});
 });
 
