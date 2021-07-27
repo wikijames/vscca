@@ -40,16 +40,15 @@ $(document).ready(function(){
 	});
 	
  // this is the id of the form
-	$("#profile").submit(function(e) {
-	
+	$("#profile").click(function(e) {
 	    e.preventDefault(); // avoid to execute the actual submit of the form.
 		var settings = {
 		    "url": "http://localhost:8080/vscca/userDetails",
 			  "method": "POST",
 			  "timeout": 0,
-			  "headers": {​​​​​​​
-			    "Content-Type": "application/json"
-			},
+			 "headers": {
+    "Content-Type": "application/json"
+  },
 		  "data": JSON.stringify({
 		    "firstName": $('#firstName').val(),
 		    "lastName": $('#lastName').val(),
@@ -72,11 +71,11 @@ $(document).ready(function(){
 		$.ajax(settings).done(function (response) {
 
 			console.log(response);		  
-			if(response.status == 200 ){
+			if(response.success == 200 ){
 				alert('profile has been added succesfully');
 			}else{
 				alert('something went wrong.'+ data);
 			}
 		});
 });
-
+})
