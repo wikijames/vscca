@@ -1,10 +1,14 @@
 package com.vscca.in.controller;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vscca.in.dto.RequestDto;
@@ -64,4 +68,46 @@ public class UserDetailsController {
 		return response;
 	}
 
+	@GetMapping("/consultingUsers")
+	public ResponseDto userDetailsByconsulting() {
+		ResponseDto response= new ResponseDto();
+		List<UserDetails> userDetails=userDetailsService.userDetailsByConsulting();
+		response.setSuccess(200);
+		response.setBody(userDetails);
+		response.setMessage("success");
+		return response;
+	}
+	
+	@GetMapping("/responsiblityUsers")
+	public ResponseDto userDetailsByResponsibility() {
+		ResponseDto response= new ResponseDto();
+		List<UserDetails> userDetails=userDetailsService.userDetailsByResponsibility();
+		response.setSuccess(200);
+		response.setBody(userDetails);
+		response.setMessage("success");
+		return response;
+	}
+	
+	
+	@GetMapping("/executionUsers")
+	public ResponseDto userDetailsByExceution() {
+		ResponseDto response= new ResponseDto();
+		List<UserDetails> userDetails=userDetailsService.userDetailsByExecution();
+		response.setSuccess(200);
+		response.setBody(userDetails);
+		response.setMessage("success");
+		return response;
+	}
+	
+	
+	@GetMapping("/intimationUsers")
+	public ResponseDto userDetailsByIntemation() {
+		ResponseDto response= new ResponseDto();
+		List<UserDetails> userDetails=userDetailsService.userDetailsByIntimation();
+		response.setSuccess(200);
+		response.setBody(userDetails);
+		response.setMessage("success");
+		return response;
+	}
+	
 }
