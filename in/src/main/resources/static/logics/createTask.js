@@ -1,11 +1,3 @@
-function GetFormattedDate() {
-    var date = new Date();
-    var month = date.getMonth() + 1;
-    var day = date.getDate();
-    var year = date.getFullYear();
-    return day + "/" + month + "/" + year;
-}
-
 function todayDate(){
 	var today = new Date();
 	var dd = String(today.getDate()).padStart(2, '0');
@@ -15,22 +7,30 @@ function todayDate(){
 	return today = dd + '/' + mm + '/' + yyyy;
 }
 
+function showContainer(){
+	if(role === 'admin'){
+		$('.show-container').show();	
+	}else if(role === 'team'){
+		$('.show-container').hide();
+	}
+}
+
 $(document).ready(function(){
-	console.log('todayDate()',todayDate())
+	//console.log('todayDate()',todayDate())
 		// populate billingClients Dropdown
 		  $.ajax({
-            type: "GET",
-            url:"http://localhost:8080/vscca/billingClients",
-            dataType: "json",
-            success: function (data) {
-			console.log('billingClients',data.body)
-                $.each(data.body,function(i,obj)
-                {
-                 var div_data="<option value="+obj.emailId+">"+obj.firstName+" "+obj.lastName+"</option>";
-                $(div_data).appendTo('#billingClientName'); 
-                });  
-                }
-          });
+	        type: "GET",
+	        url:"http://localhost:8080/vscca/billingClients",
+	        dataType: "json",
+	        success: function (data) {
+			//console.log('billingClients',data.body)
+	            $.each(data.body,function(i,obj)
+	            {
+	             var div_data="<option value="+obj.emailId+">"+obj.firstName+" "+obj.lastName+"</option>";
+	            $(div_data).appendTo('#billingClientName'); 
+	            });  
+	            }
+	      });
 
 		// populate tasks Type Dropdown
 		  $.ajax({
@@ -38,7 +38,7 @@ $(document).ready(function(){
             url:"http://localhost:8080/vscca/tasks",
             dataType: "json",
             success: function (data) {
-			console.log('task type',data.body)
+			//console.log('task type',data.body)
                 $.each(data.body,function(i,obj)
                 {
                  var div_data="<option value="+obj.id+">"+obj.value+"</option>";
@@ -53,7 +53,7 @@ $(document).ready(function(){
             url:"http://localhost:8080/vscca/responsiblityUsers",
             dataType: "json",
             success: function (data) {
-			console.log('responsiblityUsers',data.body)
+			//console.log('responsiblityUsers',data.body)
                 $.each(data.body,function(i,obj)
                 {
                  var div_data="<option value="+obj.emailId+">"+obj.firstName+" "+obj.lastName+"</option>";
@@ -68,7 +68,7 @@ $(document).ready(function(){
             url:"http://localhost:8080/vscca/executionUsers",
             dataType: "json",
             success: function (data) {
-			console.log('executionUsers',data.body)
+			//console.log('executionUsers',data.body)
                 $.each(data.body,function(i,obj)
                 {
                  var div_data="<option value="+obj.emailId+">"+obj.firstName+" "+obj.lastName+"</option>";
@@ -83,7 +83,7 @@ $(document).ready(function(){
             url:"http://localhost:8080/vscca/consultingUsers",
             dataType: "json",
             success: function (data) {
-			console.log('consultingUsers',data.body)
+			//console.log('consultingUsers',data.body)
                 $.each(data.body,function(i,obj)
                 {
                  var div_data="<option value="+obj.emailId+">"+obj.firstName+" "+obj.lastName+"</option>";
@@ -98,7 +98,7 @@ $(document).ready(function(){
             url:"http://localhost:8080/vscca/intimationUsers",
             dataType: "json",
             success: function (data) {
-			console.log('intimationuser',data.body)
+			//console.log('intimationuser',data.body)
                 $.each(data.body,function(i,obj)
                 {
                  var div_data="<option value="+obj.emailId+">"+obj.firstName+" "+obj.lastName+"</option>";
@@ -106,6 +106,8 @@ $(document).ready(function(){
                 });  
                 }
           });
+
+
 
 		var formattedDueDate;
 		$("#endDate").change(function(){
@@ -116,7 +118,7 @@ $(document).ready(function(){
 			    var year = date.getFullYear();
 				var result = day + "/" + month + "/" + year;
 				formattedDueDate = result;
-				console.log('v result', result);
+				//console.log('v result', result);
 			    return result;			
 		})
 
@@ -150,7 +152,7 @@ $(document).ready(function(){
 
 		$.ajax(settings).done(function (response) {
 
-			console.log(response);		  
+			//console.log(response);		  
 			if(response.success == 200 ){
 				alert('profile has been added succesfully');
 			}else{

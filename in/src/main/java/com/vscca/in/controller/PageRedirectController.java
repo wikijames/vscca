@@ -21,13 +21,13 @@ public class PageRedirectController {
 		   return "profile";
 	   }
 
-	@RequestMapping(value = "/createTask", method = RequestMethod.GET)
-	   public String createTask() {
+	@RequestMapping(value = "/createTaskForm", method = RequestMethod.GET)
+	   public String createTaskForm() {
 		   return "createTask";
 	   }
 
-	@RequestMapping(value = "/viewTask", method = RequestMethod.GET)
-	   public String viewTask() {
+	@RequestMapping(value = "/viewTaskGrid", method = RequestMethod.GET)
+	   public String viewTaskGrid() {
 		   return "viewTask";
 	   }
 	

@@ -4,6 +4,11 @@
 <head>
   <title>Vivek Sushil &amp; Co - Create Task</title>
   <div th:replace="fragments/head :: head"></div>
+<style>
+.show-container{
+	display: none;
+}
+</style>
 </head>
 <body>
 <div th:replace="fragments/nav :: sidenav"></div>
@@ -133,10 +138,10 @@
                     </div>
                   </div>
                 </div>
-                <hr class="my-4" />
+                <hr class="my-4 show-container" />
                 <!-- Description -->
-                <h6 class="heading-small text-muted mb-4">Comments</h6>
-                <div class="pl-lg-4">
+                <h6 class="heading-small text-muted mb-4 show-container">Comments</h6>
+                <div class="pl-lg-4 show-container">
                   <div class="row">
                     <div class="col-lg-4">
                       <div class="form-group">
