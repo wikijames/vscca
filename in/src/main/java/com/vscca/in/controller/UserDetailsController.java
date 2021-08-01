@@ -38,6 +38,7 @@ public class UserDetailsController {
 			UserDetails userDetails= new UserDetails();
 			LoginTable loginTable = new LoginTable();
 			userDetails.setFirstName(userDto.getFirstName());
+			userDetails.setEmailId(userDto.getEmailId());
 			userDetails.setLastName(userDto.getLastName());
 			userDetails.setMobileNumber(userDto.getMobileNumber());
 			userDetails.setAddress(userDto.getAddress());
