@@ -13,7 +13,7 @@
 <html>
 <head>
   <title>Vivek Sushil &amp; Co - Login</title>
-  <div th:insert="fragments/head :: head"></div>
+  <div th:replace="fragments/head :: head"></div>
 </head>
 <body class="bg-default">
 
@@ -81,7 +81,8 @@
       </div>
     </div>
   </div>
-  <div th:insert="fragments/footer :: login-footer"></div>
+  <div th:replace="fragments/footer :: login-footer"></div>
+  <div th:replace="fragments/footer :: login-footer"></div>
   <script th:src="@{/logics/login.js}"></script>
 </body>
 </html>

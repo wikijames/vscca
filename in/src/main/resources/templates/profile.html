@@ -1,6 +1,22 @@
-<div th:fragment="profile">
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Vivek Sushil &amp; Co - Create Profile</title>
+  <div th:replace="fragments/head :: head"></div>
+</head>
+<body>
+<div th:replace="fragments/nav :: sidenav"></div>
+<!-- Main content -->
+  <div class="main-content" id="panel">
+  		<!-- breadcrumb -->
+	  <div th:replace="fragments/breadcrumb :: breadcrumb"></div>
+	  <div class="container-fluid mt--6">
+
+
+
 <!-- Page content -->
-      <div class="row">
+      <div th:fragment="profile" class="row">
         <div class="col-xl-12 order-xl-1">
           <div class="card">
             <div class="card-header">
@@ -45,13 +61,13 @@
                     <div class="col-lg-4">
                       <div class="form-group">
                         <label class="form-control-label" for="firstName">First name</label>
-                        <input type="text" id="firstName" class="form-control" placeholder="First name" value="vscca">
+                        <input type="text" id="firstName" class="form-control" placeholder="First name">
                       </div>
                     </div>
                     <div class="col-lg-4">
                       <div class="form-group">
                         <label class="form-control-label" for="lastName">Last name</label>
-                        <input type="text" id="lastName" class="form-control" placeholder="Last name" value="vscca">
+                        <input type="text" id="lastName" class="form-control" placeholder="Last name">
                       </div>
                     </div>
                     <div class="col-lg-4">
@@ -76,13 +92,13 @@
                   <div class="row">
                     <div class="col-md-4">
                       <div class="form-group">
-                        <input type="checkbox" class="" id="responsibility" name="responsibility" value="Responsibility">
+                        <input type="checkbox" class="" id="responsibility" name="responsibility" >
                         <label class="form-control-label" for="responsibility">Responsibility</label><br>
-                        <input type="checkbox" class="" id="execution" name="execution" value="execution">
+                        <input type="checkbox" class="" id="execution" name="execution">
                         <label class="form-control-label" for="execution"> Execution</label><br>
-                        <input type="checkbox" class="" id="consulting" name="consulting" value="consulting">
+                        <input type="checkbox" class="" id="consulting" name="consulting">
                         <label class="form-control-label" for="consulting"> consulting</label><br>
-                        <input type="checkbox" class="" id="intimation" name="intimation" value="intimation">
+                        <input type="checkbox" class="" id="intimation" name="intimation">
                         <label class="form-control-label" for="intimation"> Intimation</label><br>
                       </div>
                     </div>
@@ -96,7 +112,7 @@
                     <div class="col-md-12">
                       <div class="form-group">
                         <label class="form-control-label" for="address">Address</label>
-                        <input id="address" class="form-control" placeholder="Home Address" value="Address" type="text">
+                        <input id="address" class="form-control" placeholder="Home Address" type="text">
                       </div>
                     </div>
                   </div>
@@ -104,13 +120,13 @@
                     <div class="col-lg-4">
                       <div class="form-group">
                         <label class="form-control-label" for="city">City</label>
-                        <input type="text" id="city" class="form-control" placeholder="City" value="New Delhi">
+                        <input type="text" id="city" class="form-control" placeholder="City" >
                       </div>
                     </div>
                     <div class="col-lg-4">
                       <div class="form-group">
                         <label class="form-control-label" for="country">Country</label>
-                        <input type="text" id="country" class="form-control" placeholder="Country" value="India">
+                        <input type="text" id="country" class="form-control" placeholder="Country">
                       </div>
                     </div>
                     <div class="col-lg-4">
@@ -135,4 +151,14 @@
           </div>
         </div>
       </div>
-</div>
+      
+      
+       <!-- footer -->
+	  <div th:replace="fragments/footer :: dashboard-footer"></div>	  
+	  </div>
+  </div>
+  <!-- scripts -->
+	<div th:replace="fragments/footer :: dashboard-scripts"></div>
+	<script th:src="@{/logics/profile.js}"></script>
+</body>
+</html>

@@ -1,39 +1,32 @@
 $(document).ready(function(){
+	
 	$("#responsibility").change(function(){
-	    //alert("checked");
 	    if($(this).is(":checked")){
 	        $(this).val("yes");
-	        //alert($(this).val());
 	    } else {
-	        $(this).val("no");;
+	        $(this).val("no");
 	    }
 	});
 	
 	$("#execution").change(function(){
-	    //alert("checked");
 	    if($(this).is(":checked")){
 	        $(this).val("yes");
-	        //alert($(this).val());
 	    } else {
 	        $(this).val("no");;
 	    }
 	});
 	
 	$("#consulting").change(function(){
-	    //alert("checked");
 	    if($(this).is(":checked")){
 	        $(this).val("yes");
-	        //alert($(this).val());
 	    } else {
 	        $(this).val("no");;
 	    }
 	});
 	
 	$("#intimation").change(function(){
-	    //alert("checked");
 	    if($(this).is(":checked")){
 	        $(this).val("yes");
-	        //alert($(this).val());
 	    } else {
 	        $(this).val("no");;
 	    }
@@ -47,8 +40,9 @@ $(document).ready(function(){
 			  "method": "POST",
 			  "timeout": 0,
 			 "headers": {
-    "Content-Type": "application/json"
-  },
+			"Authorisation" : sessionStorage.getItem('token'),
+		    "Content-Type": "application/json"
+		  },
 		  "data": JSON.stringify({
 		    "firstName": $('#firstName').val(),
 		    "lastName": $('#lastName').val(),
