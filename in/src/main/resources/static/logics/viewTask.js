@@ -1,8 +1,8 @@
 $(document).ready(function(){
 //var dt = require( 'datatables.net' )();
 //$('#table_id').DataTable();
-
-$("#table_id").dataTable({
+	
+//$("#table_id").dataTable({
   
 /*"aaData":[
     ["Sitepoint","https://www.sitepoint.com","Blog","2013-10-15 10:30:00"],
@@ -29,23 +29,74 @@ $("#table_id").dataTable({
                     : "N/A" ;
       }  
   }]*/
-});
+//});
 
 
 
 	// populate intimationuser Dropdown
+	//var emailId = 'manish@gmail.com';
 	  $.ajax({
         type: "GET",
-        url:"http://localhost:8080/vscca/viewTask?emailId=test@gmail.com",
+        url:"http://localhost:8080/vscca/taskDetails?emailId=manish@gmail.com",
         dataType: "json",
         success: function (data) {
-		console.log('intimationuser',data.body)
-            $.each(data.body,function(i,obj)
-            {
-             var div_data="<option value="+obj.emailId+">"+obj.firstName+" "+obj.lastName+"</option>";
-            $(div_data).appendTo('#intimation'); 
-            });  
+		console.log('view manish data',data.body)
+               $.each(data.body,function(i,obj)
+                {
+	 		  var div_data = '<tr>'
+					+ '<td>' + obj.projectName + '</td>' 
+                    + '<td>' + obj.partyName + '</td>'
+					+ '<td>' + obj.responsibility + '</td>'
+					+ '<td>' + obj.status + '</td>'
+					+ '</tr>';
+			    $(div_data).appendTo('#populateGrid'); 
+				console.log('data div', div_data)
+                });
             }
       });
 
-})
+
+
+
+})// jquery end
+
+	function viewType(){
+		var value = $('#viewType').val();
+		console.log('value---',value);
+		if(value == 'responsibility'){
+			return populateData('http://localhost:8080/vscca/taskDetails?emailId=manish@gmail.com');
+		}
+		else if(value == 'exceution'){
+			return populateData('http://localhost:8080/vscca/taskDetailsExceution?emailId=manish@gmail.com');
+		}
+		else if(value == 'intimation'){
+			return populateData('http://localhost:8080/vscca/taskDetailsIntimation?emailId=manish@gmail.com');
+		}
+		else if(value == 'consulting'){
+			return populateData('http://localhost:8080/vscca/taskDetailsConsulting?emailId=manish@gmail.com');
+		}
+	}
+
+function populateData(url){
+	//$('#table_id').dataTable().destroy();
+	$('#table_id tbody').empty();
+	$.ajax({
+        type: "GET",
+        url:url,
+        dataType: "json",
+        success: function (data) {
+		console.log('view manish data',data.body)
+               $.each(data.body,function(i,obj)
+                {
+	 		  var div_data = '<tr>'
+					+ '<td>' + obj.projectName + '</td>' 
+                    + '<td>' + obj.partyName + '</td>'
+					+ '<td>' + obj.responsibility + '</td>'
+					+ '<td>' + obj.status + '</td>'
+					+ '</tr>';
+			    $(div_data).appendTo('#populateGrid'); 
+				console.log('data div', div_data)
+                });
+            }
+      });
+};
