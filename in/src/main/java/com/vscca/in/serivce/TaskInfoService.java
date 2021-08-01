@@ -10,4 +10,6 @@ public interface TaskInfoService {
 	TaskInfo save(TaskInfo taskInfo);
 	
 	List<Object[]> findTaskDetails(String emailId);
+	
+	List<Object[]> findTaskDetailsIntimation(String emailId);
 }

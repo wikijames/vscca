@@ -28,4 +28,10 @@ public class TaskInfoServiceImpl implements TaskInfoService {
 		return taskInfoRepository.findTaskDetails(emailId);
 	}
 
+	@Override
+	public List<Object[]> findTaskDetailsIntimation(String emailId) {
+		// TODO Auto-generated method stub
+		return taskInfoRepository.findTaskDetailsIntimation(emailId);
+	}
+
 }
