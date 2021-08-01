@@ -25,5 +25,10 @@ public class PageRedirectController {
 	   public String createTask() {
 		   return "createTask";
 	   }
+
+	@RequestMapping(value = "/viewTask", method = RequestMethod.GET)
+	   public String viewTask() {
+		   return "viewTask";
+	   }
 	
 }

@@ -1,5 +1,22 @@
-$(document).ready(function(){
+function GetFormattedDate() {
+    var date = new Date();
+    var month = date.getMonth() + 1;
+    var day = date.getDate();
+    var year = date.getFullYear();
+    return day + "/" + month + "/" + year;
+}
+
+function todayDate(){
+	var today = new Date();
+	var dd = String(today.getDate()).padStart(2, '0');
+	var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+	var yyyy = today.getFullYear();
 	
+	return today = dd + '/' + mm + '/' + yyyy;
+}
+
+$(document).ready(function(){
+	console.log('todayDate()',todayDate())
 		// populate billingClients Dropdown
 		  $.ajax({
             type: "GET",
@@ -90,6 +107,18 @@ $(document).ready(function(){
                 }
           });
 
+		var formattedDueDate;
+		$("#endDate").change(function(){
+			var dueDate = $(this).val();
+			    var date = new Date(dueDate);
+			    var month = date.getMonth() + 1;
+			    var day = date.getDate();
+			    var year = date.getFullYear();
+				var result = day + "/" + month + "/" + year;
+				formattedDueDate = result;
+				console.log('v result', result);
+			    return result;			
+		})
 
 
  // this is the id of the form
@@ -104,21 +133,18 @@ $(document).ready(function(){
 		    "Content-Type": "application/json"
 		  },
 		  "data": JSON.stringify({
-		    "firstName": $('#firstName').val(),
-		    "lastName": $('#lastName').val(),
-		    "mobileNumber": $('#mobile').val(),
-		    "emailId": $('#email').val(),
-		    "address": $('#address').val(),
-		    "city": $('#city').val(),
-		    "country": $('#country').val(),
-		    "postalCode": $('#postalCode').val(),
+		    "projectName": $('#projectName').val(),
+		    "partyName": $('#partyName').val(),
+		    "weightage": $('#weightage').val(),
+		    "taskDescription": $('#description').val(),
+		    "taskType": $('#taskType').val(),
+		    "billingClient": $('#billingClientName').val(),
+		    "createdAt": todayDate(),
+		    "dueDate": formattedDueDate,
 		    "responsibility": $('#responsibility').val(),
-		    "execution": $('#execution').val(),
-		    "consulting": $('#consulting').val(),
 		    "intimation": $('#intimation').val(),
-		    "aboutMe": $('#aboutMe').val(),
-		    "accessType": $('#accessType').val(),
-		    "location": $('#location').val()
+		    "exceution": $('#execution').val(),
+		    "consulting": $('#consulting').val()
 		  }),
 		}; 
 
