@@ -97,7 +97,7 @@ public class TaskController {
 		return response;
 	}
 	
-	@GetMapping("/viewTask")
+	@GetMapping("/tasks")
 	public ResponseDto getTaskDetails(@RequestParam String emailId) {
 		ResponseDto response = new ResponseDto();
 		List<Object[]> taskDetails = taskInfoService.findTaskDetails(emailId);
