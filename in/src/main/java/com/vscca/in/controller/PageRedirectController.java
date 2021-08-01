@@ -21,5 +21,9 @@ public class PageRedirectController {
 		   return "profile";
 	   }
 
+	@RequestMapping(value = "/createTask", method = RequestMethod.GET)
+	   public String createTask() {
+		   return "createTask";
+	   }
 	
 }
