@@ -67,10 +67,6 @@
                         <label class="form-control-label" for="responsibility">Responsibility</label>
                         <select id="responsibility" class="form-control">
                           <option value="">Select Responsible Person</option>
-                          <option value="CA Satish Sharma">CA Satish Sharma</option>
-                          <option value="CA Nidhi Saini">CA Nidhi Saini</option>
-                          <option value="Firoz Ali">Firoz Ali</option>
-                          <option value="Ruchi Agrawal">Ruchi Agrawal</option>
                         </select>
                       </div>
                     </div>
@@ -79,11 +75,6 @@
                         <label class="form-control-label" for="execution">Execution</label>
                         <select id="execution" class="form-control">
                           <option value="">Select Executior</option>
-                          <option value="">CA Satish Sharma</option>
-                          <option value="">CA Nidhi Saini</option>
-                          <option value="">Firoz Ali</option>
-                          <option value="">Bobby Sharma</option>
-                          <option value="">NA</option>
                         </select>
                       </div>
                     </div>
@@ -92,22 +83,14 @@
                         <label class="form-control-label" for="consulting">Consulting</label>
                         <select id="consulting" class="form-control">
                           <option value="">Select Consultant</option>
-                          <option value="">CA Satish Sharma</option>
-                          <option value="">CA Nidhi Saini</option>
-                          <option value="">Firoz Ali</option>
-                          <option value="">Nipul Kumar</option>
                         </select>
                       </div>
                     </div>
                     <div class="col-lg-3">
                       <div class="form-group">
-                        <label class="form-control-label" for="assignBy">Intimation</label>
-                        <select id="assignBy" class="form-control">
+                        <label class="form-control-label" for="intimation">Intimation</label>
+                        <select id="intimation" class="form-control">
                           <option value="">Select Intimation</option>
-                          <option value="">CA Satish Sharma</option>
-                          <option value="">CA Nidhi Saini</option>
-                          <option value="">Firoz Ali</option>
-                          <option value="">NA</option>
                         </select>
                       </div>
                     </div>
@@ -134,14 +117,9 @@
                   <div class="row">
                     <div class="col-lg-4">
                       <div class="form-group">
-                        <label class="form-control-label" for="input-client-name">Task Type</label>
-                        <select id="input-client-name" class="form-control">
+                        <label class="form-control-label" for="taskType">Task Type</label>
+                        <select id="taskType" class="form-control">
                           <option value="">Select task type</option>
-                          <option value="ROC">ROC</option>
-                          <option value="Admin">Admin</option>
-                          <option value="BS">BS</option>
-                          <option value="ITR">ITR</option>
-                          <option value="Other">Other</option>
                         </select>
                       </div>
                     </div>
@@ -205,6 +183,6 @@
   </div>
   <!-- scripts -->
 	<div th:replace="fragments/footer :: dashboard-scripts"></div>
-	<script th:src="@{/logics/profile.js}"></script>
+	<script th:src="@{/logics/createTask.js}"></script>
 </body>
 </html>

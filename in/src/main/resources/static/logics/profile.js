@@ -2,33 +2,33 @@ $(document).ready(function(){
 	
 	$("#responsibility").change(function(){
 	    if($(this).is(":checked")){
-	        $(this).val("yes");
+	        $(this).val("1");
 	    } else {
-	        $(this).val("no");
+	        $(this).val("0");
 	    }
 	});
 	
 	$("#execution").change(function(){
 	    if($(this).is(":checked")){
-	        $(this).val("yes");
+	        $(this).val("1");
 	    } else {
-	        $(this).val("no");;
+	        $(this).val("0");;
 	    }
 	});
 	
 	$("#consulting").change(function(){
 	    if($(this).is(":checked")){
-	        $(this).val("yes");
+	        $(this).val("1");
 	    } else {
-	        $(this).val("no");;
+	        $(this).val("0");;
 	    }
 	});
 	
 	$("#intimation").change(function(){
 	    if($(this).is(":checked")){
-	        $(this).val("yes");
+	        $(this).val("1");
 	    } else {
-	        $(this).val("no");;
+	        $(this).val("0");;
 	    }
 	});
 	
