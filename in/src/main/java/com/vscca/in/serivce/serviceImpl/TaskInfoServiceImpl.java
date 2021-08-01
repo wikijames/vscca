@@ -1,5 +1,8 @@
 package com.vscca.in.serivce.serviceImpl;
 
+import java.util.List;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +20,12 @@ public class TaskInfoServiceImpl implements TaskInfoService {
 	public TaskInfo save(TaskInfo taskInfo) {
 		// TODO Auto-generated method stub
 		return taskInfoRepository.save(taskInfo);
+	}
+
+	@Override
+	public List<Object[]> findTaskDetails(String emailId) {
+		// TODO Auto-generated method stub
+		return taskInfoRepository.findTaskDetails(emailId);
 	}
 
 }

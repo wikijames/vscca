@@ -6,6 +6,7 @@ import javax.persistence.Column;
 
 public class TaskDto {
 	
+	private Long taskId;
 	private String projectName;
 	private String partyName;
 	private int weightage;
@@ -18,7 +19,19 @@ public class TaskDto {
 	private String intimation;
 	private String exceution;
 	private String consulting;
+	private String status;
+	private String delayReason;
+	private String remarks;
+	private Date endDate;
 	
+	
+
+	public Long getTaskId() {
+		return taskId;
+	}
+	public void setTaskId(Long taskId) {
+		this.taskId = taskId;
+	}
 	public String getProjectName() {
 		return projectName;
 	}
@@ -90,6 +103,30 @@ public class TaskDto {
 	}
 	public void setConsulting(String consulting) {
 		this.consulting = consulting;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public String getDelayReason() {
+		return delayReason;
+	}
+	public void setDelayReason(String delayReason) {
+		this.delayReason = delayReason;
+	}
+	public String getRemarks() {
+		return remarks;
+	}
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
+	public Date getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
 	}
 	
 	
