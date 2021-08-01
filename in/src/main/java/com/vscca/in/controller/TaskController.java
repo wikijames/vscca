@@ -78,7 +78,7 @@ public class TaskController {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		Date date = new Date();
 		taskInfo.setCreatedAt(date);
-		taskInfo.setDueDate(taskDto.getDueDate());
+		taskInfo.setDueDate(new Date(new SimpleDateFormat("dd/MM/yyyy").format(taskDto.getDueDate())));
 		taskInfo.setBillingClient(taskDto.getBillingClient());
 		taskInfo.setTaskType(taskDto.getTaskType());
 		taskInfo.setTaskDescription(taskDto.getTaskDescription());
