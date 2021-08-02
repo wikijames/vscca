@@ -439,7 +439,6 @@ public class TaskController {
 				response.setSuccess(401);
 				response.setMessage("Unauthorized");
 			}else {
-				String emailId=TokenValidation.finadEmailIdByToken(token);
 		List<Object[]> taskDetails = taskInfoService.findTaskDetailsById(taskId);
 		List<TaskDto> task= new ArrayList<TaskDto>();
 		for (Object[] result : taskDetails) {
@@ -503,6 +502,47 @@ public class TaskController {
 		response.setBody(task);
 		response.setMessage("success");
 			}
+		return response;
+	}
+	
+	
+	@PostMapping("/editTask")
+	public ResponseDto editTask(HttpServletRequestWrapper req,@RequestBody TaskDto taskDto) {
+		ResponseDto response = new ResponseDto();
+		String token= req.getHeader(VsccaConstants.TOKEN_HEADER);
+		TaskStatus taskStatus = new TaskStatus();
+		if(token == null && TokenValidation.getAuthentication(token) != true || getTokenAuthentication(token) != true) {
+				response.setSuccess(401);
+				response.setMessage("Unauthorized");
+			}else {
+
+//		taskInfo.setProjectName(taskDto.getProjectName());
+//		taskInfo.setPartyName(taskDto.getPartyName());
+//		taskInfo.setWeightage(taskDto.getWeightage());
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		Date date = new Date();
+//		taskInfo.setCreatedAt(date);
+//		taskInfo.setDueDate(new Date(new SimpleDateFormat("dd/MM/yyyy").format(taskDto.getDueDate())));
+//		taskInfo.setBillingClient(taskDto.getBillingClient());
+//		taskInfo.setTaskType(taskDto.getTaskType());
+//		taskInfo.setTaskDescription(taskDto.getTaskDescription());
+//		taskId = taskInfoService.save(taskInfo);
+//		taskUserDetails.setTaskId(taskId.getId());
+//		taskUserDetails.setResponsibility(taskDto.getResponsibility());
+//		taskUserDetails.setConsulting(taskDto.getConsulting());
+//		taskUserDetails.setExceution(taskDto.getExceution());
+//		taskUserDetails.setIntimation(taskDto.getIntimation());
+//		taskStatus.setTaskId(taskId.getId());
+		taskStatus.setStatus(taskDto.getStatus());
+		taskStatus.setTaskId(taskDto.getTaskId());
+		taskStatus.setEndDate(date);
+		taskStatus.setRemarks(taskDto.getRemarks());
+		taskStatus.setDelayReason(taskDto.getDelayReason());
+		//taskUserDetailsService.save(taskUserDetails);
+		taskStatusService.save(taskStatus);
+		response.setSuccess(200);
+		response.setMessage("success");
+		}
 		return response;
 	}
 	
