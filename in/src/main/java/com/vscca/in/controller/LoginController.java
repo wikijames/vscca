@@ -12,6 +12,7 @@ import com.vscca.in.dto.RequestDto;
 import com.vscca.in.dto.ResponseDto;
 import com.vscca.in.model.LoginTable;
 import com.vscca.in.serivce.LoginService;
+import com.vscca.in.serivce.UserDetailsService;
 import com.vscca.in.utill.VsccaConstants;
 
 import io.jsonwebtoken.Claims;
@@ -24,6 +25,9 @@ public class LoginController {
 	
 	@Autowired
 	LoginService loginService;
+	
+	@Autowired
+	UserDetailsService userDetailsService;
 	
 	@PostMapping("/login")
 	public ResponseDto postLogin(@RequestBody RequestDto requestDto) {
@@ -38,6 +42,7 @@ public class LoginController {
 				response.setSuccess(200);
 				response.setMessage("success");
 				response.setToken(jwtToken);
+				response.setBody(userDetailsService.findByEmailId(requestDto.userName).getAccessType());
 				loginTable.setToken(jwtToken);
 				loginService.save(loginTable);
 			}

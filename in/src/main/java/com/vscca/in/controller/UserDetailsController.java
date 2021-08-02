@@ -3,6 +3,8 @@ package com.vscca.in.controller;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +20,7 @@ import com.vscca.in.model.LoginTable;
 import com.vscca.in.model.UserDetails;
 import com.vscca.in.serivce.LoginService;
 import com.vscca.in.serivce.UserDetailsService;
+import com.vscca.in.utill.TokenValidation;
 import com.vscca.in.utill.VsccaConstants;
 
 import io.jsonwebtoken.Jwts;
@@ -32,8 +35,13 @@ public class UserDetailsController {
 	LoginService loginService;
 	
 	@PostMapping("/userDetails")
-	public ResponseDto postLogin(@RequestBody UserDto userDto) {
+	public ResponseDto postLogin(HttpServletRequest req,@RequestBody UserDto userDto) {
 		ResponseDto response= new ResponseDto();
+		String token= req.getHeader(VsccaConstants.TOKEN_HEADER);
+		if(token == null && TokenValidation.getAuthentication(token) != true || getTokenAuthentication(token) != true) {
+				response.setSuccess(401);
+				response.setMessage("Unauthorized");
+			}else {
 		if(userDto != null) {
 			UserDetails userDetails= new UserDetails();
 			LoginTable loginTable = new LoginTable();
@@ -65,50 +73,97 @@ public class UserDetailsController {
 				response.setSuccess(401);
 				response.setMessage("Fill again");
 			}
+			}
 		
 		return response;
 	}
 
 	@GetMapping("/consultingUsers")
-	public ResponseDto userDetailsByconsulting() {
+	public ResponseDto userDetailsByconsulting(HttpServletRequest req) {
 		ResponseDto response= new ResponseDto();
+		String token= req.getHeader(VsccaConstants.TOKEN_HEADER);
+		if(token == null && TokenValidation.getAuthentication(token) != true || getTokenAuthentication(token) != true) {
+				response.setSuccess(401);
+				response.setMessage("Unauthorized");
+			}else {
 		List<UserDetails> userDetails=userDetailsService.userDetailsByConsulting();
 		response.setSuccess(200);
 		response.setBody(userDetails);
 		response.setMessage("success");
+			}
 		return response;
 	}
 	
 	@GetMapping("/responsiblityUsers")
-	public ResponseDto userDetailsByResponsibility() {
+	public ResponseDto userDetailsByResponsibility(HttpServletRequest req) {
 		ResponseDto response= new ResponseDto();
+		String token= req.getHeader(VsccaConstants.TOKEN_HEADER);
+		if(token == null && TokenValidation.getAuthentication(token) != true || getTokenAuthentication(token) != true) {
+				response.setSuccess(401);
+				response.setMessage("Unauthorized");
+			}else {
 		List<UserDetails> userDetails=userDetailsService.userDetailsByResponsibility();
 		response.setSuccess(200);
 		response.setBody(userDetails);
 		response.setMessage("success");
+			}
 		return response;
 	}
 	
 	
 	@GetMapping("/executionUsers")
-	public ResponseDto userDetailsByExceution() {
+	public ResponseDto userDetailsByExceution(HttpServletRequest req) {
 		ResponseDto response= new ResponseDto();
+		String token= req.getHeader(VsccaConstants.TOKEN_HEADER);
+		if(token == null && TokenValidation.getAuthentication(token) != true || getTokenAuthentication(token) != true) {
+				response.setSuccess(401);
+				response.setMessage("Unauthorized");
+			}else {
 		List<UserDetails> userDetails=userDetailsService.userDetailsByExecution();
 		response.setSuccess(200);
 		response.setBody(userDetails);
 		response.setMessage("success");
+			}
 		return response;
 	}
 	
 	
 	@GetMapping("/intimationUsers")
-	public ResponseDto userDetailsByIntemation() {
+	public ResponseDto userDetailsByIntemation(HttpServletRequest req) {
 		ResponseDto response= new ResponseDto();
+		String token= req.getHeader(VsccaConstants.TOKEN_HEADER);
+				if(token == null && TokenValidation.getAuthentication(token) != true || getTokenAuthentication(token) != true) {
+				response.setSuccess(401);
+				response.setMessage("Unauthorized");
+			}else {
 		List<UserDetails> userDetails=userDetailsService.userDetailsByIntimation();
 		response.setSuccess(200);
 		response.setBody(userDetails);
 		response.setMessage("success");
+			}
 		return response;
 	}
 	
+	
+	public boolean getTokenAuthentication(String token) {
+		if(token != null) {
+			
+		String emailId= Jwts.parser().setSigningKey(VsccaConstants.secretKey).parseClaimsJws(token).getBody().getSubject();
+		LoginTable details= new LoginTable();
+		details = loginService.findByuserName(emailId);
+		if(null == details.getToken()) {
+			return false;
+		}
+		
+		String tokenByEmailId= details.getToken();
+		if(tokenByEmailId.equals(token)) {
+			return true;
+		}else {
+			return false;
+		}
+		}
+		return false;
+		
+	}
+
 }

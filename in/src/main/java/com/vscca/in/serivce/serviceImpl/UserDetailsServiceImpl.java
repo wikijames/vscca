@@ -45,4 +45,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		return userDetailsRepository.userDetailsByIntimation();
 	}
 
+	@Override
+	public UserDetails findByEmailId(String emailId) {
+		// TODO Auto-generated method stub
+		return userDetailsRepository.findByEmailId(emailId);
+	}
+
 }

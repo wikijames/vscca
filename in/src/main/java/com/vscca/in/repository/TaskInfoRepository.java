@@ -28,4 +28,8 @@ public interface TaskInfoRepository extends JpaRepository<TaskInfo, Long> {
 	
 	@Query(value="select ts.task_id, ti.project_name,ti.party_name,ti.weightage,ti.task_description,ti.task_type,ti.billing_client,ti.created_at,ti.due_date,ts.status,ts.delay_reason,ts.remarks,ts.end_date,tud.responsibility,tud.intimation,tud.exceution,tud.consulting from vscca.task_info as ti ,vscca.task_status as ts,vscca.task_user_details as tud  where ti.id=ts.task_id and ti.id=tud.task_id and tud.consulting= ? ",nativeQuery=true)
 	List<Object[]> findTaskDetailsConsulting(String emailId);
+	
+
+	@Query(value="select ts.task_id, ti.project_name,ti.party_name,ti.weightage,ti.task_description,ti.task_type,ti.billing_client,ti.created_at,ti.due_date,ts.status,ts.delay_reason,ts.remarks,ts.end_date,tud.responsibility,tud.intimation,tud.exceution,tud.consulting from vscca.task_info as ti ,vscca.task_status as ts,vscca.task_user_details as tud  where ti.id=ts.task_id and ti.id=tud.task_id and ti.id= ? order by ts.end_date desc limit 1",nativeQuery=true)
+	List<Object[]> findTaskDetailsById(String taskId);
 }

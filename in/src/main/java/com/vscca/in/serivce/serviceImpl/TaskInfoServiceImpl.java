@@ -46,4 +46,10 @@ public class TaskInfoServiceImpl implements TaskInfoService {
 		return taskInfoRepository.findTaskDetailsConsulting(emailId);
 	}
 
+	@Override
+	public List<Object[]> findTaskDetailsById(String taskId) {
+		// TODO Auto-generated method stub
+		return taskInfoRepository.findTaskDetailsById(taskId);
+	}
+
 }

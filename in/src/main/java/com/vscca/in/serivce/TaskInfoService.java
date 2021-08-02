@@ -16,4 +16,6 @@ public interface TaskInfoService {
 	List<Object[]> findTaskDetailsExceution(String emailId);
 	
 	List<Object[]> findTaskDetailsConsulting(String emailId);
+	
+	List<Object[]> findTaskDetailsById(String taskId);
 }

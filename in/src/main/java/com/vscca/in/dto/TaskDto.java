@@ -14,7 +14,7 @@ public class TaskDto {
 	private String taskType;
 	private String billingClient;
 	private Date createdAt;
-	private Date dueDate;
+	private String dueDate;
 	private String responsibility;
 	private String intimation;
 	private String exceution;
@@ -74,10 +74,12 @@ public class TaskDto {
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
-	public Date getDueDate() {
+
+	
+	public String getDueDate() {
 		return dueDate;
 	}
-	public void setDueDate(Date dueDate) {
+	public void setDueDate(String dueDate) {
 		this.dueDate = dueDate;
 	}
 	public String getResponsibility() {
