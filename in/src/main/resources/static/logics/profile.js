@@ -1,48 +1,83 @@
+var responsibilityValue = 0;
+var executionValue = 0;
+var consultingValue = 0;
+var intimationValue = 0;
+
 $(document).ready(function(){
 	
-	$("#responsibility").change(function(){
+	$("#responsibility").change(function(e){
+		console.log(e);
 	    if($(this).is(":checked")){
 	        $(this).val("1");
+			responsibilityValue = 1;
 	    } else {
 	        $(this).val("0");
+			responsibilityValue = 0;
 	    }
 	});
 	
 	$("#execution").change(function(){
 	    if($(this).is(":checked")){
 	        $(this).val("1");
+			executionValue = 1;
 	    } else {
-	        $(this).val("0");;
+	        $(this).val("0");
+			executionValue = 0;
 	    }
 	});
 	
 	$("#consulting").change(function(){
 	    if($(this).is(":checked")){
 	        $(this).val("1");
+			consultingValue = 1;
 	    } else {
-	        $(this).val("0");;
+	        $(this).val("0");
+			consultingValue = 0;
 	    }
 	});
 	
 	$("#intimation").change(function(){
 	    if($(this).is(":checked")){
 	        $(this).val("1");
+			intimationValue = 1;
 	    } else {
-	        $(this).val("0");;
+	        $(this).val("0");
+			intimationValue = 0;
 	    }
 	});
+
+$('#saveProfile').click(function(e){
 	
- // this is the id of the form
-	$("#profile").click(function(e) {
+    var valid=0;
+    $('#profileForm').find('input[type=text], select').each(function(){
+        if($(this).val() != "") valid+=1;
+    });
+
+    if(valid){
+        console.log(valid + " inputs have been filled");
+		submitData(e);
+        return true;
+    }
+    else {
+        alert("error: you must fill in at least one field");
+        return false;
+    }
+});	
+   	
+})// jquery end
+
+
+function submitData(e){
+	console.log('url',window.location);
 	    e.preventDefault(); // avoid to execute the actual submit of the form.
 		var settings = {
-		    "url": "http://localhost:8080/vscca/userDetails",
+		    "url": postProfileURL,
 			  "method": "POST",
 			  "timeout": 0,
-			 "headers": {
-			"Authorisation" : sessionStorage.getItem('token'),
-		    "Content-Type": "application/json"
-		  },
+		"headers": {
+		    	"Content-Type": "application/json",
+				"Authorization": sessionStorage.getItem('token')	
+		  	},
 		  "data": JSON.stringify({
 		    "firstName": $('#firstName').val(),
 		    "lastName": $('#lastName').val(),
@@ -52,10 +87,10 @@ $(document).ready(function(){
 		    "city": $('#city').val(),
 		    "country": $('#country').val(),
 		    "postalCode": $('#postalCode').val(),
-		    "responsibility": $('#responsibility').val(),
-		    "execution": $('#execution').val(),
-		    "consulting": $('#consulting').val(),
-		    "intimation": $('#intimation').val(),
+		    "responsibility": responsibilityValue,
+		    "execution": executionValue,
+		    "consulting": consultingValue,
+		    "intimation": intimationValue,
 		    "aboutMe": $('#aboutMe').val(),
 		    "accessType": $('#accessType').val(),
 		    "location": $('#location').val()
@@ -66,10 +101,10 @@ $(document).ready(function(){
 
 			console.log(response);		  
 			if(response.success == 200 ){
+				$("#profileForm")[0].reset();
 				alert('profile has been added succesfully');
 			}else{
 				alert('something went wrong.'+ data);
 			}
 		});
-});
-})
+	};

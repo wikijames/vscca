@@ -1,6 +1,7 @@
 package com.vscca.in.controller;
 
 import java.math.BigInteger;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -90,7 +91,7 @@ public class TaskController {
 	}
 
 	@PostMapping("/createTask")
-	public ResponseDto postCreateTask(HttpServletRequestWrapper req,@RequestBody TaskDto taskDto) {
+	public ResponseDto postCreateTask(HttpServletRequest req,@RequestBody TaskDto taskDto) {
 		ResponseDto response = new ResponseDto();
 		String token= req.getHeader(VsccaConstants.TOKEN_HEADER);
 
@@ -109,7 +110,12 @@ public class TaskController {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		Date date = new Date();
 		taskInfo.setCreatedAt(date);
-		taskInfo.setDueDate(new Date(new SimpleDateFormat("dd/MM/yyyy").format(taskDto.getDueDate())));
+		try {
+			taskInfo.setDueDate(formatter.parse(taskDto.getDueDate()));
+			} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			}
 		taskInfo.setBillingClient(taskDto.getBillingClient());
 		taskInfo.setTaskType(taskDto.getTaskType());
 		taskInfo.setTaskDescription(taskDto.getTaskDescription());
@@ -130,7 +136,7 @@ public class TaskController {
 	}
 	
 	@GetMapping("/taskDetails")
-	public ResponseDto getTaskDetails(HttpServletRequestWrapper req) {
+	public ResponseDto getTaskDetails(HttpServletRequest req) {
 		ResponseDto response = new ResponseDto();
 		String token= req.getHeader(VsccaConstants.TOKEN_HEADER);
 		if(token == null && TokenValidation.getAuthentication(token) != true || getTokenAuthentication(token) != true) {
@@ -507,7 +513,7 @@ public class TaskController {
 	
 	
 	@PostMapping("/editTask")
-	public ResponseDto editTask(HttpServletRequestWrapper req,@RequestBody TaskDto taskDto) {
+	public ResponseDto editTask(HttpServletRequest req,@RequestBody TaskDto taskDto) {
 		ResponseDto response = new ResponseDto();
 		String token= req.getHeader(VsccaConstants.TOKEN_HEADER);
 		TaskStatus taskStatus = new TaskStatus();

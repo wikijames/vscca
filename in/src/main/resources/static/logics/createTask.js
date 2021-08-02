@@ -20,8 +20,12 @@ $(document).ready(function(){
 		// populate billingClients Dropdown
 		  $.ajax({
 	        type: "GET",
-	        url:"http://localhost:8080/vscca/billingClients",
+	        url:getBillingClientsURL,
 	        dataType: "json",
+			 "headers": {
+		    	"Content-Type": "application/json",
+				"Authorization": sessionStorage.getItem('token')	
+		  	},
 	        success: function (data) {
 			//console.log('billingClients',data.body)
 	            $.each(data.body,function(i,obj)
@@ -35,9 +39,13 @@ $(document).ready(function(){
 		// populate tasks Type Dropdown
 		  $.ajax({
             type: "GET",
-            url:"http://localhost:8080/vscca/tasks",
+            url:getTasksURL,
             dataType: "json",
-            success: function (data) {
+            "headers": {
+		    	"Content-Type": "application/json",
+				"Authorization": sessionStorage.getItem('token')	
+		  	},
+			success: function (data) {
 			//console.log('task type',data.body)
                 $.each(data.body,function(i,obj)
                 {
@@ -50,9 +58,13 @@ $(document).ready(function(){
 		// populate responsiblityUsers Dropdown
 		  $.ajax({
             type: "GET",
-            url:"http://localhost:8080/vscca/responsiblityUsers",
+            url:getResponsiblityUsersURL,
             dataType: "json",
-            success: function (data) {
+            "headers": {
+		    	"Content-Type": "application/json",
+				"Authorization": sessionStorage.getItem('token')	
+		  	},
+			success: function (data) {
 			//console.log('responsiblityUsers',data.body)
                 $.each(data.body,function(i,obj)
                 {
@@ -65,9 +77,13 @@ $(document).ready(function(){
 		// populate executionUsers Dropdown
 		  $.ajax({
             type: "GET",
-            url:"http://localhost:8080/vscca/executionUsers",
+            url:getExecutionUsersURL,
             dataType: "json",
-            success: function (data) {
+            "headers": {
+		    	"Content-Type": "application/json",
+				"Authorization": sessionStorage.getItem('token')	
+		  	},
+			success: function (data) {
 			//console.log('executionUsers',data.body)
                 $.each(data.body,function(i,obj)
                 {
@@ -80,9 +96,13 @@ $(document).ready(function(){
 		// populate consultingUsers Dropdown
 		  $.ajax({
             type: "GET",
-            url:"http://localhost:8080/vscca/consultingUsers",
+            url:getConsultingUsersURL,
             dataType: "json",
-            success: function (data) {
+            "headers": {
+		    	"Content-Type": "application/json",
+				"Authorization": sessionStorage.getItem('token')	
+		  	},
+			success: function (data) {
 			//console.log('consultingUsers',data.body)
                 $.each(data.body,function(i,obj)
                 {
@@ -95,9 +115,13 @@ $(document).ready(function(){
 		// populate intimationuser Dropdown
 		  $.ajax({
             type: "GET",
-            url:"http://localhost:8080/vscca/intimationUsers",
+            url:getIntimationUsersURL,
             dataType: "json",
-            success: function (data) {
+            "headers": {
+		    	"Content-Type": "application/json",
+				"Authorization": sessionStorage.getItem('token')	
+		  	},
+			success: function (data) {
 			//console.log('intimationuser',data.body)
                 $.each(data.body,function(i,obj)
                 {
@@ -128,13 +152,13 @@ $(document).ready(function(){
 	    e.preventDefault(); // avoid to execute the actual submit of the form.
 		
 		var settings = {
-		    "url": "http://localhost:8080/vscca/createTask",
+		    "url": postCreateTaskURL,
 			  "method": "POST",
 			  "timeout": 0,
-			 "headers": {
-			"Authorisation" : sessionStorage.getItem('token'),
-		    "Content-Type": "application/json"
-		  },
+			"headers": {
+		    	"Content-Type": "application/json",
+				"Authorization": sessionStorage.getItem('token')	
+		  	},
 		  "data": JSON.stringify({
 		    "projectName": $('#projectName').val(),
 		    "partyName": $('#partyName').val(),
@@ -155,7 +179,7 @@ $(document).ready(function(){
 
 			//console.log(response);		  
 			if(response.success == 200 ){
-				alert('profile has been added succesfully');
+				alert('Task has been added succesfully');
 			}else{
 				alert('something went wrong.'+ data);
 			}

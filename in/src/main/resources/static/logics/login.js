@@ -4,11 +4,11 @@ $(document).ready(function(){
 		e.preventDefault();
 		console.log('test')
 		var settings = {
-		  "url": "http://localhost:8080/vscca/login",
+		  "url": postLoginURL,
 		  "method": "POST",
 		  "timeout": 0,
 		  "headers": {
-		    "Content-Type": "application/json"
+		    "Content-Type": "application/json",
 		  },
 		  "data": JSON.stringify({
 		    "userName": $('#email').val(),
@@ -21,6 +21,7 @@ $(document).ready(function(){
 			if(response.success == 200){
 				window.location = 'dashboard';
                 sessionStorage.setItem('token', response.token);
+				sessionStorage.setItem('roles', response.body)
 			}else{
 				
 				alert('try again');
