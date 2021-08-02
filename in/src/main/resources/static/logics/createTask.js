@@ -119,15 +119,16 @@ $(document).ready(function(){
 				var result = day + "/" + month + "/" + year;
 				formattedDueDate = result;
 				//console.log('v result', result);
-			    return result;			
+			    //return result;			
 		})
 
 
  // this is the id of the form
 	$("#save").click(function(e) {
 	    e.preventDefault(); // avoid to execute the actual submit of the form.
+		
 		var settings = {
-		    "url": "http://localhost:8080/vscca/userDetails",
+		    "url": "http://localhost:8080/vscca/createTask",
 			  "method": "POST",
 			  "timeout": 0,
 			 "headers": {
@@ -141,7 +142,7 @@ $(document).ready(function(){
 		    "taskDescription": $('#description').val(),
 		    "taskType": $('#taskType').val(),
 		    "billingClient": $('#billingClientName').val(),
-		    "createdAt": todayDate(),
+		    //"createdAt": todayDate(),
 		    "dueDate": formattedDueDate,
 		    "responsibility": $('#responsibility').val(),
 		    "intimation": $('#intimation').val(),
