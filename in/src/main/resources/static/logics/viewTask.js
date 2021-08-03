@@ -6,10 +6,10 @@ $(document).ready(function(){
         dataType: "json",
         "headers": {
 		    	"Content-Type": "application/json",
-				"Authorization": sessionStorage.getItem('token')	
+				"Authorization": accessToken	
 		  	},
 			success: function (data) {
-		//console.log('view manish data',data.body)
+		console.log('view manish data',data.body)
                $.each(data.body,function(i,obj)
                 {
 	 		  var div_data = '<tr>'
@@ -17,6 +17,7 @@ $(document).ready(function(){
                     + '<td>' + obj.partyName + '</td>'
 					+ '<td>' + obj.responsibility + '</td>'
 					+ '<td>' + obj.status + '</td>'
+					+ '<td> <a onClick="redirectToTaskDetails(' + obj.taskId + ')" class="btn pointer">View</a></td>'
 					+ '</tr>';
 			    $(div_data).appendTo('#populateGrid'); 
 				//console.log('data div', div_data)
@@ -54,7 +55,7 @@ function populateData(url){
         dataType: "json",
         "headers": {
 		    	"Content-Type": "application/json",
-				"Authorization": sessionStorage.getItem('token')	
+				"Authorization": accessToken	
 		  	},
 			success: function (data) {
 		console.log('view manish data',data.body)
@@ -72,3 +73,9 @@ function populateData(url){
             }
       });
 };
+
+function redirectToTaskDetails(id){
+	window.location = 'createTaskForm';
+	sessionStorage.setItem('taskId',id);
+}
+

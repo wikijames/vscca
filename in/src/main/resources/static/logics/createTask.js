@@ -7,13 +7,13 @@ function todayDate(){
 	return today = dd + '/' + mm + '/' + yyyy;
 }
 
-function showContainer(){
-	if(role === 'admin'){
-		$('.show-container').show();	
-	}else if(role === 'team'){
-		$('.show-container').hide();
-	}
-}
+//function showContainer(){
+//	if(roles === 'admin'){
+//		$('.show-container').show();	
+//	}else if(role === 'team'){
+//		$('.show-container').hide();
+//	}
+//}
 
 $(document).ready(function(){
 	//console.log('todayDate()',todayDate())
@@ -24,7 +24,7 @@ $(document).ready(function(){
 	        dataType: "json",
 			 "headers": {
 		    	"Content-Type": "application/json",
-				"Authorization": sessionStorage.getItem('token')	
+				"Authorization": accessToken	
 		  	},
 	        success: function (data) {
 			//console.log('billingClients',data.body)
@@ -43,7 +43,7 @@ $(document).ready(function(){
             dataType: "json",
             "headers": {
 		    	"Content-Type": "application/json",
-				"Authorization": sessionStorage.getItem('token')	
+				"Authorization": accessToken	
 		  	},
 			success: function (data) {
 			//console.log('task type',data.body)
@@ -62,7 +62,7 @@ $(document).ready(function(){
             dataType: "json",
             "headers": {
 		    	"Content-Type": "application/json",
-				"Authorization": sessionStorage.getItem('token')	
+				"Authorization": accessToken	
 		  	},
 			success: function (data) {
 			//console.log('responsiblityUsers',data.body)
@@ -81,7 +81,7 @@ $(document).ready(function(){
             dataType: "json",
             "headers": {
 		    	"Content-Type": "application/json",
-				"Authorization": sessionStorage.getItem('token')	
+				"Authorization": accessToken	
 		  	},
 			success: function (data) {
 			//console.log('executionUsers',data.body)
@@ -100,7 +100,7 @@ $(document).ready(function(){
             dataType: "json",
             "headers": {
 		    	"Content-Type": "application/json",
-				"Authorization": sessionStorage.getItem('token')	
+				"Authorization": accessToken	
 		  	},
 			success: function (data) {
 			//console.log('consultingUsers',data.body)
@@ -119,7 +119,7 @@ $(document).ready(function(){
             dataType: "json",
             "headers": {
 		    	"Content-Type": "application/json",
-				"Authorization": sessionStorage.getItem('token')	
+				"Authorization": accessToken	
 		  	},
 			success: function (data) {
 			//console.log('intimationuser',data.body)
@@ -150,39 +150,76 @@ $(document).ready(function(){
  // this is the id of the form
 	$("#save").click(function(e) {
 	    e.preventDefault(); // avoid to execute the actual submit of the form.
-		
-		var settings = {
-		    "url": postCreateTaskURL,
+		var taskId = $("#save").attr('title');
+		console.log('task id in edit', taskId);
+		if(taskId !== ''){
+			var settings = {
+		    "url": postEditTaskURL,
 			  "method": "POST",
 			  "timeout": 0,
 			"headers": {
 		    	"Content-Type": "application/json",
-				"Authorization": sessionStorage.getItem('token')	
+				"Authorization": accessToken	
 		  	},
 		  "data": JSON.stringify({
-		    "projectName": $('#projectName').val(),
-		    "partyName": $('#partyName').val(),
-		    "weightage": $('#weightage').val(),
-		    "taskDescription": $('#description').val(),
-		    "taskType": $('#taskType').val(),
-		    "billingClient": $('#billingClientName').val(),
-		    //"createdAt": todayDate(),
-		    "dueDate": formattedDueDate,
-		    "responsibility": $('#responsibility').val(),
-		    "intimation": $('#intimation').val(),
-		    "exceution": $('#execution').val(),
-		    "consulting": $('#consulting').val()
+			"status": $('#status').val(),
+			"remarks": $('#remarks').val(),
+			"delayReason": $('#reasonForDelay').val(),
+			"taskId": $('#taskId').val()
 		  }),
 		}; 
+			$.ajax(settings).done(function (response) {
+	
+				//console.log(response);		  
+				if(response.success == 200 ){
+					$("#createForm")[0].reset();
+					window.location = 'viewTaskGrid'
+					alert('Task has been updated succesfully');
+				}else if(reponse.success === 401 ){
+					logoutOnSessionExpire();
+				}else{
+					alert('something went wrong.'+ data);
+				}
+			});
+		}else{
+			var settings = {
+			    "url": postCreateTaskURL,
+				  "method": "POST",
+				  "timeout": 0,
+				"headers": {
+			    	"Content-Type": "application/json",
+					"Authorization": accessToken	
+			  	},
+			  "data": JSON.stringify({
+			    "projectName": $('#projectName').val(),
+			    "partyName": $('#partyName').val(),
+			    "weightage": $('#weightage').val(),
+			    "taskDescription": $('#description').val(),
+			    "taskType": $('#taskType').val(),
+			    "billingClient": $('#billingClientName').val(),
+			    //"createdAt": todayDate(),
+			    "dueDate": formattedDueDate,
+			    "responsibility": $('#responsibility').val(),
+			    "intimation": $('#intimation').val(),
+			    "exceution": $('#execution').val(),
+			    "consulting": $('#consulting').val()
+			  }),
+			};	
+				$.ajax(settings).done(function (response) {
 
-		$.ajax(settings).done(function (response) {
+					//console.log(response);		  
+					if(response.success == 200 ){
+						window.location = 'viewTaskGrid';
+						$("#createForm")[0].reset();
+						alert('Task has been created succesfully');
+					}else if(reponse.success === 401 ){
+						logoutOnSessionExpire();
+					}else{
+						alert('something went wrong.'+ data);
+					}
+				});
+		}	
 
-			//console.log(response);		  
-			if(response.success == 200 ){
-				alert('Task has been added succesfully');
-			}else{
-				alert('something went wrong.'+ data);
-			}
-		});
+
 });
-})
+})//ready ends
