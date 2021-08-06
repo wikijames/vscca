@@ -14,7 +14,7 @@
 <div th:replace="fragments/nav :: sidenav"></div>
 <!-- Main content -->
   <div class="main-content" id="panel">
-  		<!-- breadcrumb -->
+  	  <div th:replace="fragments/topNav :: topNav"></div>
 	  <div th:replace="fragments/breadcrumb :: breadcrumb"></div>
 	  <div class="container-fluid mt--6">
 
@@ -47,6 +47,7 @@
                     <th scope="col" class="sort" data-sort="budget">Party Name</th>
                     <th scope="col" class="sort" data-sort="status">Responsibility</th>
                     <th scope="col">Status</th>
+                    <th scope="col">Actions</th>
                   </tr>
                 </thead>
                 <tbody id="populateGrid" class="list">

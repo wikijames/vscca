@@ -76,7 +76,7 @@ function submitData(e){
 			  "timeout": 0,
 		"headers": {
 		    	"Content-Type": "application/json",
-				"Authorization": sessionStorage.getItem('token')	
+				"Authorization": accessToken	
 		  	},
 		  "data": JSON.stringify({
 		    "firstName": $('#firstName').val(),
@@ -103,6 +103,8 @@ function submitData(e){
 			if(response.success == 200 ){
 				$("#profileForm")[0].reset();
 				alert('profile has been added succesfully');
+			}else if(reponse.success === 401 ){
+				logoutOnSessionExpire();
 			}else{
 				alert('something went wrong.'+ data);
 			}

@@ -1,0 +1,22 @@
+@charset 'UTF-8';
+
+
+.hide{
+	display: none !important;
+}
+.show{
+	display: initial;
+}
+
+.hideNav{
+	display:none !important;
+}
+.showNav{
+	display:initial;
+}
+.pointer{
+	cursor: pointer;
+}
+.show-container{
+	display: none !important;
+}
