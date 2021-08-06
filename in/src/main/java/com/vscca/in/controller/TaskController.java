@@ -127,6 +127,7 @@ public class TaskController {
 		taskUserDetails.setIntimation(taskDto.getIntimation());
 		taskStatus.setTaskId(taskId.getId());
 		taskStatus.setStatus("Coming");
+		taskStatus.setEndDate(date);
 		taskUserDetailsService.save(taskUserDetails);
 		taskStatusService.save(taskStatus);
 		response.setSuccess(200);

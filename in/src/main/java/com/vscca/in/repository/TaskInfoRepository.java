@@ -17,16 +17,16 @@ public interface TaskInfoRepository extends JpaRepository<TaskInfo, Long> {
 	@Transactional
 	TaskInfo save(TaskInfo taskInfo);
 	
-	@Query(value="select ts.task_id, ti.project_name,ti.party_name,ti.weightage,ti.task_description,ti.task_type,ti.billing_client,ti.created_at,ti.due_date,ts.status,ts.delay_reason,ts.remarks,ts.end_date,tud.responsibility,tud.intimation,tud.exceution,tud.consulting from vscca.task_info as ti ,vscca.task_status as ts,vscca.task_user_details as tud  where ti.id=ts.task_id and ti.id=tud.task_id and tud.responsibility= ? ",nativeQuery=true)
+	@Query(value="select ts.task_id, ti.project_name,ti.party_name,ti.weightage,ti.task_description,ti.task_type,ti.billing_client,ti.created_at,ti.due_date,ts.status,ts.delay_reason,ts.remarks,ts.end_date,tud.responsibility,tud.intimation,tud.exceution,tud.consulting from vscca.task_info as ti ,vscca.task_status as ts,vscca.task_user_details as tud  where ti.id=ts.task_id and ti.id=tud.task_id and tud.responsibility= ? order by ts.end_date desc ",nativeQuery=true)
 	List<Object[]> findTaskDetails(String emailId);
 
-	@Query(value="select ts.task_id, ti.project_name,ti.party_name,ti.weightage,ti.task_description,ti.task_type,ti.billing_client,ti.created_at,ti.due_date,ts.status,ts.delay_reason,ts.remarks,ts.end_date,tud.responsibility,tud.intimation,tud.exceution,tud.consulting from vscca.task_info as ti ,vscca.task_status as ts,vscca.task_user_details as tud  where ti.id=ts.task_id and ti.id=tud.task_id and tud.intimation= ? ",nativeQuery=true)
+	@Query(value="select ts.task_id, ti.project_name,ti.party_name,ti.weightage,ti.task_description,ti.task_type,ti.billing_client,ti.created_at,ti.due_date,ts.status,ts.delay_reason,ts.remarks,ts.end_date,tud.responsibility,tud.intimation,tud.exceution,tud.consulting from vscca.task_info as ti ,vscca.task_status as ts,vscca.task_user_details as tud  where ti.id=ts.task_id and ti.id=tud.task_id and tud.intimation= ? order by ts.end_date desc ",nativeQuery=true)
 	List<Object[]> findTaskDetailsIntimation(String emailId);
 
-	@Query(value="select ts.task_id, ti.project_name,ti.party_name,ti.weightage,ti.task_description,ti.task_type,ti.billing_client,ti.created_at,ti.due_date,ts.status,ts.delay_reason,ts.remarks,ts.end_date,tud.responsibility,tud.intimation,tud.exceution,tud.consulting from vscca.task_info as ti ,vscca.task_status as ts,vscca.task_user_details as tud  where ti.id=ts.task_id and ti.id=tud.task_id and tud.exceution= ? ",nativeQuery=true)
+	@Query(value="select ts.task_id, ti.project_name,ti.party_name,ti.weightage,ti.task_description,ti.task_type,ti.billing_client,ti.created_at,ti.due_date,ts.status,ts.delay_reason,ts.remarks,ts.end_date,tud.responsibility,tud.intimation,tud.exceution,tud.consulting from vscca.task_info as ti ,vscca.task_status as ts,vscca.task_user_details as tud  where ti.id=ts.task_id and ti.id=tud.task_id and tud.exceution= ? order by ts.end_date desc ",nativeQuery=true)
 	List<Object[]> findTaskDetailsExceution(String emailId);
 	
-	@Query(value="select ts.task_id, ti.project_name,ti.party_name,ti.weightage,ti.task_description,ti.task_type,ti.billing_client,ti.created_at,ti.due_date,ts.status,ts.delay_reason,ts.remarks,ts.end_date,tud.responsibility,tud.intimation,tud.exceution,tud.consulting from vscca.task_info as ti ,vscca.task_status as ts,vscca.task_user_details as tud  where ti.id=ts.task_id and ti.id=tud.task_id and tud.consulting= ? ",nativeQuery=true)
+	@Query(value="select ts.task_id, ti.project_name,ti.party_name,ti.weightage,ti.task_description,ti.task_type,ti.billing_client,ti.created_at,ti.due_date,ts.status,ts.delay_reason,ts.remarks,ts.end_date,tud.responsibility,tud.intimation,tud.exceution,tud.consulting from vscca.task_info as ti ,vscca.task_status as ts,vscca.task_user_details as tud  where ti.id=ts.task_id and ti.id=tud.task_id and tud.consulting= ? order by ts.end_date desc ",nativeQuery=true)
 	List<Object[]> findTaskDetailsConsulting(String emailId);
 	
 
