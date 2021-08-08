@@ -62,7 +62,7 @@ public class UserDetailsController {
 			userDetails.setLocation(userDto.getLocation());
 			userDetails.setIsActive(1);
 			loginTable.setUserName(userDto.getEmailId());
-			loginTable.setPassword("123");
+			loginTable.setPassword("Vscca@123");
 			loginService.save(loginTable);
 			userDetailsService.save(userDetails);
 				response.setSuccess(200);
