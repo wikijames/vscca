@@ -25,5 +25,7 @@ public interface UserDetailsService {
 	List<UserDetails> userDetailsByIntimation();
 	
 	UserDetails findByEmailId(String emailId);
+	
+	List<UserDetails>findAll();
 
 }

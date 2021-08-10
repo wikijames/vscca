@@ -15,6 +15,8 @@ public interface UserDetailsRepository extends JpaRepository<UserDetails, Long>{
 	
 	UserDetails findByEmailId(String emailId);
 	
+	List<UserDetails>findAll();
+	
 	@Query(value="select * from vscca.user_details where consulting= 1",nativeQuery=true)
 	List<UserDetails> userDetailsByConsulting();
 	

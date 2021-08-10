@@ -165,5 +165,38 @@ public class UserDetailsController {
 		return false;
 		
 	}
+	
+	@GetMapping("/users")
+	public ResponseDto getUsers(HttpServletRequest req) {
+		ResponseDto response= new ResponseDto();
+		String token= req.getHeader(VsccaConstants.TOKEN_HEADER);
+		if(token == null && TokenValidation.getAuthentication(token) != true || getTokenAuthentication(token) != true) {
+				response.setSuccess(401);
+				response.setMessage("Unauthorized");
+			}else {
+		List<UserDetails> userDetails=userDetailsService.findAll();
+		response.setSuccess(200);
+		response.setBody(userDetails);
+		response.setMessage("success");
+			}
+		return response;
+	}
 
+	@GetMapping("/usersById")
+	public ResponseDto getUsersById(HttpServletRequest req) {
+		ResponseDto response= new ResponseDto();
+		String token= req.getHeader(VsccaConstants.TOKEN_HEADER);
+				if(token == null && TokenValidation.getAuthentication(token) != true || getTokenAuthentication(token) != true) {
+				response.setSuccess(401);
+				response.setMessage("Unauthorized");
+			}else {
+				String emailId = Jwts.parser().setSigningKey(VsccaConstants.secretKey).parseClaimsJws(token).getBody()
+						.getSubject();
+		UserDetails userDetails=userDetailsService.findByEmailId(emailId);
+		response.setSuccess(200);
+		response.setBody(userDetails);
+		response.setMessage("success");
+			}
+		return response;
+	}
 }

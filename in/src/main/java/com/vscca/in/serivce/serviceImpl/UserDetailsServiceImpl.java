@@ -51,4 +51,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		return userDetailsRepository.findByEmailId(emailId);
 	}
 
+	@Override
+	public List<UserDetails> findAll() {
+		// TODO Auto-generated method stub
+		return userDetailsRepository.findAll();
+	}
+
 }
