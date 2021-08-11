@@ -12,6 +12,7 @@ function disableProfileFormInputHandler(){
 	}else if(userRole.toLowerCase() === 'supervisor' ){
 		$('#profileForm').find('input, textarea, button, select').attr('disabled','disabled');
 		$('#profileForm').find('input, textarea, button, select').attr('readonly','readonly');
+		$('#saveProfile').remove();
 		getViewOwnProfile()
 	}else if(userRole.toLowerCase() === 'team member'){
 		$('#profileForm').find('input, textarea, button, select').attr('disabled','disabled');
