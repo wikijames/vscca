@@ -6,8 +6,7 @@ var intimationValue = 0;
 $(document).ready(function(){
 	
 	$("#responsibility").change(function(e){
-		console.log(e);
-	    if($(this).is(":checked")){
+		if($(this).is(":checked")){
 	        $(this).val("1");
 			responsibilityValue = 1;
 	    } else {
@@ -63,12 +62,53 @@ $('#saveProfile').click(function(e){
         return false;
     }
 });	
-   	
+
+accessType();
+locationType();
 })// jquery end
 
 
+function accessType(){
+	 $.ajax({
+	        type: "GET",
+	        url:getAccessURL,
+	        dataType: "json",
+			 "headers": {
+		    	"Content-Type": "application/json",
+				"Authorization": accessToken	
+		  	},
+	        success: function (data) {
+				checkSession(data.success);
+		        $.each(data.body,function(i,obj)
+	            {
+	             var div_data="<option value="+obj.acessType+">"+ obj.acessType +"</option>";
+	            $(div_data).appendTo('#accessType'); 
+	            });  
+	            }
+	      });
+}
+function locationType(){
+	 $.ajax({
+	        type: "GET",
+	        url:getLocationURL,
+	        dataType: "json",
+			 "headers": {
+		    	"Content-Type": "application/json",
+				"Authorization": accessToken	
+		  	},
+	        success: function (data) {
+				checkSession(data.success);
+				
+			    $.each(data.body,function(i,obj)
+	            {
+	             var div_data="<option value="+obj.workLocation+">"+ obj.workLocation+"</option>";
+	            $(div_data).appendTo('#location'); 
+	            });  
+	            }
+	      });
+}
+
 function submitData(e){
-	console.log('url',window.location);
 	    e.preventDefault(); // avoid to execute the actual submit of the form.
 		var settings = {
 		    "url": postProfileURL,
@@ -98,8 +138,6 @@ function submitData(e){
 		}; 
 
 		$.ajax(settings).done(function (response) {
-
-			console.log(response);		  
 			if(response.success == 200 ){
 				$("#profileForm")[0].reset();
 				alert('profile has been added succesfully');

@@ -5,10 +5,8 @@ $(document).ready(function(){
 })// ready ends
 
 function disableFormInputHandler(){
-	debugger;
 	var taskId = sessionStorage.getItem('taskId');
 	var taskCompletedDate = $('#completedDate').val();
-	console.log('task id in disable', taskId);
 	if(taskId !== null){
 	
 		$('.taskInformation,.clientInformation').find('input, textarea, button, select').attr('disabled','disabled');
@@ -45,6 +43,7 @@ function disableFormInputHandler(){
 				"Authorization": accessToken	
 		  	},
 			success: function (data) {
+				checkSession(data.success);
 				console.log('data task', data);
 				$.each(data.body,function(i,obj){
 					$("#save").attr('title', obj.taskId);

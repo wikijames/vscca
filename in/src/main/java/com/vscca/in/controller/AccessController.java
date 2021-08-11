@@ -2,6 +2,7 @@ package com.vscca.in.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class AccessController {
 	@Autowired
 	AccessService accessService;
 	@GetMapping(value="/access")
-	public ResponseDto getAccess(HttpServletRequestWrapper req) {
+	public ResponseDto getAccess(HttpServletRequest req) {
 		String token= req.getHeader(VsccaConstants.TOKEN_HEADER);
 		ResponseDto response = new ResponseDto();
 		if(token != null) {

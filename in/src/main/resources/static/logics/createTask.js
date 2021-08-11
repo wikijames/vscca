@@ -27,8 +27,8 @@ $(document).ready(function(){
 				"Authorization": accessToken	
 		  	},
 	        success: function (data) {
-			//console.log('billingClients',data.body)
-	            $.each(data.body,function(i,obj)
+		checkSession(data.success);
+			    $.each(data.body,function(i,obj)
 	            {
 	             var div_data="<option value="+obj.emailId+">"+obj.firstName+" "+obj.lastName+"</option>";
 	            $(div_data).appendTo('#billingClientName'); 
@@ -46,10 +46,10 @@ $(document).ready(function(){
 				"Authorization": accessToken	
 		  	},
 			success: function (data) {
-			//console.log('task type',data.body)
+				checkSession(data.success);
                 $.each(data.body,function(i,obj)
                 {
-                 var div_data="<option value="+obj.id+">"+obj.value+"</option>";
+                 var div_data="<option value="+obj.task+">"+obj.task+"</option>";
                 $(div_data).appendTo('#taskType'); 
                 });  
                 }
@@ -65,6 +65,7 @@ $(document).ready(function(){
 				"Authorization": accessToken	
 		  	},
 			success: function (data) {
+				checkSession(data.success);
 			//console.log('responsiblityUsers',data.body)
                 $.each(data.body,function(i,obj)
                 {
@@ -84,6 +85,7 @@ $(document).ready(function(){
 				"Authorization": accessToken	
 		  	},
 			success: function (data) {
+				checkSession(data.success);
 			//console.log('executionUsers',data.body)
                 $.each(data.body,function(i,obj)
                 {
@@ -103,6 +105,7 @@ $(document).ready(function(){
 				"Authorization": accessToken	
 		  	},
 			success: function (data) {
+				checkSession(data.success);
 			//console.log('consultingUsers',data.body)
                 $.each(data.body,function(i,obj)
                 {
@@ -122,6 +125,7 @@ $(document).ready(function(){
 				"Authorization": accessToken	
 		  	},
 			success: function (data) {
+				checkSession(data.success);
 			//console.log('intimationuser',data.body)
                 $.each(data.body,function(i,obj)
                 {

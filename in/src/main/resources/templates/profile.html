@@ -27,6 +27,7 @@
                 <div class="col-4 text-right">
                   <!-- <a href="#!" class="btn btn-sm btn-primary">Settings</a> -->
                   <!-- <input type="submit" class="btn btn-neutral" id="saveProfile" value="Save profile"/> -->
+                  <a id="saveProfile" class="btn btn-neutral" title="">Save profile</a>
                 </div>
               </div>
             </div>
@@ -40,9 +41,6 @@
                         <label class="form-control-label" for="accessType">Access Type</label>
                         <select id="accessType" class="form-control">
                           <option value="">Select Access Type</option>
-                          <option value="Admin">Admin</option>
-                          <option value="CA">Manager</option>
-                          <option value="TeamMember">Team Member</option>
                         </select>
                       </div>
                     </div>
@@ -51,10 +49,6 @@
                         <label class="form-control-label" for="location">Work Location</label>
                         <select id="location" class="form-control">
                           <option value="">Select work location</option>
-                          <option value="Roorkee">Roorkee</option>
-                          <option value="Dehradun">Dehradun</option>
-                          <option value="Lucknow">Lucknow</option>
-                          <option value="Jaipur">Jaipur</option>
                         </select>
                       </div>
                     </div>
@@ -126,7 +120,7 @@
                     <div class="col-lg-4">
                       <div class="form-group">
                         <label class="form-control-label" for="country">Country</label>
-                        <input type="text" id="country" class="form-control" placeholder="Country">
+                        <input type="text" id="country" class="form-control" placeholder="Country" >
                       </div>
                     </div>
                     <div class="col-lg-4">
@@ -145,7 +139,7 @@
                     <label class="form-control-label">About Me</label>
                     <textarea rows="4" id="aboutMe" class="form-control" placeholder="A few words about you ..."></textarea>
                   </div>
-                  <input type="button" class="btn btn-neutral" id="saveProfile"  value="Save profile" />
+                  
                 </div>
               </form>
             </div>
@@ -161,5 +155,6 @@
   <!-- scripts -->
 	<div th:replace="fragments/footer :: dashboard-scripts"></div>
 	<script th:src="@{/logics/profile.js}"></script>
+	<script th:src="@{/logics/viewCreateProfileDetails.js}"></script>
 </body>
 </html>

@@ -9,6 +9,7 @@ $(document).ready(function(){
 				"Authorization": accessToken	
 		  	},
 			success: function (data) {
+				checkSession(data.success);
 		       $.each(data.body,function(i,obj)
                 {
 	 		  var div_data = '<tr>'
@@ -57,6 +58,7 @@ function populateData(url){
 				"Authorization": accessToken	
 		  	},
 			success: function (data) {
+				checkSession(data.success);
 		console.log('view manish data',data.body)
                $.each(data.body,function(i,obj)
                 {

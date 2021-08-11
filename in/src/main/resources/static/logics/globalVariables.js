@@ -4,7 +4,13 @@ var accessToken = sessionStorage.getItem('token')
 //login
 var postLoginURL = envVar+'login';
 //profile add
+var getAccessURL = envVar+'access';
 var postProfileURL = envVar+'userDetails';
+//profile view
+var getUsersProfileURL = envVar+'users';
+var getUserProfileByIdURL = envVar+'usersById';
+var getLocationURL = envVar+'location';
+
 //view task
 var getResponsibilityURL = envVar+'taskDetails';
 var getExceutionURL = envVar+'taskDetailsExceution';
@@ -18,9 +24,12 @@ var getExecutionUsersURL = envVar+'executionUsers';
 var getConsultingUsersURL = envVar+'consultingUsers';
 var getIntimationUsersURL = envVar+'intimationUsers';
 var postCreateTaskURL = envVar+'createTask';
+
 // edit view
 var getTaskDetailsByIdURL = envVar+'taskDetailsById';
 var postEditTaskURL = envVar+'editTask';
+
+var getLogoutURL = envVar+'logout';
 
 function logoutOnSessionExpire(){
 	alert('Your session has been expired, Please login in again to continue...');
@@ -28,10 +37,47 @@ function logoutOnSessionExpire(){
 	window.location = '/vscca';
 }
 
+function checkSession(value){
+	if(value === 401 || value === 500){
+	alert('Your session has been expired, Please login in again to continue...');
+	sessionStorage.clear();
+	window.location = '/vscca';	
+	}	
+}
+
 $(document).ready(function(){
 	$('#adminLogout').click(function(){
+		$.ajax({
+        type: "GET",
+        url:getLogoutURL,
+        dataType: "json",
+        "headers": {
+		    	"Content-Type": "application/json",
+				"Authorization": accessToken	
+		  	},
+			success: function () {
+				if(data.success === 200){
+					sessionStorage.clear();
+					window.location = '/vscca';	
+				}else{
+					sessionStorage.clear();
+					window.location = '/vscca';
+				}
+				
+            },
+			error: function(e){
+				sessionStorage.clear();
+				window.location = '/vscca';
+			}
+      });
 		sessionStorage.clear();
 		window.location = '/vscca';
+		
 	});
 	
 })// ready ends
+
+
+function redirectToProfilePage(){
+	window.location = 'profile';
+}

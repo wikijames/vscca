@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.vscca.in.dto.ResponseDto;
 import com.vscca.in.model.Access;
@@ -18,6 +19,7 @@ import com.vscca.in.utill.VsccaConstants;
 
 import io.jsonwebtoken.Jwts;
 
+@RestController
 public class LocationController {
 
 	@Autowired

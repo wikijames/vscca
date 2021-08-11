@@ -20032,6 +20032,7 @@ a.btn-icon-only
     bottom: 0;
 
     width: 100%;
+    z-index: -1;
 }
 
 .form-control-label
