@@ -44,6 +44,7 @@ $(document).ready(function(){
 			intimationValue = 0;
 	    }
 	});
+	
 
 $('#saveProfile').click(function(e){
 	
@@ -101,7 +102,7 @@ function locationType(){
 				
 			    $.each(data.body,function(i,obj)
 	            {
-	             var div_data="<option value="+obj.workLocation+">"+ obj.workLocation+"</option>";
+					 var div_data="<option value="+obj.workLocation+">"+ obj.workLocation+"</option>";
 	            $(div_data).appendTo('#location'); 
 	            });  
 	            }

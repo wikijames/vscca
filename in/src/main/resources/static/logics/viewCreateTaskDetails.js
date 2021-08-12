@@ -7,7 +7,7 @@ $(document).ready(function(){
 function disableFormInputHandler(){
 	var taskId = sessionStorage.getItem('taskId');
 	var taskCompletedDate = $('#completedDate').val();
-	if(taskId !== null){
+	if(taskId != null){
 	
 		$('.taskInformation,.clientInformation').find('input, textarea, button, select').attr('disabled','disabled');
 		$('.taskInformation,.clientInformation').find('input, textarea, button, select').attr('readonly','readonly');
@@ -18,13 +18,13 @@ function disableFormInputHandler(){
 		$('.taskInformation,.clientInformation,.commentsSection').find('input, textarea, button, select').attr('readonly','readonly');
 		$('#save').remove();
 	
-	}else if(taskId === null &&  taskCompletedDate === ''){
+	}else if(taskId == null &&  taskCompletedDate == ''){
 		
 		$('.commentsSection').remove();
 		
 	}
 	
-	if(userRole === 'TeamMember' && ($.trim($('#remarks').val()).length <= 0)){
+	if(userRole == 'TeamMember' && ($.trim($('#remarks').val()).length <= 0)){
 	
 		$('.remarksColumn').addClass('hide');
 	
@@ -44,8 +44,7 @@ function disableFormInputHandler(){
 		  	},
 			success: function (data) {
 				checkSession(data.success);
-				console.log('data task', data);
-				$.each(data.body,function(i,obj){
+					var obj = data.body;
 					$("#save").attr('title', obj.taskId);
 					$('#taskId').val(obj.taskId);
 					$('#projectName').val(obj.projectName);
@@ -63,8 +62,6 @@ function disableFormInputHandler(){
 					$('#reasonForDelay').val(obj.delayReason);
 					$('#completedDate').val(obj.endDate);
 					$('#remarks').val(obj.remarks);
-					
-					});
 					
 				setTimeout(function(){
 					sessionStorage.removeItem('taskId');
