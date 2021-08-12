@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -58,6 +59,7 @@ public class TaskController {
 	@Autowired
 	LoginService loginService;
 
+	@CrossOrigin
 	@GetMapping("/tasks")
 	public ResponseDto getTaskType(HttpServletRequest req) {
 		ResponseDto response = new ResponseDto();
@@ -74,6 +76,7 @@ public class TaskController {
 		return response;
 	}
 
+	@CrossOrigin
 	@GetMapping("/billingClients")
 	public ResponseDto getBillingClients(HttpServletRequest req) {
 		ResponseDto response = new ResponseDto();
@@ -90,6 +93,7 @@ public class TaskController {
 		return response;
 	}
 
+	@CrossOrigin
 	@PostMapping("/createTask")
 	public ResponseDto postCreateTask(HttpServletRequest req,@RequestBody TaskDto taskDto) {
 		ResponseDto response = new ResponseDto();
@@ -136,6 +140,7 @@ public class TaskController {
 		return response;
 	}
 	
+	@CrossOrigin
 	@GetMapping("/taskDetails")
 	public ResponseDto getTaskDetails(HttpServletRequest req) {
 		ResponseDto response = new ResponseDto();
@@ -211,7 +216,7 @@ public class TaskController {
 		return response;
 	}
 
-	
+	@CrossOrigin
 	@GetMapping("/taskDetailsIntimation")
 	public ResponseDto getTaskDetailsIntimation(HttpServletRequest req) {
 		ResponseDto response = new ResponseDto();
@@ -287,6 +292,7 @@ public class TaskController {
 		return response;
 	}
 
+	@CrossOrigin
 	@GetMapping("/taskDetailsExceution")
 	public ResponseDto getTaskDetailsExceution(HttpServletRequest req) {
 		ResponseDto response = new ResponseDto();
@@ -362,7 +368,7 @@ public class TaskController {
 		return response;
 	}
 	
-	
+	@CrossOrigin
 	@GetMapping("/taskDetailsConsulting")
 	public ResponseDto getTaskDetailsConsulting(HttpServletRequest req) {
 		ResponseDto response = new ResponseDto();
@@ -438,6 +444,7 @@ public class TaskController {
 		return response;
 	}
 	
+	@CrossOrigin
 	@GetMapping("/taskDetailsById")
 	public ResponseDto getTaskDetailsConsulting(HttpServletRequest req,@RequestParam String taskId) {
 		ResponseDto response = new ResponseDto();
@@ -512,7 +519,7 @@ public class TaskController {
 		return response;
 	}
 	
-	
+	@CrossOrigin
 	@PostMapping("/editTask")
 	public ResponseDto editTask(HttpServletRequest req,@RequestBody TaskDto taskDto) {
 		ResponseDto response = new ResponseDto();
