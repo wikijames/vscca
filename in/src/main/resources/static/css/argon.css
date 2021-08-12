@@ -29839,3 +29839,7 @@ input.datetimepicker[data-color='yellow'] + .bootstrap-datetimepicker-widget.dro
 {
     background: transparent;
 }
+
+#topNavUserName{
+	text-transform: capitalize;
+}
