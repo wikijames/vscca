@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,6 +35,7 @@ public class UserDetailsController {
 	@Autowired
 	LoginService loginService;
 	
+	@CrossOrigin
 	@PostMapping("/userDetails")
 	public ResponseDto postLogin(HttpServletRequest req,@RequestBody UserDto userDto) {
 		ResponseDto response= new ResponseDto();
@@ -78,6 +80,7 @@ public class UserDetailsController {
 		return response;
 	}
 
+	@CrossOrigin
 	@GetMapping("/consultingUsers")
 	public ResponseDto userDetailsByconsulting(HttpServletRequest req) {
 		ResponseDto response= new ResponseDto();
@@ -94,6 +97,7 @@ public class UserDetailsController {
 		return response;
 	}
 	
+	@CrossOrigin
 	@GetMapping("/responsiblityUsers")
 	public ResponseDto userDetailsByResponsibility(HttpServletRequest req) {
 		ResponseDto response= new ResponseDto();
@@ -111,6 +115,7 @@ public class UserDetailsController {
 	}
 	
 	
+	@CrossOrigin
 	@GetMapping("/executionUsers")
 	public ResponseDto userDetailsByExceution(HttpServletRequest req) {
 		ResponseDto response= new ResponseDto();
@@ -128,6 +133,7 @@ public class UserDetailsController {
 	}
 	
 	
+	@CrossOrigin
 	@GetMapping("/intimationUsers")
 	public ResponseDto userDetailsByIntemation(HttpServletRequest req) {
 		ResponseDto response= new ResponseDto();
@@ -166,6 +172,7 @@ public class UserDetailsController {
 		
 	}
 	
+	@CrossOrigin
 	@GetMapping("/users")
 	public ResponseDto getUsers(HttpServletRequest req) {
 		ResponseDto response= new ResponseDto();
@@ -182,6 +189,7 @@ public class UserDetailsController {
 		return response;
 	}
 
+	@CrossOrigin
 	@GetMapping("/usersById")
 	public ResponseDto getUsersById(HttpServletRequest req) {
 		ResponseDto response= new ResponseDto();

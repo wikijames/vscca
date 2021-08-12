@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +21,8 @@ import com.vscca.in.utill.VsccaConstants;
 public class AccessController {
 	@Autowired
 	AccessService accessService;
+	
+	@CrossOrigin
 	@GetMapping(value="/access")
 	public ResponseDto getAccess(HttpServletRequest req) {
 		String token= req.getHeader(VsccaConstants.TOKEN_HEADER);

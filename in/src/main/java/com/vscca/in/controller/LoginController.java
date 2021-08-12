@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,6 +32,7 @@ public class LoginController {
 	@Autowired
 	UserDetailsService userDetailsService;
 
+	@CrossOrigin
 	@PostMapping("/login")
 	public ResponseDto postLogin(@RequestBody RequestDto requestDto) {
 		ResponseDto response = new ResponseDto();
@@ -58,6 +60,7 @@ public class LoginController {
 		return response;
 	}
 
+	@CrossOrigin
 	@GetMapping("/logout")
 	public ResponseDto postLogin(HttpServletRequest req) {
 		ResponseDto response = new ResponseDto();
