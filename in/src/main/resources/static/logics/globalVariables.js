@@ -1,4 +1,4 @@
-var envVar = "http://192.168.0.108:8080/vscca/";
+var envVar = "http://localhost:8080/vscca/";
 var userRole = sessionStorage.getItem('roles');
 var accessToken = sessionStorage.getItem('token')
 //login
@@ -38,7 +38,7 @@ function logoutOnSessionExpire(){
 }
 
 function checkSession(value){
-	if(value === 401 || value === 500){
+	if(value == 401 || value == 500){
 	alert('Your session has been expired, Please login in again to continue...');
 	sessionStorage.clear();
 	window.location = '/vscca';	
@@ -79,7 +79,7 @@ topNavUserName();
 
 
 function redirectToProfilePage(){
-	window.location = 'profile';
+	window.location = 'myProfile';
 }
 
 

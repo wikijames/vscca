@@ -1,6 +1,5 @@
 
 $(document).ready(function(){
-	getViewTaskById();
 	disableFormInputHandler();
 })// ready ends
 
@@ -8,11 +7,11 @@ function disableFormInputHandler(){
 	var taskId = sessionStorage.getItem('taskId');
 	var taskCompletedDate = $('#completedDate').val();
 	if(taskId != null){
-	
 		$('.taskInformation,.clientInformation').find('input, textarea, button, select').attr('disabled','disabled');
 		$('.taskInformation,.clientInformation').find('input, textarea, button, select').attr('readonly','readonly');
+		getViewTaskById();
 	
-	}else if(taskCompletedDate !== ''){
+	}else if(taskCompletedDate != ''){
 		
 		$('.taskInformation,.clientInformation,.commentsSection').find('input, textarea, button, select').attr('disabled','disabled');
 		$('.taskInformation,.clientInformation,.commentsSection').find('input, textarea, button, select').attr('readonly','readonly');
@@ -24,16 +23,22 @@ function disableFormInputHandler(){
 		
 	}
 	
-	if(userRole == 'TeamMember' && ($.trim($('#remarks').val()).length <= 0)){
+	if(userRole.toLowerCase() == 'TeamMember' && ($.trim($('#remarks').val()).length <= 0)){
 	
 		$('.remarksColumn').addClass('hide');
 	
 	}
 };
 
+function convertDate(value,name){
+	const date = new Date(value).toLocaleDateString().split('/');
+	const formattedDate = ('0' + date[1]).slice(-2)+'-'+('0' + date[0]).slice(-2)+'-'+date[2];
+	$('#'+name).prop('type','text');
+	$('#'+name).val(formattedDate);
+}
 	function getViewTaskById(){
 		var id = sessionStorage.getItem('taskId');
-		if(id !== null){
+		if(id != null){
 	$.ajax({
         type: "GET",
         url:getTaskDetailsByIdURL+'?taskId='+id,
@@ -44,7 +49,9 @@ function disableFormInputHandler(){
 		  	},
 			success: function (data) {
 				checkSession(data.success);
-					var obj = data.body;
+				$.each(data.body,function(i,obj)
+                {	
+					console.log('data.body', data.body);
 					$("#save").attr('title', obj.taskId);
 					$('#taskId').val(obj.taskId);
 					$('#projectName').val(obj.projectName);
@@ -53,7 +60,6 @@ function disableFormInputHandler(){
 					$('#description').val(obj.taskDescription);
 					$('#taskType').val(obj.taskType);
 					$('#billingClientName').val(obj.billingClient);
-					$('#endDate').val(obj.dueDate);
 					$('#responsibility').val(obj.responsibility);
 					$('#intimation').val(obj.intimation);
 					$('#execution').val(obj.exceution);
@@ -62,10 +68,12 @@ function disableFormInputHandler(){
 					$('#reasonForDelay').val(obj.delayReason);
 					$('#completedDate').val(obj.endDate);
 					$('#remarks').val(obj.remarks);
-					
-				setTimeout(function(){
-					sessionStorage.removeItem('taskId');
-				},3000)
+					convertDate(obj.dueDate,'endDate');
+					convertDate(obj.endDate,'completedDate');
+				});
+//				setTimeout(function(){
+//					sessionStorage.removeItem('taskId');
+//				},3000)
             }
       });
 	};

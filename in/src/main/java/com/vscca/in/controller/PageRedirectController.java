@@ -25,6 +25,11 @@ public class PageRedirectController {
 	   public String profile() {
 		   return "profile";
 	   }
+	@CrossOrigin
+	@RequestMapping(value = "/myProfile", method = RequestMethod.GET)
+	   public String myProfile() {
+		   return "myProfile";
+	   }
 	
 	@CrossOrigin
 	@RequestMapping(value = "/viewProfileGrid", method = RequestMethod.GET)

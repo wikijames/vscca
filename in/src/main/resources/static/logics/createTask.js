@@ -30,7 +30,7 @@ $(document).ready(function(){
 		checkSession(data.success);
 			    $.each(data.body,function(i,obj)
 	            {
-	             var div_data="<option value="+obj.emailId+">"+obj.firstName+" "+obj.lastName+"</option>";
+					var div_data="<option value="+obj.client+">"+obj.client+"</option>";
 	            $(div_data).appendTo('#billingClientName'); 
 	            });  
 	            }

@@ -1,7 +1,7 @@
 
 $(document).ready(function(){
-	disableProfileFormInputHandler();
-	getViewOwnProfile();
+//	disableProfileFormInputHandler();
+	//getViewOwnProfile();
 	//$('#responsibility').prop('checked', true);
 })// ready ends
 

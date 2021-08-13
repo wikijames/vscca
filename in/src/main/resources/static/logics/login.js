@@ -2,7 +2,6 @@ $(document).ready(function(){
  // on click Sign In Button checks with the remote server that username =='admin' and password == 'password'
     $("#login").click(function(e){
 		e.preventDefault();
-		console.log('test')
 		var settings = {
 		  "url": postLoginURL,
 		  "method": "POST",
@@ -22,6 +21,10 @@ $(document).ready(function(){
 				window.location = 'dashboard';
                 sessionStorage.setItem('token', response.token);
 				sessionStorage.setItem('roles', response.body)
+			}else if(response.success == 500){
+				alert('Either user is not registered or there is some other issue...');
+			    sessionStorage.removeItem('token');
+				sessionStorage.removeItem('roles')
 			}else{
 				
 				alert('try again');

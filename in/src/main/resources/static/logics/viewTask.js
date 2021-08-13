@@ -59,7 +59,6 @@ function populateData(url){
 		  	},
 			success: function (data) {
 				checkSession(data.success);
-		console.log('view manish data',data.body)
                $.each(data.body,function(i,obj)
                 {
 	 		  var div_data = '<tr>'
@@ -67,9 +66,9 @@ function populateData(url){
                     + '<td>' + obj.partyName + '</td>'
 					+ '<td>' + obj.responsibility + '</td>'
 					+ '<td>' + obj.status + '</td>'
+					+ '<td> <a onClick="redirectToTaskDetails(' + obj.taskId + ')" class="btn pointer">View</a></td>'
 					+ '</tr>';
 			    $(div_data).appendTo('#populateGrid'); 
-				console.log('data div', div_data)
                 });
             }
       });

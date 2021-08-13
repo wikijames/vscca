@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Vivek Sushil &amp; Co - My Profile</title>
+  <div th:replace="fragments/head :: head"></div>
+</head>
+<body>
+<div th:replace="fragments/nav :: sidenav"></div>
+<!-- Main content -->
+  <div class="main-content" id="panel">
+  		<div th:replace="fragments/topNav :: topNav"></div>
+	  <div th:replace="fragments/breadcrumb :: breadcrumb"></div>
+	  <div class="container-fluid mt--6">
+
+
+
+<!-- Page content -->
+      <div th:fragment="profile" class="row">
+        <div class="col-xl-12 order-xl-1">
+          <div class="card">
+            <div class="card-header">
+              <div class="row align-items-center">
+                <div class="col-8">
+                  <h3 class="mb-0">My Profile </h3>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+             <form id="profileFormMy" role="form" action="" method="post">
+                <h6 class="heading-small text-muted mb-4">User information</h6>
+                <div class="pl-lg-4">
+                  <div class="row">
+                    <div class="col-lg-4">
+                      <div class="form-group">
+                        <label class="form-control-label" for="accessTypeMy">Access Type</label>
+                        <input type="text" id="accessTypeMy" class="form-control">
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="form-group">
+                        <label class="form-control-label" for="locationMy">Work Location</label>
+                        <input type="text" id="locationMy" class="form-control">
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="form-group">
+                        <label class="form-control-label" for="firstNameMy">First name</label>
+                        <input type="text" id="firstNameMy" class="form-control">
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="form-group">
+                        <label class="form-control-label" for="lastNameMy">Last name</label>
+                        <input type="text" id="lastNameMy" class="form-control" />
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="form-group">
+                        <label class="form-control-label" for="emailMy">Email address</label>
+                        <input type="email" id="emailMy" class="form-control" />
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="form-group">
+                        <label class="form-control-label" for="mobileMy">Mobile</label>
+                        <input type="email" id="mobileMy" class="form-control" />
+                      </div>
+                    </div>
+                    
+                  </div>
+                </div>
+                <!---User Role-->
+                <hr class="my-4" />
+                <h6 class="heading-small text-muted mb-4">User Role</h6>
+                <div class="pl-lg-4">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <input type="checkbox" class="" id="responsibilityMy" name="responsibility" >
+                        <label class="form-control-label" for="responsibilityMy">Responsibility</label><br>
+                        <input type="checkbox" class="" id="executionMy" name="execution">
+                        <label class="form-control-label" for="executionMy"> Execution</label><br>
+                        <input type="checkbox" class="" id="consultingMy" name="consulting">
+                        <label class="form-control-label" for="consultingMy"> consulting</label><br>
+                        <input type="checkbox" class="" id="intimationMy" name="intimation">
+                        <label class="form-control-label" for="intimationMy"> Intimation</label><br>
+                      </div>
+                    </div>
+                  </div>
+                  </div>
+                  <hr class="my-4" />
+                <!-- Address -->
+                <h6 class="heading-small text-muted mb-4">Contact information</h6>
+                <div class="pl-lg-4">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label class="form-control-label" for="addressMy">Address</label>
+                        <input id="addressMy" class="form-control" type="text" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-4">
+                      <div class="form-group">
+                        <label class="form-control-label" for="cityMy">City</label>
+                        <input type="text" id="cityMy" class="form-control" />
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="form-group">
+                        <label class="form-control-label" for="countryMy">Country</label>
+                        <input type="text" id="countryMy" class="form-control" />
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="form-group">
+                        <label class="form-control-label" for="postalCodeMy">Postal code</label>
+                        <input type="number" id="postalCodeMy" class="form-control" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr class="my-4" />
+                <!-- Description -->
+                <h6 class="heading-small text-muted mb-4">About me</h6>
+                <div class="pl-lg-4">
+                  <div class="form-group">
+                    <label class="form-control-label">About Me</label>
+                    <textarea rows="4" id="aboutMeMy" class="form-control" ></textarea>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      
+       <!-- footer -->
+	  <div th:replace="fragments/footer :: dashboard-footer"></div>	  
+	  </div>
+  </div>
+  <!-- scripts -->
+	<div th:replace="fragments/footer :: dashboard-scripts"></div>
+<!-- 	<script th:src="@{/logics/profile.js}"></script> -->
+	<script th:src="@{/logics/myProfile.js}"></script>
+</body>
+</html>
