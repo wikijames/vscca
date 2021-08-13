@@ -1,4 +1,4 @@
-var envVar = "http://localhost:8080/vscca/";
+var envVar = "http://192.168.0.108:8080/vscca/";
 var userRole = sessionStorage.getItem('roles');
 var accessToken = sessionStorage.getItem('token')
 //login
