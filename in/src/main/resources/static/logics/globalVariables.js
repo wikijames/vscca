@@ -74,10 +74,30 @@ $(document).ready(function(){
 		window.location = '/vscca';
 		
 	});
-	
+topNavUserName();	
 })// ready ends
 
 
 function redirectToProfilePage(){
 	window.location = 'profile';
 }
+
+
+function topNavUserName(){
+	$.ajax({
+        type: "GET",
+        url:getUserProfileByIdURL,
+        dataType: "json",
+        "headers": {
+		    	"Content-Type": "application/json",
+				"Authorization": accessToken	
+		  	},
+			success: function (data) {
+				checkSession(data.success);
+					var obj = data.body;
+					$('#topNavuserName').append(obj.firstName+' '+obj.lastName);
+            }
+      });
+	
+};
+
