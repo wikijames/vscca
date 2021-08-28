@@ -31,23 +31,20 @@ var postEditTaskURL = envVar+'editTask';
 
 var getLogoutURL = envVar+'logout';
 
-function logoutOnSessionExpire(){
-	alert('Your session has been expired, Please login in again to continue...');
-	sessionStorage.clear();
-	window.location = '/vscca';
-}
 
 function checkSession(value){
-	if(value == 401 || value == 500){
-	alert('Your session has been expired, Please login in again to continue...');
-	sessionStorage.clear();
-	window.location = '/vscca';	
+	var cookies  = Cookies.get("token");
+	console.log('cook', cookies);
+	if(cookies == null || cookies == undefined || value == 401 || value == 500){
+		sessionStorage.clear();
+		window.location = '/vscca';	
+		alert('Your session has been expired, Please login in again to continue...');
 	}	
 }
 
-$(document).ready(function(){
-	$('#adminLogout').click(function(){
-		$.ajax({
+
+function Logout(){
+	$.ajax({
         type: "GET",
         url:getLogoutURL,
         dataType: "json",
@@ -72,16 +69,7 @@ $(document).ready(function(){
       });
 		sessionStorage.clear();
 		window.location = '/vscca';
-		
-	});
-topNavUserName();	
-})// ready ends
-
-
-function redirectToProfilePage(){
-	window.location = 'myProfile';
-}
-
+};
 
 function topNavUserName(){
 	$.ajax({
@@ -101,3 +89,20 @@ function topNavUserName(){
 	
 };
 
+function roleBaseAccess(){
+	if(userRole.toLowerCase() == 'admin' ){
+		$('.changePasswordTopNav').remove();
+	}else if(userRole.toLowerCase() == 'supervisor' ){
+		$('.adminPanelTopNav').remove();
+	}else if(userRole.toLowerCase() == 'teammember'){
+		$('.adminPanelTopNav').remove();
+	}
+
+}
+
+$(document).ready(function(){
+	topNavUserName();
+	setInterval(function(){ 
+		checkSession(); 
+	}, 61000);	
+})// ready ends

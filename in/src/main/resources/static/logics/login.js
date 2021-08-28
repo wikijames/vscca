@@ -19,14 +19,12 @@ $(document).ready(function(){
 	
 			if(response.success == 200){
 				window.location = 'dashboard';
-                sessionStorage.setItem('token', response.token);
+				Cookies.set('token', response.token, {expires: 1/1440});
+				sessionStorage.setItem('token', response.token);
 				sessionStorage.setItem('roles', response.body)
 			}else if(response.success == 500){
 				alert('Either user is not registered or there is some other issue...');
-			    sessionStorage.removeItem('token');
-				sessionStorage.removeItem('roles')
 			}else{
-				
 				alert('try again');
 			}
 		

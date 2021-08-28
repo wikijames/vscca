@@ -1,23 +1,8 @@
-<!--
-=========================================================
-* Argon Dashboard - v1.2.0
-=========================================================
-* Product Page: https://www.creative-tim.com/product/argon-dashboard
-
-
-* Copyright  Creative Tim (http://www.creative-tim.com)
-* Coded by www.creative-tim.com
-
-
-
-=========================================================
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
--->
 <!DOCTYPE html>
 <html>
 
 <head>
-  <title>Vivek Sushil &amp; Co - Dashboard</title>
+  <title>Vivek Sushil &amp; Co - Admin Panel</title>
   <div th:replace="fragments/head :: head"></div>
 </head>
 <body>
@@ -25,7 +10,7 @@
 <!-- Main content -->
   <div class="main-content" id="panel">
   	  <div th:replace="fragments/topNav :: topNav"></div>
-	  <div th:replace="fragments/breadcrumb :: breadcrumb"></div>
+	  <div th:replace="fragments/adminNav :: adminNav"></div>
 	  <div class="container-fluid mt--6">
 	  
 <!-- Page content -->
@@ -35,7 +20,7 @@
             <div class="card-header">
               <div class="row align-items-center">
                 <div class="col-8">
-                  <h3 class="mb-0">Dashboard</h3>
+                  <h3 class="mb-0">Admin Panel</h3>
                 </div>
               </div>
             </div>
@@ -45,14 +30,13 @@
           </div>
         </div>
       </div>
-      	
-	
-	  <!-- footer -->
+      
+       <!-- footer -->
 	  <div th:replace="fragments/footer :: dashboard-footer"></div>	  
 	  </div>
   </div>
   <!-- scripts -->
 	<div th:replace="fragments/footer :: dashboard-scripts"></div>
-	<script th:src="@{/logics/profile.js}"></script>
+	<script th:src="@{/logics/myProfile.js}"></script>
 </body>
 </html>
