@@ -30,6 +30,27 @@ $(document).ready(function(){
 
 })// jquery end
 
+	function viewTaskTypeHandler(){
+		var value = $('#viewType').val();
+		$('#taskNameChangeHeading').text('Your task');
+		if(value == 'responsibility'){
+			$('#taskNameChangeHeading').text('Your task');
+			return populateData(getResponsibilityURL);
+		}
+		else if(value == 'exceution'){
+			$('#taskNameChangeHeading').text("Today's Task");
+			return populateData(getExceutionURL);
+		}
+		else if(value == 'intimation'){
+			$('#taskNameChangeHeading').text("7 Days's Plan");
+			return populateData(getIntimationURL);
+		}
+		else if(value == 'consulting'){
+			$('#taskNameChangeHeading').text("Overdue Task");
+			return populateData(getConsultingURL);
+		}
+	}
+
 	function viewType(){
 		var value = $('#viewType').val();
 		if(value == 'responsibility'){

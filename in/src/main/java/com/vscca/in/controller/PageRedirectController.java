@@ -48,5 +48,17 @@ public class PageRedirectController {
 	   public String viewTaskGrid() {
 		   return "viewTask";
 	   }
+	
+	@CrossOrigin
+	@RequestMapping(value = "/password", method = RequestMethod.GET)
+	   public String ChangePassword() {
+		   return "password";
+	   }
 
+	@CrossOrigin
+	@RequestMapping(value = "/adminPanel", method = RequestMethod.GET)
+	   public String NavigateToAdminPanel() {
+		   return "adminPanel";
+	   }
+	
 }

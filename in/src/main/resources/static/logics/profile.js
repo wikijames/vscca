@@ -143,7 +143,7 @@ function submitData(e){
 				$("#profileForm")[0].reset();
 				alert('profile has been added succesfully');
 			}else if(reponse.success === 401 ){
-				logoutOnSessionExpire();
+				checkSession();
 			}else{
 				alert('something went wrong.'+ data);
 			}

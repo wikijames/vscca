@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Vivek Sushil &amp; Co - Admin Panel</title>
+  <div th:replace="fragments/head :: head"></div>
+</head>
+<body>
+<!-- <div th:replace="fragments/nav :: sidenav"></div> -->
+<!-- Main content -->
+  <div class="main-content" id="panel">
+  	  <div th:replace="fragments/topNav :: topNav"></div>
+	  <div th:replace="fragments/adminNav :: adminNav"></div>
+	  <div class="container-fluid mt--6">
+	  
+<!-- Page content -->
+      <div th:fragment="profile" class="row">
+        <div class="col-xl-12 order-xl-1">
+          <div class="card">
+            <div class="card-header">
+              <div class="row align-items-center">
+                <div class="col-8">
+                  <h3 class="mb-0">Admin Panel</h3>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+             
+            </div>
+          </div>
+        </div>
+      </div>
+      
+       <!-- footer -->
+	  <div th:replace="fragments/footer :: dashboard-footer"></div>	  
+	  </div>
+  </div>
+  <!-- scripts -->
+	<div th:replace="fragments/footer :: dashboard-scripts"></div>
+	<script th:src="@{/logics/myProfile.js}"></script>
+</body>
+</html>
