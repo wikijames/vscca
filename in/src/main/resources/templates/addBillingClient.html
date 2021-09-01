@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vivek Sushil &amp; Co - Add Billing Client</title>
+    <div th:replace="fragments/head :: head"></div>
+  </head>
+  <body>
+    <!-- Main content -->
+    <div class="main-content" id="panel">
+      <div th:replace="fragments/topNav :: topNav"></div>
+      <div th:replace="fragments/breadcrumb :: breadcrumb"></div>
+      <div class="container-fluid mt--6">
+        <!-- Page content -->
+        <div th:fragment="profile" class="row">
+          <div class="col-xl-12 order-xl-1">
+            <div class="card">
+              <div class="card-header">
+                <div class="row align-items-center">
+                  <div class="col-8">
+                    <h3 class="mb-0">Billing Client</h3>
+                  </div>
+                  <div class="col-4 text-right">
+                    <a id="save" class="btn btn-neutral" title="">Save</a>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body">
+                <form id="profileForm" role="form" action="" method="post">
+                  <h6 class="heading-small text-muted mb-4">
+                    Client information
+                  </h6>
+                  <div class="pl-lg-4">
+                    <div class="row">
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label class="form-control-label" for="personName"
+                            >Person name</label
+                          >
+                          <input
+                            type="text"
+                            id="personName"
+                            class="form-control"
+                            placeholder="Person Name"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label class="form-control-label" for="entityName"
+                            >Entity name</label
+                          >
+                          <input
+                            type="text"
+                            id="entityName"
+                            class="form-control"
+                            placeholder="Entity Name"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label class="form-control-label" for="ledgerNumber"
+                            >Ledger Number</label
+                          >
+                          <input
+                            type="text"
+                            id="ledgerNumber"
+                            class="form-control"
+                            placeholder="Ledger Number"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label class="form-control-label" for="pageNumber"
+                            >Page Number</label
+                          >
+                          <input
+                            type="text"
+                            id="pageNumber"
+                            class="form-control"
+                            placeholder="Page Number."
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!---User Role-->
+                  <hr class="my-4" />
+                  <h6 class="heading-small text-muted mb-4">
+                    Check box to activate client
+                  </h6>
+                  <div class="pl-lg-4">
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <input
+                            type="checkbox"
+                            class=""
+                            id="isActive"
+                            name="isActive"
+                          />
+                          <label class="form-control-label" for="isActive"
+                            >Check box to activate client</label
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- footer -->
+        <div th:replace="fragments/footer :: dashboard-footer"></div>
+      </div>
+    </div>
+    <!-- scripts -->
+    <div th:replace="fragments/footer :: dashboard-scripts"></div>
+    <script th:src="@{/logics/addBillings.js}"></script>
+    <!-- <script th:src="@{/logics/viewCreateProfileDetails.js}"></script> -->
+  </body>
+</html>

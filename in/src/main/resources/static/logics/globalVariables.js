@@ -1,4 +1,5 @@
-var envVar = "http://192.168.0.108:8080/vscca/";
+//var envVar = "http://192.168.0.108:8080/vscca/";
+var envVar = "http://localhost:8080/vscca/";
 var userRole = sessionStorage.getItem('roles');
 var accessToken = sessionStorage.getItem('token')
 //login
@@ -28,9 +29,12 @@ var postCreateTaskURL = envVar + 'createTask';
 // edit view
 var getTaskDetailsByIdURL = envVar + 'taskDetailsById';
 var postEditTaskURL = envVar + 'editTask';
-
 var getLogoutURL = envVar + 'logout';
 
+//change password
+var postPasswordChangeSelfURL = envVar + 'passwordChangeSelf';
+var PostPasswordChangeURL = envVar + 'passwordChange';
+var getUsersURL = envVar + 'users';
 
 function checkSession(value) {
 	var cookies = Cookies.get("token");
@@ -94,13 +98,16 @@ function roleBaseAccess() {
 		$('.changePasswordTopNav').remove();
 	} else if (userRole.toLowerCase() == 'supervisor') {
 		$('.adminPanelTopNav').remove();
+        $('#forAdmin').remove();
 	} else if (userRole.toLowerCase() == 'teammember') {
 		$('.adminPanelTopNav').remove();
+        $('#forAdmin').remove();
 	}
 
 }
 
 $(document).ready(function() {
+    roleBaseAccess();
 	topNavUserName();
 	setInterval(function() {
 		checkSession();

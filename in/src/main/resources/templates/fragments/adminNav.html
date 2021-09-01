@@ -1,39 +1,69 @@
-
 <!-- Header -->
 <div th:fragment="adminNav" class="header bg-primary pb-6">
-	<div class="container-fluid">
-		<div class="header-body">
-			<div class="row align-items-center py-4">
-				<div class="col-lg-1 col-7 ">
-					<a class="mainlink mainlink-links mainlink-dark"
-						th:href="@{/dashboard}"> <span class="mainlink-item"> <i
-							class="fas fa-home"></i> Home
-					</span>
-					</a>
-				</div>
-				<div class="col-lg-2 col-7 ">
-					<a class="mainlink mainlink-links mainlink-dark"
-						th:href="@{/profile}"> <span class="mainlink-item"> <i
-							class="ni ni-fat-add"></i> Create Profile
-					</span>
-					</a>
-				</div>
-				<div class="col-lg-2 col-7 ">
-					<a class="mainlink mainlink-links mainlink-dark"
-						th:href="@{/viewProfileGrid}"> <span class="mainlink-item">
-							<i class="ni ni-chart-bar-32"></i> View Profile
-					</span>
-					</a>
-				</div>
-				<div class="col-lg-2 col-7 ">
-					<a class="mainlink mainlink-links mainlink-dark"
-						th:href="@{/password}"> <span class="mainlink-item"> <i
-							class="ni ni-lock-circle-open"></i> Change Password
-					</span>
-					</a>
-				</div>
-			</div>
-
-		</div>
-	</div>
+  <div class="container-fluid">
+    <div class="header-body">
+      <div class="row align-items-center py-4">
+        <div class="col-lg-1 col-7">
+          <a
+            class="mainlink mainlink-links mainlink-dark"
+            th:href="@{/dashboard}"
+          >
+            <span class="mainlink-item">
+              <i class="fas fa-home"></i> Home
+            </span>
+          </a>
+        </div>
+        <div class="col-lg-2 col-7">
+          <a
+            class="mainlink mainlink-links mainlink-dark"
+            th:href="@{/profile}"
+          >
+            <span class="mainlink-item">
+              <i class="ni ni-fat-add"></i> Add User
+            </span>
+          </a>
+        </div>
+        <div class="col-lg-2 col-7">
+          <a
+            class="mainlink mainlink-links mainlink-dark"
+            th:href="@{/viewProfileGrid}"
+          >
+            <span class="mainlink-item">
+              <i class="ni ni-chart-bar-32"></i> View User
+            </span>
+          </a>
+        </div>
+        <div class="col-lg-2 col-7">
+          <a
+            class="mainlink mainlink-links mainlink-dark"
+            th:href="@{/password}"
+          >
+            <span class="mainlink-item">
+              <i class="ni ni-lock-circle-open"></i> Change Password
+            </span>
+          </a>
+        </div>
+        <div class="col-lg-2 col-7">
+          <a
+            class="mainlink mainlink-links mainlink-dark"
+            th:href="@{/addBillingClient}"
+          >
+            <span class="mainlink-item">
+              <i class="ni ni-fat-add"></i> Add Billing Client
+            </span>
+          </a>
+        </div>
+        <div class="col-lg-2 col-7">
+          <a
+            class="mainlink mainlink-links mainlink-dark"
+            th:href="@{/viewBillingClient}"
+          >
+            <span class="mainlink-item">
+              <i class="ni ni-chart-bar-32"></i> View Billing Clients
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
