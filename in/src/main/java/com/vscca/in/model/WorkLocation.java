@@ -12,7 +12,7 @@ import javax.persistence.Table;
 public class WorkLocation {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
 	private long Id;
 
 	@Column(name="work_location", length=50, nullable=false, unique=true)

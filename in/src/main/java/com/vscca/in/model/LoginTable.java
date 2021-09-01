@@ -11,8 +11,8 @@ import javax.persistence.Id;
 @Table(name = "login")
 public class LoginTable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+
+	@GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
 	private long Id;
 
 	@Column(name="user_name", length=50, nullable=false, unique=true)

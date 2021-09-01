@@ -14,7 +14,7 @@ import javax.persistence.Table;
 public class TaskInfo {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
 	private long Id;
 	
 	@Column(name="project_name")

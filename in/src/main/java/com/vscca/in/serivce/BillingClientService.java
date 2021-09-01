@@ -9,6 +9,6 @@ import com.vscca.in.model.BillingClient;
 @Service
 public interface BillingClientService {
 	
-	List<BillingClient> findAll();
+	List<BillingClient> findAll(String client);
 
 }

@@ -16,9 +16,9 @@ public class BillingClientServiceImpl implements BillingClientService {
 	BillingClientRepository billingClientRepository;
 	
 	@Override
-	public List<BillingClient> findAll() {
+	public List<BillingClient> findAll(String client) {
 		// TODO Auto-generated method stub
-		return billingClientRepository.findAll();
+		return billingClientRepository.findAll(client);
 	}
 
 }

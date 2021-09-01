@@ -12,7 +12,7 @@ import javax.persistence.Table;
 public class UserDetails {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy =javax.persistence.GenerationType.IDENTITY)
 	private long Id;
 	
 	@Column(name="first_name")
@@ -21,7 +21,7 @@ public class UserDetails {
 	@Column(name="last_name")
 	private String lastName;
 	
-	@Column(name="email_id")
+	@Column(name="email_id",length=50, nullable=false, unique=true)
 	private String emailId;
 	
 	@Column(name="mobile_Number")

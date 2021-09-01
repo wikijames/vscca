@@ -12,7 +12,7 @@ import javax.persistence.Table;
 public class Access {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
 	private long Id;
 
 	@Column(name="access_type", length=50, nullable=false, unique=true)

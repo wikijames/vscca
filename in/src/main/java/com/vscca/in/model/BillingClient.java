@@ -13,7 +13,7 @@ public class BillingClient {
 
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
 	private long Id;
 	
 	@Column(name="client")
