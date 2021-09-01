@@ -190,8 +190,8 @@ public class UserDetailsController {
 	}
 
 	@CrossOrigin
-	@GetMapping("/usersById")
-	public ResponseDto getUsersById(HttpServletRequest req) {
+	@GetMapping("/userDetailsSelf")
+	public ResponseDto getUserDetailsSelf(HttpServletRequest req) {
 		ResponseDto response= new ResponseDto();
 		String token= req.getHeader(VsccaConstants.TOKEN_HEADER);
 				if(token == null && TokenValidation.getAuthentication(token) != true || getTokenAuthentication(token) != true) {
@@ -205,6 +205,84 @@ public class UserDetailsController {
 		response.setBody(userDetails);
 		response.setMessage("success");
 			}
+		return response;
+	}
+	
+	@CrossOrigin
+	@GetMapping("/userDetailById")
+	public ResponseDto getUsersById(HttpServletRequest req,@RequestParam String emailId) {
+		ResponseDto response= new ResponseDto();
+		String token= req.getHeader(VsccaConstants.TOKEN_HEADER);
+				if(token == null && TokenValidation.getAuthentication(token) != true || getTokenAuthentication(token) != true) {
+				response.setSuccess(401);
+				response.setMessage("Unauthorized");
+			}else {
+		UserDetails userDetails=userDetailsService.findByEmailId(emailId);
+		response.setSuccess(200);
+		response.setBody(userDetails);
+		response.setMessage("success");
+			}
+		return response;
+	}
+	
+	@CrossOrigin
+	@PostMapping("/editUserDetails")
+	public ResponseDto editUserDetails(HttpServletRequest req, @RequestBody UserDto userDto) {
+		ResponseDto response= new ResponseDto();
+		String token= req.getHeader(VsccaConstants.TOKEN_HEADER);
+		if(token == null && TokenValidation.getAuthentication(token) != true || getTokenAuthentication(token) != true) {
+				response.setSuccess(401);
+				response.setMessage("Unauthorized");
+			}else {
+			UserDetails userDetails=userDetailsService.findByEmailId(userDto.getEmailId());
+			if(userDto.getFirstName()!= null && !userDto.getFirstName().equals("")) {
+			userDetails.setFirstName(userDto.getFirstName());
+			}
+			if(userDto.getLastName()!= null && !userDto.getLastName().equals("")) {
+			userDetails.setLastName(userDto.getLastName());
+			}
+			if(userDto.getMobileNumber()!= null && !userDto.getMobileNumber().equals("")) {
+			userDetails.setMobileNumber(userDto.getMobileNumber());
+			}
+			if(userDto.getAddress()!= null && !userDto.getAddress().equals("")) {
+			userDetails.setAddress(userDto.getAddress());
+			}
+			if(userDto.getCity()!= null && !userDto.getCity().equals("")) {
+			userDetails.setCity(userDto.getCity());
+			}
+			if(userDto.getCountry()!= null && !userDto.getCountry().equals("")) {
+			userDetails.setCountry(userDto.getCountry());
+			}
+			if(userDto.getPostalCode()!= null && !userDto.getPostalCode().equals("")) {
+			userDetails.setPostalCode(userDto.getPostalCode());
+			}
+			if(userDto.getResponsibility()!= null && !userDto.getResponsibility().equals("")) {
+			userDetails.setResponsibility(userDto.getResponsibility());
+			}
+			if(userDto.getExecution()!= null && !userDto.getExecution().equals("")) {
+			userDetails.setExecution(userDto.getExecution());
+			}
+			if(userDto.getConsulting()!= null && !userDto.getConsulting().equals("")) {
+			userDetails.setConsulting(userDto.getConsulting());
+			}
+			if(userDto.getIntimation()!= null && !userDto.getIntimation().equals("")) {
+			userDetails.setIntimation(userDto.getIntimation());
+			}
+			if(userDto.getAboutMe()!= null && !userDto.getAboutMe().equals("")) {
+			userDetails.setAboutMe(userDto.getAboutMe());
+			}
+			if(userDto.getAccessType()!= null && !userDto.getAccessType().equals("")) {
+			userDetails.setAccessType(userDto.getAccessType());
+			}
+			if(userDto.getLocation()!= null && !userDto.getLocation().equals("")) {
+			userDetails.setLocation(userDto.getLocation());
+			}
+			userDetails.setIsActive(userDto.getIsActive());
+			userDetailsService.save(userDetails);
+				response.setSuccess(200);
+				response.setMessage("success");
+			}
+		
 		return response;
 	}
 }

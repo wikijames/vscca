@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +27,7 @@ public class PasswordChangeController {
 	@Autowired
 	LoginService loginService;
 	
+	@CrossOrigin
 	@PostMapping("/passwordChange")
 	public ResponseDto passwordChange(HttpServletRequest req, @RequestBody RequestDto requestDto) {
 		ResponseDto response= new ResponseDto();
@@ -50,7 +52,7 @@ public class PasswordChangeController {
 		
 	}
 	
-	
+	@CrossOrigin
 	@PostMapping("/passwordChangeSelf")
 	public ResponseDto passwordChangeSelf(HttpServletRequest req, @RequestBody RequestDto requestDto) {
 		ResponseDto response= new ResponseDto();
