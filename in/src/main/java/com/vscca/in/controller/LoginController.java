@@ -39,8 +39,8 @@ public class LoginController {
 		if (requestDto != null) {
 			LoginTable loginTable = loginService.findByuserName(requestDto.getUserName());
 			// System.out.println(loginTable.getUserName());
-			if (requestDto.userName.equals(loginTable.getUserName())
-					&& requestDto.Password.equals(loginTable.getPassword())) {
+			if (requestDto.getUserName().equals(loginTable.getUserName())
+					&& requestDto.getPassword().equals(loginTable.getPassword())) {
 				final int EXPIRATIONTIME = 1000 * 60 * 60 * 1 * 1;// 60 mint
 				String jwtToken = Jwts.builder().setSubject(loginTable.getUserName())
 						.setExpiration(new Date(System.currentTimeMillis() + EXPIRATIONTIME)).claim("roles", "user")

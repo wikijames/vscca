@@ -2,7 +2,7 @@ package com.vscca.in.dto;
 
 public class RequestDto {
 	public String userName;
-	public String Password;
+	public String password;
 	
 	
 	public String getUserName() {
@@ -12,11 +12,12 @@ public class RequestDto {
 		this.userName = userName;
 	}
 	public String getPassword() {
-		return Password;
+		return password;
 	}
 	public void setPassword(String password) {
-		Password = password;
+		this.password = password;
 	}
+	
 	
 	
 
