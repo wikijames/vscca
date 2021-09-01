@@ -12,6 +12,7 @@ import javax.persistence.Id;
 public class LoginTable {
 
 
+	@Id
 	@GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
 	private long Id;
 
