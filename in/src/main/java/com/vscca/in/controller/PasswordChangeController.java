@@ -26,7 +26,7 @@ public class PasswordChangeController {
 	@Autowired
 	LoginService loginService;
 	
-	@PostMapping("/passwordChnage")
+	@PostMapping("/passwordChange")
 	public ResponseDto passwordChange(HttpServletRequest req, @RequestBody RequestDto requestDto) {
 		ResponseDto response= new ResponseDto();
 		String token = req.getHeader(VsccaConstants.TOKEN_HEADER);
@@ -50,6 +50,30 @@ public class PasswordChangeController {
 		
 	}
 	
+	
+	@PostMapping("/passwordChangeSelf")
+	public ResponseDto passwordChangeSelf(HttpServletRequest req, @RequestBody RequestDto requestDto) {
+		ResponseDto response= new ResponseDto();
+		String token = req.getHeader(VsccaConstants.TOKEN_HEADER);
+		if (token == null && TokenValidation.getAuthentication(token) != true
+				|| getTokenAuthentication(token) != true) {
+			response.setSuccess(401);
+			response.setMessage("Unauthorized");
+		} else {
+		if (requestDto != null) {
+			LoginTable loginTable = loginService.findByuserName(TokenValidation.finadEmailIdByToken(token));
+			// System.out.println(loginTable.getUserName());
+			
+				response.setSuccess(200);
+				response.setMessage("success");
+				
+				loginTable.setPassword(requestDto.getPassword());
+				loginService.save(loginTable);
+			} 
+		}
+		return response;
+		
+	}
 	public boolean getTokenAuthentication(String token) {
 		if (token != null) {
 
