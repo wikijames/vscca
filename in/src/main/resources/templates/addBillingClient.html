@@ -25,7 +25,12 @@
                 </div>
               </div>
               <div class="card-body">
-                <form id="profileForm" role="form" action="" method="post">
+                <form
+                  id="billingClientForm"
+                  role="form"
+                  action=""
+                  method="post"
+                >
                   <h6 class="heading-small text-muted mb-4">
                     Client information
                   </h6>
@@ -100,9 +105,11 @@
                             id="isActive"
                             name="isActive"
                           />
-                          <label class="form-control-label" for="isActive"
-                            >Check box to activate client</label
-                          >
+                          <label
+                            id="isActiveLabel"
+                            class="form-control-label"
+                            for="isActive"
+                          ></label>
                         </div>
                       </div>
                     </div>
@@ -119,7 +126,7 @@
     </div>
     <!-- scripts -->
     <div th:replace="fragments/footer :: dashboard-scripts"></div>
-    <script th:src="@{/logics/addBillings.js}"></script>
+    <script th:src="@{/logics/addBillingClient.js}"></script>
     <!-- <script th:src="@{/logics/viewCreateProfileDetails.js}"></script> -->
   </body>
 </html>

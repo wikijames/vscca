@@ -6,30 +6,40 @@ $(document).ready(function(){
         dataType: "json",
         "headers": {
 		    	"Content-Type": "application/json",
-				"Authorization": accessToken	
+				"Authorization": accessToken
 		  	},
 			success: function (data) {
 				checkSession(data.success);
 		       $.each(data.body,function(i,obj)
                 {
 	 		  var div_data = '<tr>'
-					+ '<td>' + obj.projectName + '</td>' 
+					+ '<td>' + obj.projectName + '</td>'
                     + '<td>' + obj.partyName + '</td>'
+                    + '<td>' + obj.weightage + '</td>'
 					+ '<td>' + obj.responsibility + '</td>'
+                    + '<td>' + obj.dueDate + '</td>'
+                    + '<td>' + isTaskDescription(obj.taskDescription) + '</td>'
 					+ '<td>' + obj.status + '</td>'
 					+ '<td> <a onClick="redirectToTaskDetails(' + obj.taskId + ')" class="btn pointer">View</a></td>'
 					+ '</tr>';
-			    $(div_data).appendTo('#populateGrid'); 
-				//console.log('data div', div_data)
+			    $(div_data).appendTo('#populateGrid');
+				console.log('data div', data.body)
                 });
             }
       });
 
-
-
-
 })// jquery end
 
+function formatDate(date) {
+    new Date(Date.now()).toLocaleString().split(',')[0]
+}
+function isTaskDescription(value){
+	if(value != null || value != '' || value != undefined){
+		return 'Yes';
+	}else{
+		return 'No'
+	}
+};
 	function viewTaskTypeHandler(){
 		var value = $('#viewType').val();
 		$('#taskNameChangeHeading').text('Your task');
@@ -76,20 +86,20 @@ function populateData(url){
         dataType: "json",
         "headers": {
 		    	"Content-Type": "application/json",
-				"Authorization": accessToken	
+				"Authorization": accessToken
 		  	},
 			success: function (data) {
 				checkSession(data.success);
                $.each(data.body,function(i,obj)
                 {
 	 		  var div_data = '<tr>'
-					+ '<td>' + obj.projectName + '</td>' 
+					+ '<td>' + obj.projectName + '</td>'
                     + '<td>' + obj.partyName + '</td>'
 					+ '<td>' + obj.responsibility + '</td>'
 					+ '<td>' + obj.status + '</td>'
 					+ '<td> <a onClick="redirectToTaskDetails(' + obj.taskId + ')" class="btn pointer">View</a></td>'
 					+ '</tr>';
-			    $(div_data).appendTo('#populateGrid'); 
+			    $(div_data).appendTo('#populateGrid');
                 });
             }
       });

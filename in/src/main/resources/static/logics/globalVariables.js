@@ -36,9 +36,11 @@ var postPasswordChangeSelfURL = envVar + 'passwordChangeSelf';
 var PostPasswordChangeURL = envVar + 'passwordChange';
 var getUsersURL = envVar + 'users';
 
+// Billing client
+var postBillingClientURL = envVar + '';
+
 function checkSession(value) {
 	var cookies = Cookies.get("token");
-	console.log('cook', cookies);
 	if (cookies == null || cookies == undefined || value == 401 || value == 500) {
 		sessionStorage.clear();
 		window.location = '/vscca';
@@ -109,6 +111,11 @@ function roleBaseAccess() {
 $(document).ready(function() {
     roleBaseAccess();
 	topNavUserName();
+
+    $(".datepicker").datepicker({
+        format: "dd-mm-yyyy",
+      });
+
 	setInterval(function() {
 		checkSession();
 	}, 300000);

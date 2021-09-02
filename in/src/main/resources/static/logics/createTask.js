@@ -3,13 +3,13 @@ function todayDate(){
 	var dd = String(today.getDate()).padStart(2, '0');
 	var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
 	var yyyy = today.getFullYear();
-	
+
 	return today = dd + '/' + mm + '/' + yyyy;
 }
 
 //function showContainer(){
 //	if(roles === 'admin'){
-//		$('.show-container').show();	
+//		$('.show-container').show();
 //	}else if(role === 'team'){
 //		$('.show-container').hide();
 //	}
@@ -18,21 +18,23 @@ function todayDate(){
 $(document).ready(function(){
 	//console.log('todayDate()',todayDate())
 		// populate billingClients Dropdown
+
+        $('.billingClientNameClass').select2({});
 		  $.ajax({
 	        type: "GET",
 	        url:getBillingClientsURL,
 	        dataType: "json",
 			 "headers": {
 		    	"Content-Type": "application/json",
-				"Authorization": accessToken	
+				"Authorization": accessToken
 		  	},
 	        success: function (data) {
 		checkSession(data.success);
 			    $.each(data.body,function(i,obj)
 	            {
 					var div_data="<option value="+obj.client+">"+obj.client+"</option>";
-	            $(div_data).appendTo('#billingClientName'); 
-	            });  
+	            $(div_data).appendTo('.billingClientNameClass');
+	            });
 	            }
 	      });
 
@@ -43,15 +45,15 @@ $(document).ready(function(){
             dataType: "json",
             "headers": {
 		    	"Content-Type": "application/json",
-				"Authorization": accessToken	
+				"Authorization": accessToken
 		  	},
 			success: function (data) {
 				checkSession(data.success);
                 $.each(data.body,function(i,obj)
                 {
                  var div_data="<option value="+obj.task+">"+obj.task+"</option>";
-                $(div_data).appendTo('#taskType'); 
-                });  
+                $(div_data).appendTo('#taskType');
+                });
                 }
           });
 
@@ -62,7 +64,7 @@ $(document).ready(function(){
             dataType: "json",
             "headers": {
 		    	"Content-Type": "application/json",
-				"Authorization": accessToken	
+				"Authorization": accessToken
 		  	},
 			success: function (data) {
 				checkSession(data.success);
@@ -70,8 +72,8 @@ $(document).ready(function(){
                 $.each(data.body,function(i,obj)
                 {
                  var div_data="<option value="+obj.emailId+">"+obj.firstName+" "+obj.lastName+"</option>";
-                $(div_data).appendTo('#responsibility'); 
-                });  
+                $(div_data).appendTo('#responsibility');
+                });
                 }
           });
 
@@ -82,7 +84,7 @@ $(document).ready(function(){
             dataType: "json",
             "headers": {
 		    	"Content-Type": "application/json",
-				"Authorization": accessToken	
+				"Authorization": accessToken
 		  	},
 			success: function (data) {
 				checkSession(data.success);
@@ -90,8 +92,8 @@ $(document).ready(function(){
                 $.each(data.body,function(i,obj)
                 {
                  var div_data="<option value="+obj.emailId+">"+obj.firstName+" "+obj.lastName+"</option>";
-                $(div_data).appendTo('#execution'); 
-                });  
+                $(div_data).appendTo('#execution');
+                });
                 }
           });
 
@@ -102,7 +104,7 @@ $(document).ready(function(){
             dataType: "json",
             "headers": {
 		    	"Content-Type": "application/json",
-				"Authorization": accessToken	
+				"Authorization": accessToken
 		  	},
 			success: function (data) {
 				checkSession(data.success);
@@ -110,8 +112,8 @@ $(document).ready(function(){
                 $.each(data.body,function(i,obj)
                 {
                  var div_data="<option value="+obj.emailId+">"+obj.firstName+" "+obj.lastName+"</option>";
-                $(div_data).appendTo('#consulting'); 
-                });  
+                $(div_data).appendTo('#consulting');
+                });
                 }
           });
 
@@ -122,7 +124,7 @@ $(document).ready(function(){
             dataType: "json",
             "headers": {
 		    	"Content-Type": "application/json",
-				"Authorization": accessToken	
+				"Authorization": accessToken
 		  	},
 			success: function (data) {
 				checkSession(data.success);
@@ -130,8 +132,8 @@ $(document).ready(function(){
                 $.each(data.body,function(i,obj)
                 {
                  var div_data="<option value="+obj.emailId+">"+obj.firstName+" "+obj.lastName+"</option>";
-                $(div_data).appendTo('#intimation'); 
-                });  
+                $(div_data).appendTo('#intimation');
+                });
                 }
           });
 
@@ -147,7 +149,7 @@ $(document).ready(function(){
 				var result = day + "/" + month + "/" + year;
 				formattedDueDate = result;
 				//console.log('v result', result);
-			    //return result;			
+			    //return result;
 		})
 
 
@@ -163,7 +165,7 @@ $(document).ready(function(){
 			  "timeout": 0,
 			"headers": {
 		    	"Content-Type": "application/json",
-				"Authorization": accessToken	
+				"Authorization": accessToken
 		  	},
 		  "data": JSON.stringify({
 			"status": $('#status').val(),
@@ -171,10 +173,10 @@ $(document).ready(function(){
 			"delayReason": $('#reasonForDelay').val(),
 			"taskId": $('#taskId').val()
 		  }),
-		}; 
+		};
 			$.ajax(settings).done(function (response) {
-	
-				//console.log(response);		  
+
+				//console.log(response);
 				if(response.success == 200 ){
 					$("#createForm")[0].reset();
 					window.location = 'viewTaskGrid'
@@ -192,7 +194,7 @@ $(document).ready(function(){
 				  "timeout": 0,
 				"headers": {
 			    	"Content-Type": "application/json",
-					"Authorization": accessToken	
+					"Authorization": accessToken
 			  	},
 			  "data": JSON.stringify({
 			    "projectName": $('#projectName').val(),
@@ -208,10 +210,10 @@ $(document).ready(function(){
 			    "exceution": $('#execution').val(),
 			    "consulting": $('#consulting').val()
 			  }),
-			};	
+			};
 				$.ajax(settings).done(function (response) {
 
-					//console.log(response);		  
+					//console.log(response);
 					if(response.success == 200 ){
 						window.location = 'viewTaskGrid';
 						$("#createForm")[0].reset();
@@ -222,7 +224,7 @@ $(document).ready(function(){
 						alert('something went wrong.'+ data);
 					}
 				});
-		}	
+		}
 
 
 });

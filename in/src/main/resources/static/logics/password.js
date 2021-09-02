@@ -27,7 +27,7 @@ $( document ).ready( function () {
 
         if(password == confirmPassword){
             if ( userRole.toLowerCase() == 'admin' ) {
-                var settings = passwordChangeOptionForAdminHandler();
+                var settings = passwordChangeOptionForAdminHandler(settings);
             } else {
                 var settings = userPasswordResetHandler( settings );
             }
@@ -75,8 +75,8 @@ function passwordChangeOptionForAdminHandler () {
             "Authorization": accessToken
         },
         "data": JSON.stringify( {
-            "userName": $( '#status' ).val(),
-            "password": $( '#remarks' ).val()
+            "userName": $( '#userNames' ).val(),
+            "password": $( '#password' ).val()
         } ),
     };
     $.ajax( settings ).done( function ( response ) {

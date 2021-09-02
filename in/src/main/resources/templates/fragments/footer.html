@@ -1,32 +1,52 @@
-
 <footer th:fragment="dashboard-footer" class="footer pt-0">
-        <div class="row align-items-center justify-content-lg-between">
-          <div class="col-lg-6">
-            <div class="copyright text-center text-xl-left text-muted">
-              &copy; 2021 <a href="http://vscca.in/index.php" class="font-weight-bold ml-1" target="_blank">VSCCA.IN</a>
-            </div>
-          </div>
-          <div class="col-lg-6">
-            <ul class="nav nav-footer justify-content-center justify-content-xl-end">
-              <li class="nav-item">
-                <a href="http://vscca.in/index.php" class="nav-link" target="_blank">Home</a>
-              </li>
-              <li class="nav-item">
-                <a href="http://vscca.in/our_firm.php" class="nav-link" target="_blank">About Us</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </footer>
+  <div class="row align-items-center justify-content-lg-between">
+    <div class="col-lg-6">
+      <div class="copyright text-center text-xl-left text-muted">
+        &copy; 2021
+        <a
+          href="http://vscca.in/index.php"
+          class="font-weight-bold ml-1"
+          target="_blank"
+          >VSCCA.IN</a
+        >
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <ul class="nav nav-footer justify-content-center justify-content-xl-end">
+        <li class="nav-item">
+          <a href="http://vscca.in/index.php" class="nav-link" target="_blank"
+            >Home</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            href="http://vscca.in/our_firm.php"
+            class="nav-link"
+            target="_blank"
+            >About Us</a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
 
 <div th:fragment="dashboard-scripts">
   <!-- Argon Scripts -->
   <!-- Core -->
   <script th:src="@{/vendor/jquery/dist/jquery.min.js}"></script>
-  <script th:src="@{/vendor/bootstrap/dist/js/bootstrap.bundle.min.js}"></script>
+  <script
+    th:src="@{/vendor/bootstrap/dist/js/bootstrap.bundle.min.js}"
+  ></script>
   <script th:src="@{/vendor/js-cookie/js.cookie.js}"></script>
   <script th:src="@{/vendor/jquery.scrollbar/jquery.scrollbar.min.js}"></script>
-  <script th:src="@{/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js}"></script>
+  <script
+    th:src="@{/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js}"
+  ></script>
+  <script
+    th:src="@{/vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js}"
+  ></script>
+  <script th:src="@{/vendor/select2/dist/js/select2.min.js}"></script>
   <!-- Argon JS -->
   <script th:src="@{/js/argon.js?v=1.2.0}"></script>
   <script th:src="@{/logics/globalVariables.js}"></script>
@@ -34,35 +54,54 @@
 </div>
 
 <!-- Footer -->
-  <footer th:fragment="login-footer" class="py-5" id="footer-main">
-    <div class="container">
-      <div class="row align-items-center justify-content-xl-between">
-        <div class="col-xl-6">
-          <div class="copyright text-center text-xl-left text-muted">
-            &copy; 2021 <a href="http://vscca.in/index.php" class="font-weight-bold ml-1" target="_blank">VSCCA.IN</a>
-          </div>
-        </div>
-        <div class="col-xl-6">
-          <ul class="nav nav-footer justify-content-center justify-content-xl-end">
-            <li class="nav-item">
-              <a href="http://vscca.in/index.php" class="nav-link" target="_blank">Home</a>
-            </li>
-            <li class="nav-item">
-              <a href="http://vscca.in/our_firm.php" class="nav-link" target="_blank">About Us</a>
-            </li>
-          </ul>
+<footer th:fragment="login-footer" class="py-5" id="footer-main">
+  <div class="container">
+    <div class="row align-items-center justify-content-xl-between">
+      <div class="col-xl-6">
+        <div class="copyright text-center text-xl-left text-muted">
+          &copy; 2021
+          <a
+            href="http://vscca.in/index.php"
+            class="font-weight-bold ml-1"
+            target="_blank"
+            >VSCCA.IN</a
+          >
         </div>
       </div>
+      <div class="col-xl-6">
+        <ul
+          class="nav nav-footer justify-content-center justify-content-xl-end"
+        >
+          <li class="nav-item">
+            <a href="http://vscca.in/index.php" class="nav-link" target="_blank"
+              >Home</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              href="http://vscca.in/our_firm.php"
+              class="nav-link"
+              target="_blank"
+              >About Us</a
+            >
+          </li>
+        </ul>
+      </div>
     </div>
-  </footer>
-  <!-- Argon Scripts -->
- <div th:fragment="login-footer-scripts" >
+  </div>
+</footer>
+<!-- Argon Scripts -->
+<div th:fragment="login-footer-scripts">
   <!-- Core -->
   <script th:src="@{/vendor/jquery/dist/jquery.min.js}"></script>
-  <script th:src="@{/vendor/bootstrap/dist/js/bootstrap.bundle.min.js}"></script>
+  <script
+    th:src="@{/vendor/bootstrap/dist/js/bootstrap.bundle.min.js}"
+  ></script>
   <script th:src="@{/vendor/js-cookie/js.cookie.js}"></script>
   <script th:src="@{/vendor/jquery.scrollbar/jquery.scrollbar.min.js}"></script>
-  <script th:src="@{/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js}"></script>
+  <script
+    th:src="@{/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js}"
+  ></script>
   <!-- Argon JS -->
   <script th:src="@{/js/argon.js?v=1.2.0}"></script>
   <script th:src="@{/logics/globalVariables.js}"></script>
