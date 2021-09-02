@@ -78,14 +78,14 @@ public class TaskController {
 
 	@CrossOrigin
 	@GetMapping("/billingClients")
-	public ResponseDto getBillingClients(HttpServletRequest req,@RequestParam String client) {
+	public ResponseDto getBillingClients(HttpServletRequest req) {
 		ResponseDto response = new ResponseDto();
 		String token= req.getHeader(VsccaConstants.TOKEN_HEADER);
 		if(token == null && TokenValidation.getAuthentication(token) != true || getTokenAuthentication(token) != true) {
 				response.setSuccess(401);
 				response.setMessage("Unauthorized");
 			}else {
-		List<BillingClient> clients = billingClientService.findAll(client);
+		List<BillingClient> clients = billingClientService.findAll();
 		response.setSuccess(200);
 		response.setBody(clients);
 		response.setMessage("success");

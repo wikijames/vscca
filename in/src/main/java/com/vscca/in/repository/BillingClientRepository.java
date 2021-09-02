@@ -12,6 +12,8 @@ import com.vscca.in.model.BillingClient;
 public interface BillingClientRepository extends JpaRepository<BillingClient, Long>{
 
 
-	@Query(value="select vbc.client from vscca.billing_client as vbc where client %?%",nativeQuery=true)
-	List<BillingClient> findAll( String client);
+//	@Query(value="select vbc.client from vscca.billing_client as vbc where client %?%",nativeQuery=true)
+//	List<BillingClient> findAll( String client);
+	
+	List<BillingClient> findAll();
 }
