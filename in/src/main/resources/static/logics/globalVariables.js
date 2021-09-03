@@ -89,7 +89,7 @@ function topNavUserName() {
 		success: function(data) {
 			checkSession(data.success);
 			var obj = data.body;
-			$('#topNavuserName').append(obj.firstName + ' ' + obj.lastName);
+            $('#topNavuserName').append(obj.firstName + ' ' + obj.lastName);
 		}
 	});
 
@@ -104,8 +104,34 @@ function roleBaseAccess() {
 	} else if (userRole.toLowerCase() == 'teammember') {
 		$('.adminPanelTopNav').remove();
         $('#forAdmin').remove();
+        $('.notForTM').remove();
 	}
 
+}
+function taskNavLoadHandler(value){
+    $('#taskNameChangeHeading').text('');
+    if(value == 'all'){
+        alert('all');
+        $('#taskNameChangeHeading').text('All Task');
+    }else if (value == 'today'){
+        alert('today');
+        $('#taskNameChangeHeading').text("Today's Task");
+    }else if (value == 'week'){
+        alert('week');
+        $('#taskNameChangeHeading').text("7 Day's Plan");
+    }else if (value == 'overdue'){
+        alert('overdue');
+        $('#taskNameChangeHeading').text("Overdue");
+    }
+}
+
+function showTaskbyTypeHandler(value){
+    if ((window.location.href.indexOf("myProfile") > -1) || (window.location.href.indexOf("password") > -1) || ((window.location.href.indexOf("reports") > -1))) {
+        window.location = 'dashboard'
+        taskNavLoadHandler(value);
+    }else if(window.location.href.indexOf("dashboard") > -1){
+        taskNavLoadHandler(value);
+    }
 }
 
 $(document).ready(function() {

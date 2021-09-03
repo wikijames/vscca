@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Vivek Sushil &amp; Co - View Task</title>
+    <title>Vivek Sushil &amp; Co - View Billing Client</title>
     <div th:replace="fragments/head :: head"></div>
     <style>
       .show-container {
@@ -14,7 +14,7 @@
     <!-- Main content -->
     <div class="main-content" id="panel">
       <div th:replace="fragments/topNav :: topNav"></div>
-      <div th:replace="fragments/breadcrumb :: breadcrumb"></div>
+      <div th:replace="fragments/adminNav :: adminNav"></div>
       <div class="container-fluid mt--6">
         <div th:fragment="createTask" class="row">
           <div class="col">
@@ -23,20 +23,9 @@
               <div class="card-header border-0">
                 <div class="row">
                   <div class="col-lg-9">
-                    <h3 class="mb-0">View Task</h3>
+                    <h3 class="mb-0">View Billing Client</h3>
                   </div>
-                  <div class="col-lg-3">
-                    <select
-                      id="viewType"
-                      class="form-control"
-                      onChange="viewType()"
-                    >
-                      <option value="responsibility">Responsibility</option>
-                      <option value="exceution">Execution</option>
-                      <option value="intimation">Intimation</option>
-                      <option value="consulting">Consulting</option>
-                    </select>
-                  </div>
+                  <div class="col-lg-3"></div>
                 </div>
               </div>
               <!-- Light table -->
@@ -48,22 +37,19 @@
                   <thead class="thead-light">
                     <tr>
                       <th scope="col" class="sort" data-sort="projectName">
-                        Project Name
+                        Person Name
                       </th>
                       <th scope="col" class="sort" data-sort="partyName">
-                        Party Name
+                        Entity Name
                       </th>
                       <th scope="col" class="sort" data-sort="weightage">
-                        Weightage
+                        Ledger Number
                       </th>
                       <th scope="col" class="sort" data-sort="userType">
-                        user Type
+                        Page Number
                       </th>
                       <th scope="col" class="sort" data-sort="dueDate">
-                        Due Date
-                      </th>
-                      <th scope="col" class="sort" data-sort="description">
-                        Description
+                        Status
                       </th>
                       <th scope="col" class="sort" data-sort="status">
                         Status

@@ -1,18 +1,33 @@
-$( document ).ready( function () {
+jQuery( function () {
     populateDataHandler();
-    setTimeout(function () {
-        dataTableFilterHandler();
-    },1000);
+    setTimeout( function () {
+        if(roles.toLowerCase() == 'admin'){
+            dataTableFilterHandler();
+        }else if(roles.toLowerCase() == 'supervisor'){
+            dataTableFilterHandler();
+        }else if(roles.toLowerCase() == 'teammember'){
+
+        }
+    }, 1000 );
 
 
-
+    // $('#table_id').DataTable( {
+    //     dom: 'Bfrtip',
+    //     buttons: [
+    //         'copy', 'csv', 'excel', 'pdf', 'print'
+    //     ]
+    // } );
 
 } )// jquery end
 
 
-function dataTableFilterHandler(){
+function dataTableFilterHandler () {
     //Data table filter
-    $( '#table_id' ).DataTable({
+    $( '#table_id' ).DataTable( {
+        // dom: 'Bfrtip',
+        // buttons: [
+        //     'copy', 'csv', 'excel', 'pdf', 'print'
+        // ],
         initComplete: function () {
             this.api().columns().every( function () {
                 var column = this;
@@ -64,9 +79,17 @@ function dataTableFilterHandler(){
         }
     } );
 };
-function formatDate ( date ) {
-    new Date( Date.now() ).toLocaleString().split( ',' )[ 0 ]
-}
+
+function formatDateHandler ( value ) {
+    console.log( 'duedate', value );
+    var date = new Date( value );
+    var month = date.getMonth() + 1;
+    var day = date.getDate();
+    var year = date.getFullYear();
+    var result = day + "-" + month + "-" + year;
+    console.log( 'v result', result );
+    return result;
+};
 function isTaskDescription ( value ) {
     if ( value != null || value != '' || value != undefined ) {
         return 'Yes';
@@ -114,6 +137,7 @@ function viewType () {
 function populateData ( url ) {
     //$('#table_id').dataTable().destroy();
     $( '#table_id tbody' ).empty();
+    var count = 0;
     $.ajax( {
         type: "GET",
         url: url,
@@ -125,26 +149,29 @@ function populateData ( url ) {
         success: function ( data ) {
             checkSession( data.success );
             $.each( data.body, function ( i, obj ) {
+                count++;
                 var div_data = '<tr>'
                     + '<td>' + obj.projectName + '</td>'
                     + '<td>' + obj.partyName + '</td>'
                     + '<td>' + obj.weightage + '</td>'
                     + '<td>' + obj.responsibility + '</td>'
-                    + '<td>' + obj.dueDate + '</td>'
+                    + '<td>' + formatDateHandler( obj.dueDate ) + '</td>'
                     + '<td>' + isTaskDescription( obj.taskDescription ) + '</td>'
                     + '<td>' + obj.status + '</td>'
                     + '<td> <a onClick="redirectToTaskDetails(' + obj.taskId + ')" class="btn pointer">View</a></td>'
                     + '</tr>';
                 $( div_data ).appendTo( '#populateGrid' );
-                console.log( 'data div', data.body )
+                console.log(count, 'data div', data.body )
             } );
         }
     } );
 };
 
-function populateDataHandler(){
+function populateDataHandler () {
     //data table - view all task
+    $('#taskNameChangeHeading').text('All Task');
     $( '#table_id tbody' ).empty();
+    var count;
     $.ajax( {
         type: "GET",
         url: getResponsibilityURL,
@@ -156,18 +183,19 @@ function populateDataHandler(){
         success: function ( data ) {
             checkSession( data.success );
             $.each( data.body, function ( i, obj ) {
+                count = i++;
                 var div_data = '<tr>'
                     + '<td>' + obj.projectName + '</td>'
                     + '<td>' + obj.partyName + '</td>'
                     + '<td>' + obj.weightage + '</td>'
                     + '<td>' + obj.responsibility + '</td>'
-                    + '<td>' + obj.dueDate + '</td>'
+                    + '<td>' + formatDateHandler( obj.dueDate ) + '</td>'
                     + '<td>' + isTaskDescription( obj.taskDescription ) + '</td>'
                     + '<td>' + obj.status + '</td>'
                     + '<td> <a onClick="redirectToTaskDetails(' + obj.taskId + ')" class="btn pointer">View</a></td>'
                     + '</tr>';
                 $( div_data ).appendTo( '#populateGrid' );
-                console.log( 'data div', data.body )
+                console.log(count, 'data div', data.body )
             } );
         }
     } );

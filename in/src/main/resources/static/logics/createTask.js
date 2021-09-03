@@ -142,15 +142,14 @@ $(document).ready(function(){
 		var formattedDueDate;
 		$("#endDate").change(function(){
 			var dueDate = $(this).val();
+            console.log('duedate',dueDate);
 			    var date = new Date(dueDate);
 			    var month = date.getMonth() + 1;
 			    var day = date.getDate();
 			    var year = date.getFullYear();
-				var result = day + "/" + month + "/" + year;
-				formattedDueDate = result;
-				//console.log('v result', result);
-			    //return result;
-		})
+				var result = day + "-" + month + "-" + year;
+				formattedDueDate = dueDate;
+		});
 
 
  // this is the id of the form

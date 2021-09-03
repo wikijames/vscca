@@ -72,4 +72,9 @@ public class PageRedirectController {
         public String NavigateToViewBillingClient() {
             return "viewBillingClient";
         }
+    @CrossOrigin
+    @RequestMapping(value = "/reports", method = RequestMethod.GET)
+    public String NavigateToViewReports() {
+            return "reports";
+        }
 }

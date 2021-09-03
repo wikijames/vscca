@@ -1,45 +1,79 @@
-    <!-- Header -->
-    <div th:fragment="breadcrumb" class="header bg-primary pb-6">
-      <div class="container-fluid">
-		<div class="header-body">
-			<div class="row align-items-center py-4">
-				<div class="col-lg-1 col-7 ">
-					<a class="mainlink mainlink-links mainlink-dark"
-						th:href="@{/dashboard}"> <span class="mainlink-item"> <i
-							class="fas fa-home"></i> Home
-					</span>
-					</a>
-				</div>
-				<div class="col-lg-2 col-7 ">
-					<a class="mainlink mainlink-links mainlink-dark"
-						th:href="@{/profile}"> <span class="mainlink-item"> <i
-							class="ni ni-book-bookmark"></i> Your Task
-					</span>
-					</a>
-				</div>
-				<div class="col-lg-2 col-7 ">
-					<a class="mainlink mainlink-links mainlink-dark"
-						th:href="@{/viewProfileGrid}"> <span class="mainlink-item">
-							<i class="ni ni-book-bookmark"></i> Today's Task
-					</span>
-					</a>
-				</div>
-				<div class="col-lg-2 col-7 ">
-					<a class="mainlink mainlink-links mainlink-dark"
-						th:href="@{/password}"> <span class="mainlink-item"> <i
-							class="ni ni-book-bookmark"></i> 7 Day's Plan
-					</span>
-					</a>
-				</div>
-				<div class="col-lg-2 col-7 ">
-					<a class="mainlink mainlink-links mainlink-dark"
-						th:href="@{/password}"> <span class="mainlink-item"> <i
-							class="ni ni-book-bookmark"></i> Overdue
-					</span>
-					</a>
-				</div>
-			</div>
-
-		</div>
-	</div>
+<!-- Header -->
+<div th:fragment="breadcrumb" class="header bg-primary pb-6">
+  <div class="container-fluid">
+    <div class="header-body">
+      <div class="row align-items-center py-4">
+        <div class="col-lg-1 col-7">
+          <a
+            class="mainlink mainlink-links mainlink-dark"
+            th:href="@{/dashboard}"
+          >
+            <span class="mainlink-item">
+              <i class="fas fa-home"></i> Home
+            </span>
+          </a>
+        </div>
+        <div class="col-lg-2 col-7">
+          <a
+            class="mainlink mainlink-links mainlink-dark pointer"
+            onclick="showTaskbyTypeHandler('all')"
+          >
+            <span class="mainlink-item">
+              <i class="ni ni-book-bookmark"></i> Your Task
+            </span>
+          </a>
+        </div>
+        <div class="col-lg-2 col-7">
+          <a
+            class="mainlink mainlink-links mainlink-dark pointer"
+            onclick="showTaskbyTypeHandler('today')"
+          >
+            <span class="mainlink-item">
+              <i class="ni ni-book-bookmark"></i> Today's Task
+            </span>
+          </a>
+        </div>
+        <div class="col-lg-2 col-7">
+          <a
+            class="mainlink mainlink-links mainlink-dark pointer"
+            onclick="showTaskbyTypeHandler('week')"
+          >
+            <span class="mainlink-item">
+              <i class="ni ni-book-bookmark"></i> 7 Day's Plan
+            </span>
+          </a>
+        </div>
+        <div class="col-lg-2 col-7">
+          <a
+            class="mainlink mainlink-links mainlink-dark pointer"
+            onclick="showTaskbyTypeHandler('overdue')"
+          >
+            <span class="mainlink-item">
+              <i class="ni ni-book-bookmark"></i> Overdue
+            </span>
+          </a>
+        </div>
+        <div class="col-lg-2 col-7 notForTM">
+            <a
+              class="mainlink mainlink-links mainlink-dark pointer"
+              th:href="@{/createTaskForm}"
+            >
+              <span class="mainlink-item">
+                <i class="ni ni-fat-add"></i> Create Task
+              </span>
+            </a>
+          </div>
+        <div class="col-lg-2 col-7 notForTM">
+          <a
+            class="mainlink mainlink-links mainlink-dark pointer"
+            th:href=@{/reports}
+          >
+            <span class="mainlink-item">
+              <i class="ni ni-book-bookmark"></i> Reports
+            </span>
+          </a>
+        </div>
+      </div>
     </div>
+  </div>
+</div>

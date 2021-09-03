@@ -2,9 +2,31 @@ var responsibilityValue = 0;
 var executionValue = 0;
 var consultingValue = 0;
 var intimationValue = 0;
+var isActive = 0;
 
 $(document).ready(function(){
-	
+
+    if ( $( this ).is( ":checked" ) ) {
+        $( this ).val( "1" );
+        isActive = 1;
+        $( '#isActiveLabel' ).text( 'User is De-activated' );
+    } else {
+        $( this ).val( "0" );
+        isActive = 0;
+        $( '#isActiveLabel' ).text( 'User is Activated' );
+    }
+
+    $( "#isActive" ).change( function ( e ) {
+        if ( $( this ).is( ":checked" ) ) {
+            $( this ).val( "1" );
+            isActive = 1;
+            $( '#isActiveLabel' ).text( 'User is De-activated' );
+        } else {
+            $( this ).val( "0" );
+            isActive = 0;
+            $( '#isActiveLabel' ).text( 'User is Activated' );
+        }
+    } );
 	$("#responsibility").change(function(e){
 		if($(this).is(":checked")){
 	        $(this).val("1");
@@ -14,7 +36,7 @@ $(document).ready(function(){
 			responsibilityValue = 0;
 	    }
 	});
-	
+
 	$("#execution").change(function(){
 	    if($(this).is(":checked")){
 	        $(this).val("1");
@@ -24,7 +46,7 @@ $(document).ready(function(){
 			executionValue = 0;
 	    }
 	});
-	
+
 	$("#consulting").change(function(){
 	    if($(this).is(":checked")){
 	        $(this).val("1");
@@ -34,7 +56,7 @@ $(document).ready(function(){
 			consultingValue = 0;
 	    }
 	});
-	
+
 	$("#intimation").change(function(){
 	    if($(this).is(":checked")){
 	        $(this).val("1");
@@ -44,10 +66,10 @@ $(document).ready(function(){
 			intimationValue = 0;
 	    }
 	});
-	
+
 
 $('#saveProfile').click(function(e){
-	
+
     var valid=0;
     $('#profileForm').find('input[type=text], select').each(function(){
         if($(this).val() != "") valid+=1;
@@ -62,7 +84,7 @@ $('#saveProfile').click(function(e){
         alert("error: you must fill in at least one field");
         return false;
     }
-});	
+});
 
 accessType();
 locationType();
@@ -76,15 +98,15 @@ function accessType(){
 	        dataType: "json",
 			 "headers": {
 		    	"Content-Type": "application/json",
-				"Authorization": accessToken	
+				"Authorization": accessToken
 		  	},
 	        success: function (data) {
 				checkSession(data.success);
 		        $.each(data.body,function(i,obj)
 	            {
 	             var div_data="<option value="+obj.acessType+">"+ obj.acessType +"</option>";
-	            $(div_data).appendTo('#accessType'); 
-	            });  
+	            $(div_data).appendTo('#accessType');
+	            });
 	            }
 	      });
 }
@@ -95,16 +117,16 @@ function locationType(){
 	        dataType: "json",
 			 "headers": {
 		    	"Content-Type": "application/json",
-				"Authorization": accessToken	
+				"Authorization": accessToken
 		  	},
 	        success: function (data) {
 				checkSession(data.success);
-				
+
 			    $.each(data.body,function(i,obj)
 	            {
 					 var div_data="<option value="+obj.workLocation+">"+ obj.workLocation+"</option>";
-	            $(div_data).appendTo('#location'); 
-	            });  
+	            $(div_data).appendTo('#location');
+	            });
 	            }
 	      });
 }
@@ -117,7 +139,7 @@ function submitData(e){
 			  "timeout": 0,
 		"headers": {
 		    	"Content-Type": "application/json",
-				"Authorization": accessToken	
+				"Authorization": accessToken
 		  	},
 		  "data": JSON.stringify({
 		    "firstName": $('#firstName').val(),
@@ -136,7 +158,7 @@ function submitData(e){
 		    "accessType": $('#accessType').val(),
 		    "location": $('#location').val()
 		  }),
-		}; 
+		};
 
 		$.ajax(settings).done(function (response) {
 			if(response.success == 200 ){

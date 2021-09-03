@@ -5,7 +5,7 @@
     <div th:replace="fragments/head :: head"></div>
   </head>
   <body>
-    <div th:replace="fragments/nav :: sidenav"></div>
+    <!-- <div th:replace="fragments/nav :: sidenav"></div> -->
     <!-- Main content -->
     <div class="main-content" id="panel">
       <div th:replace="fragments/topNav :: topNav"></div>
@@ -140,7 +140,7 @@
                               class="form-control datepicker"
                               placeholder="Select date"
                               type="text"
-                              value="20-06-2020"
+                              value=""
                             />
                           </div>
                         </div>
@@ -286,5 +286,13 @@
     <div th:replace="fragments/footer :: dashboard-scripts"></div>
     <script th:src="@{/logics/createTask.js}"></script>
     <script th:src="@{/logics/viewCreateTaskDetails.js}"></script>
+    <script>
+      $(document).ready(function () {
+        // $.fn.datepicker.defaults.format = "yyyy/dd/mm";
+        // $(".datepicker").datepicker({
+        //   format: "dd-mm-yyyy",
+        // });
+      });
+    </script>
   </body>
 </html>
