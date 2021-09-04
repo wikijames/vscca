@@ -23,9 +23,9 @@ public class TaskInfoServiceImpl implements TaskInfoService {
 	}
 
 	@Override
-	public List<Object[]> findTaskDetails(String emailId) {
+	public List<Object[]> findTaskDetails() {
 		// TODO Auto-generated method stub
-		return taskInfoRepository.findTaskDetails(emailId);
+		return taskInfoRepository.findTaskDetails();
 	}
 
 	@Override

@@ -9,7 +9,7 @@ public interface TaskInfoService {
 
 	TaskInfo save(TaskInfo taskInfo);
 	
-	List<Object[]> findTaskDetails(String emailId);
+	List<Object[]> findTaskDetails();
 	
 	List<Object[]> findTaskDetailsIntimation(String emailId);
 	
@@ -18,4 +18,6 @@ public interface TaskInfoService {
 	List<Object[]> findTaskDetailsConsulting(String emailId);
 	
 	List<Object[]> findTaskDetailsById(String taskId);
+	
+	//List<Object[]> findTaskDetailsUser(String emailId,String emailId,);
 }
