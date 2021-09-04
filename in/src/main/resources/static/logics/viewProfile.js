@@ -12,6 +12,7 @@ function isActiveUser(value){
 		return 'Deactive'
 	}
 }
+
 function populateData(){
 	//$('#table_id').dataTable().destroy();
 	$('#table_id tbody').empty();
@@ -21,14 +22,14 @@ function populateData(){
         dataType: "json",
         "headers": {
 		    	"Content-Type": "application/json",
-				"Authorization": accessToken	
+				"Authorization": accessToken
 		  	},
 			success: function (data) {
 				checkSession(data.success);
                $.each(data.body,function(i,obj)
                 {
 	 		  var div_data = '<tr>'
-					+ '<td>' + obj.firstName + ' ' + obj.lastName +'</td>' 
+					+ '<td>' + obj.firstName + ' ' + obj.lastName +'</td>'
                     + '<td>' + obj.accessType + '</td>'
 					+ '<td>' + isActiveUser(obj.isActive) + '</td>'
 					+ '<td> <a onClick="redirectToProfileDetails(' + obj.id+ ')" class="btn pointer">View</a></td>'

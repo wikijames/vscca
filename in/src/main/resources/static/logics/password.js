@@ -1,4 +1,3 @@
-
 $( document ).ready( function () {
     // populate User Name
     $.ajax( {
@@ -26,7 +25,7 @@ $( document ).ready( function () {
         var confirmPassword = $( '#confirmPassword' ).val();
 
         if(password == confirmPassword){
-            if ( userRole.toLowerCase() == 'admin' ) {
+            if ( userRole == 'admin' ) {
                 var settings = passwordChangeOptionForAdminHandler(settings);
             } else {
                 var settings = userPasswordResetHandler( settings );
