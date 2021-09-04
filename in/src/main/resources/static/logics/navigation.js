@@ -1,10 +1,10 @@
 
 function loadRoleBaseNavigation(){
-	if(userRole.toLowerCase() == 'admin' ){
+	if(userRole == 'admin' ){
 		//$('.userInfoNav').addClass('hideNav');
-	}else if(userRole.toLowerCase() == 'supervisor' ){
+	}else if(userRole == 'supervisor' ){
 		$('.userInfoNav').addClass('hideNav');
-	}else if(userRole.toLowerCase() == 'teammember'){
+	}else if(userRole == 'teammember'){
 		$('.userInfoNav').addClass('hideNav');
 		$('.createTaskNav').addClass('hideNav');
 		$('.reportNav').addClass('hideNav');

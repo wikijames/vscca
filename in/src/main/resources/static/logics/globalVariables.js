@@ -1,7 +1,9 @@
 //var envVar = "http://192.168.0.108:8080/vscca/";
 var envVar = "http://localhost:8080/vscca/";
-var userRole = sessionStorage.getItem('roles');
+var userRoleInSession = sessionStorage.getItem('roles');
+var userRole = userRoleInSession.toLowerCase();
 var accessToken = sessionStorage.getItem('token')
+
 //login
 var postLoginURL = envVar + 'login';
 //profile add
@@ -9,7 +11,9 @@ var getAccessURL = envVar + 'access';
 var postProfileURL = envVar + 'userDetails';
 //profile view
 var getUsersProfileURL = envVar + 'users';
-var getUserProfileByIdURL = envVar + 'usersById';
+var getUserProfileByIdURL = envVar + 'userDetailsSelf';
+var getUserDetailByIdURL = envVar + 'userDetailById';
+var postEditUserDetailsURL = envVar + 'editUserDetails';
 var getLocationURL = envVar + 'location';
 
 //view task
@@ -96,18 +100,25 @@ function topNavUserName() {
 };
 
 function roleBaseAccess() {
-	if (userRole.toLowerCase() == 'admin') {
+	if(userRole == null || userRole == '' || userRole == undefined){
+        sessionStorage.clear();
+		window.location = '/vscca';
+    }else if (userRole == 'admin') {
 		$('.changePasswordTopNav').remove();
-	} else if (userRole.toLowerCase() == 'supervisor') {
+        $('.passwordNavforUsers').remove();
+	} else if (userRole.toLowerCase == 'supervisor') {
 		$('.adminPanelTopNav').remove();
         $('#forAdmin').remove();
-	} else if (userRole.toLowerCase() == 'teammember') {
+        $('.forAdmin').remove();
+        $('.passwordNavforAdmin').remove();
+	} else if (userRole == 'teammember') {
 		$('.adminPanelTopNav').remove();
         $('#forAdmin').remove();
         $('.notForTM').remove();
+        $('.passwordNavforAdmin').remove();
 	}
+};
 
-}
 function taskNavLoadHandler(value){
     $('#taskNameChangeHeading').text('');
     if(value == 'all'){
@@ -123,7 +134,7 @@ function taskNavLoadHandler(value){
         alert('overdue');
         $('#taskNameChangeHeading').text("Overdue");
     }
-}
+};
 
 function showTaskbyTypeHandler(value){
     if ((window.location.href.indexOf("myProfile") > -1) || (window.location.href.indexOf("password") > -1) || ((window.location.href.indexOf("reports") > -1))) {
@@ -132,7 +143,7 @@ function showTaskbyTypeHandler(value){
     }else if(window.location.href.indexOf("dashboard") > -1){
         taskNavLoadHandler(value);
     }
-}
+};
 
 $(document).ready(function() {
     roleBaseAccess();

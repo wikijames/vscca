@@ -7,16 +7,16 @@ $(document).ready(function(){
 
 function disableProfileFormInputHandler(){
 	console.log('userRole',userRole);
-	if(userRole.toLowerCase() == 'admin' ){
+	if(userRole == 'admin' ){
 		//$('#profileForm').find('input, textarea, button, select').attr('disabled','disabled');
 		//$('#profileForm').find('input, textarea, button, select').attr('readonly','readonly');
 //		getViewOwnProfile()
-	}else if(userRole.toLowerCase() == 'supervisor' ){
+	}else if(userRole == 'supervisor' ){
 		$('#profileForm').find('input, textarea, button, select').attr('disabled','disabled');
 		$('#profileForm').find('input, textarea, button, select').attr('readonly','readonly');
 		$('#saveProfile').remove();
 //		getViewOwnProfile()
-	}else if(userRole.toLowerCase() == 'teammember'){
+	}else if(userRole == 'teammember'){
 		$('#profileForm').find('input, textarea, button, select').attr('disabled','disabled');
 		$('#profileForm').find('input, textarea, button, select').attr('readonly','readonly');
 		$('#saveProfile').remove();
@@ -28,7 +28,7 @@ function isCheckedType(value){
 	if(value == 1){
 		return true;
 	}
-}	
+}
 
 function getViewOwnProfile(){
 	$.ajax({
@@ -37,7 +37,7 @@ function getViewOwnProfile(){
         dataType: "json",
         "headers": {
 		    	"Content-Type": "application/json",
-				"Authorization": accessToken	
+				"Authorization": accessToken
 		  	},
 			success: function (data) {
 				checkSession(data.success);
@@ -56,10 +56,10 @@ function getViewOwnProfile(){
 					$('#country').val(obj.country);
 					$('#postalCode').val(obj.postalCode);
 					$('#aboutMe').val(obj.aboutMe);
-					
+
             }
       });
-	
+
 };
 
 

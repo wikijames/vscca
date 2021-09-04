@@ -1,13 +1,8 @@
 jQuery( function () {
     populateDataHandler();
-    setTimeout( function () {
-        if(roles.toLowerCase() == 'admin'){
-            dataTableFilterHandler();
-        }else if(roles.toLowerCase() == 'supervisor'){
-            dataTableFilterHandler();
-        }else if(roles.toLowerCase() == 'teammember'){
 
-        }
+    setTimeout( function () {
+        dataTableFilterHandler();
     }, 1000 );
 
 

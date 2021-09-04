@@ -10,23 +10,23 @@ function disableFormInputHandler(){
 		$('.taskInformation,.clientInformation').find('input, textarea, button, select').attr('disabled','disabled');
 		$('.taskInformation,.clientInformation').find('input, textarea, button, select').attr('readonly','readonly');
 		getViewTaskById();
-	
+
 	}else if(taskCompletedDate != ''){
-		
+
 		$('.taskInformation,.clientInformation,.commentsSection').find('input, textarea, button, select').attr('disabled','disabled');
 		$('.taskInformation,.clientInformation,.commentsSection').find('input, textarea, button, select').attr('readonly','readonly');
 		$('#save').remove();
-	
+
 	}else if(taskId == null &&  taskCompletedDate == ''){
-		
+
 		$('.commentsSection').remove();
-		
+
 	}
-	
-	if(userRole.toLowerCase() == 'TeamMember' && ($.trim($('#remarks').val()).length <= 0)){
-	
+
+	if(userRole == 'TeamMember' && ($.trim($('#remarks').val()).length <= 0)){
+
 		$('.remarksColumn').addClass('hide');
-	
+
 	}
 };
 
@@ -45,12 +45,12 @@ function convertDate(value,name){
         dataType: "json",
         "headers": {
 		    	"Content-Type": "application/json",
-				"Authorization": accessToken	
+				"Authorization": accessToken
 		  	},
 			success: function (data) {
 				checkSession(data.success);
 				$.each(data.body,function(i,obj)
-                {	
+                {
 					console.log('data.body', data.body);
 					$("#save").attr('title', obj.taskId);
 					$('#taskId').val(obj.taskId);
