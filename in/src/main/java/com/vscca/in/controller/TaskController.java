@@ -93,6 +93,7 @@ public class TaskController {
 		return response;
 	}
 
+	@SuppressWarnings("deprecation")
 	@CrossOrigin
 	@PostMapping("/createTask")
 	public ResponseDto postCreateTask(HttpServletRequest req,@RequestBody TaskDto taskDto) {
@@ -111,11 +112,16 @@ public class TaskController {
 		taskInfo.setProjectName(taskDto.getProjectName());
 		taskInfo.setPartyName(taskDto.getPartyName());
 		taskInfo.setWeightage(taskDto.getWeightage());
-		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		Date date = new Date();
-		taskInfo.setCreatedAt(date);
 		try {
-			taskInfo.setDueDate(formatter.parse(taskDto.getDueDate()));
+			taskInfo.setCreatedAt(formatter.parse(formatter.format(date)));
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			taskInfo.setDueDate(formatter.parse(formatter.format(new Date(taskDto.getDueDate()))));
 			} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -131,7 +137,12 @@ public class TaskController {
 		taskUserDetails.setIntimation(taskDto.getIntimation());
 		taskStatus.setTaskId(taskId.getId());
 		taskStatus.setStatus("Coming");
-		taskStatus.setEndDate(date);
+		try {
+			taskStatus.setEndDate(formatter.parse(formatter.format(date)));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		taskUserDetailsService.save(taskUserDetails);
 		taskStatusService.save(taskStatus);
 		response.setSuccess(200);
@@ -150,7 +161,7 @@ public class TaskController {
 				response.setMessage("Unauthorized");
 			}else {
 				String emailId=TokenValidation.finadEmailIdByToken(token);
-		List<Object[]> taskDetails = taskInfoService.findTaskDetails(emailId);
+		List<Object[]> taskDetails = taskInfoService.findTaskDetails();
 		List<TaskDto> task= new ArrayList<TaskDto>();
 		for (Object[] result : taskDetails) {
 			TaskDto taskDto= new TaskDto(); 
@@ -533,8 +544,8 @@ public class TaskController {
 //		taskInfo.setProjectName(taskDto.getProjectName());
 //		taskInfo.setPartyName(taskDto.getPartyName());
 //		taskInfo.setWeightage(taskDto.getWeightage());
-		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-		Date date = new Date();
+				SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+				Date date = new Date();
 //		taskInfo.setCreatedAt(date);
 //		taskInfo.setDueDate(new Date(new SimpleDateFormat("dd/MM/yyyy").format(taskDto.getDueDate())));
 //		taskInfo.setBillingClient(taskDto.getBillingClient());
@@ -581,5 +592,81 @@ public class TaskController {
 		}
 		return false;
 		
+	}
+	
+	@CrossOrigin
+	@GetMapping("/taskDetailsUser")
+	public ResponseDto getTaskDetailsUser(HttpServletRequest req) {
+		ResponseDto response = new ResponseDto();
+		String token= req.getHeader(VsccaConstants.TOKEN_HEADER);
+		if(token == null && TokenValidation.getAuthentication(token) != true || getTokenAuthentication(token) != true) {
+				response.setSuccess(401);
+				response.setMessage("Unauthorized");
+			}else {
+				String emailId=TokenValidation.finadEmailIdByToken(token);
+		List<Object[]> taskDetails = taskInfoService.findTaskDetailsConsulting(emailId);
+		List<TaskDto> task= new ArrayList<TaskDto>();
+		for (Object[] result : taskDetails) {
+			TaskDto taskDto= new TaskDto(); 
+			if(result[0]!= null) {
+			taskDto.setTaskId(((BigInteger) result[0]).longValue());
+			}
+			if(result[1]!= null) {
+			taskDto.setProjectName(result[1].toString());
+			}
+			if(result[2]!= null) {
+			taskDto.setPartyName(result[2].toString());
+			}
+			if(result[3]!= null) {
+			taskDto.setWeightage((Integer)result[3]);
+			}
+			if(result[4]!= null) {
+			taskDto.setTaskDescription(result[4].toString());
+			}
+			if(result[5]!= null) {
+			taskDto.setTaskType(result[5].toString());
+			}
+			if(result[6]!= null) {
+			taskDto.setBillingClient(result[6].toString());
+			}
+			if(result[7]!= null) {
+			taskDto.setCreatedAt((Date)result[7]);
+			}
+			if(result[8]!= null) {
+				taskDto.setDueDate(result[8].toString());
+			}
+			if(result[9]!= null) {
+			taskDto.setStatus(result[9].toString());
+			}
+			if(result[10]!= null) {
+			taskDto.setDelayReason(result[10].toString());
+			}
+			if(result[11]!= null) {
+			taskDto.setRemarks(result[11].toString());
+			}
+			if(result[12]!= null) {
+			taskDto.setEndDate((Date)result[12]);
+			}
+			if(result[13]!= null) {
+			taskDto.setResponsibility(result[13].toString());
+			}
+			if(result[14]!= null) {
+			taskDto.setIntimation(result[14].toString());
+			}
+			if(result[15]!= null) {
+			taskDto.setExceution(result[15].toString());
+			}
+			if(result[16]!= null) {
+			taskDto.setConsulting(result[16].toString());
+			}
+			task.add(taskDto);
+		}
+		
+		
+		response.setSuccess(200);
+		response.setBody(task);
+		response.setMessage("success");
+			}
+		return response;
 	}
 }
