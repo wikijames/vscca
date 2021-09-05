@@ -23,6 +23,11 @@ public class TaskDto {
 	private String delayReason;
 	private String remarks;
 	private Date endDate;
+	private String responsibilityName;
+	private String exceutionName;
+	private String intimationName;
+	private String consultingName;
+	private String finalWeightage;
 	
 	
 
@@ -130,6 +135,38 @@ public class TaskDto {
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
+	public String getResponsibilityName() {
+		return responsibilityName;
+	}
+	public void setResponsibilityName(String responsibilityName) {
+		this.responsibilityName = responsibilityName;
+	}
+	public String getExceutionName() {
+		return exceutionName;
+	}
+	public void setExceutionName(String exceutionName) {
+		this.exceutionName = exceutionName;
+	}
+	public String getIntimationName() {
+		return intimationName;
+	}
+	public void setIntimationName(String intimationName) {
+		this.intimationName = intimationName;
+	}
+	public String getConsultingName() {
+		return consultingName;
+	}
+	public void setConsultingName(String consultingName) {
+		this.consultingName = consultingName;
+	}
+	public String getFinalWeightage() {
+		return finalWeightage;
+	}
+	public void setFinalWeightage(String finalWeightage) {
+		this.finalWeightage = finalWeightage;
+	}
+	
+	
 	
 	
 	

@@ -20,4 +20,13 @@ public interface TaskInfoService {
 	List<Object[]> findTaskDetailsById(String taskId);
 	
 	//List<Object[]> findTaskDetailsUser(String emailId,String emailId,);
+	
+	List<Object[]> findTaskDetailsByUser(String emailId);
+	
+	List<Object[]> findTaskDetailsForUsersToday(String emailId);
+	
+	
+	List<Object[]> findTaskDetailsForUsersWeek(String emailId);
+	
+	List<Object[]> findTaskDetailsForUsersByDueDate(String emailId);
 }
