@@ -15,7 +15,7 @@ public interface BillingClientRepository extends JpaRepository<BillingClient, Lo
 //	@Query(value="select vbc.client from vscca.billing_client as vbc where client %?%",nativeQuery=true)
 //	List<BillingClient> findAll( String client);
 	
-	@Query(value="select vbc.client from vscca.billing_client as vbc where vbc.is_active=1",nativeQuery=true)
+	@Query(value="select * from vscca.billing_client where is_active=1",nativeQuery=true)
 	List<BillingClient> findAll();
 	
 	BillingClient save(BillingClient billingClient);
