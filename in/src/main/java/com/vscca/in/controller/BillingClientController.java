@@ -61,7 +61,7 @@ public class BillingClientController {
 		ResponseDto response = new ResponseDto();
 		String token = req.getHeader(VsccaConstants.TOKEN_HEADER);
 		if (token == null && TokenValidation.getAuthentication(token) != true
-				|| getTokenAuthentication(token) != true) {
+				&& getTokenAuthentication(token) != true) {
 			response.setSuccess(401);
 			response.setMessage("Unauthorized");
 		} else {
@@ -104,8 +104,8 @@ public class BillingClientController {
 			response.setSuccess(401);
 			response.setMessage("Unauthorized");
 		} else {
-			BillingClient billingClient =billingClientService.getById(billingClientDto.getId());
-			
+			BillingClient billingClient = billingClientService.getById(billingClientDto.getId());
+
 			billingClient.setClient(billingClientDto.getPartyName() + "-" + billingClientDto.getLedgerNo() + "-"
 					+ billingClientDto.getPageNo());
 			billingClient.setIsActive(billingClientDto.getIsActive());
