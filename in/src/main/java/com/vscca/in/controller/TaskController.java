@@ -239,15 +239,20 @@ public class TaskController {
 				}
 				if (result[13] != null) {
 					taskDto.setResponsibility(result[13].toString());
+					taskDto.setResponsibilityName(getNameByEmailId(result[13].toString()));
 				}
+
 				if (result[14] != null) {
 					taskDto.setIntimation(result[14].toString());
+					taskDto.setIntimationName(getNameByEmailId(result[14].toString()));
 				}
 				if (result[15] != null) {
 					taskDto.setExceution(result[15].toString());
+					taskDto.setExceutionName(getNameByEmailId(result[15].toString()));
 				}
 				if (result[16] != null) {
 					taskDto.setConsulting(result[16].toString());
+					taskDto.setConsultingName(getNameByEmailId(result[16].toString()));
 				}
 				task.add(taskDto);
 			}
@@ -955,7 +960,7 @@ public class TaskController {
 
 	public String getNameByEmailId(String emailId) {
 		UserDetails userDetails = userDetailsService.findByEmailId(emailId);
-		String name = userDetails.getFirstName().toString() + "" + userDetails.getLastName().toString();
+		String name = userDetails.getFirstName() + " " + userDetails.getLastName();
 		return name;
 	}
 	 
