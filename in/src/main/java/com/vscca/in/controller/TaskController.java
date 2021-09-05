@@ -494,7 +494,7 @@ public class TaskController {
 
 	@CrossOrigin
 	@GetMapping("/taskDetailsById")
-	public ResponseDto getTaskDetailsConsulting(HttpServletRequest req, @RequestParam String taskId) {
+	public ResponseDto getTaskDetailsConsulting(HttpServletRequest req, @RequestParam String taskId) throws ParseException {
 		ResponseDto response = new ResponseDto();
 		String token = req.getHeader(VsccaConstants.TOKEN_HEADER);
 		if (token == null && TokenValidation.getAuthentication(token) != true
@@ -616,7 +616,7 @@ public class TaskController {
 
 	@CrossOrigin
 	@GetMapping("/taskDetailsByUser")
-	public ResponseDto getTaskDetailsUser(HttpServletRequest req) {
+	public ResponseDto getTaskDetailsUser(HttpServletRequest req) throws ParseException {
 		ResponseDto response = new ResponseDto();
 		String token = req.getHeader(VsccaConstants.TOKEN_HEADER);
 		if (token == null && TokenValidation.getAuthentication(token) != true
@@ -702,7 +702,7 @@ public class TaskController {
 
 	@CrossOrigin
 	@GetMapping("/taskDetailsByUserToday")
-	public ResponseDto getTaskDetailsUserToday(HttpServletRequest req) {
+	public ResponseDto getTaskDetailsUserToday(HttpServletRequest req) throws ParseException {
 		ResponseDto response = new ResponseDto();
 		String token = req.getHeader(VsccaConstants.TOKEN_HEADER);
 		if (token == null && TokenValidation.getAuthentication(token) != true
@@ -788,7 +788,7 @@ public class TaskController {
 
 	@CrossOrigin
 	@GetMapping("/taskDetailsByUserWeek")
-	public ResponseDto getTaskDetailsUserWeek(HttpServletRequest req) {
+	public ResponseDto getTaskDetailsUserWeek(HttpServletRequest req) throws ParseException {
 		ResponseDto response = new ResponseDto();
 		String token = req.getHeader(VsccaConstants.TOKEN_HEADER);
 		if (token == null && TokenValidation.getAuthentication(token) != true
@@ -874,7 +874,7 @@ public class TaskController {
 
 	@CrossOrigin
 	@GetMapping("/taskDetailsByUserByDueDate")
-	public ResponseDto getTaskDetailsUserByDueDate(HttpServletRequest req) {
+	public ResponseDto getTaskDetailsUserByDueDate(HttpServletRequest req) throws ParseException {
 		ResponseDto response = new ResponseDto();
 		String token = req.getHeader(VsccaConstants.TOKEN_HEADER);
 		if (token == null && TokenValidation.getAuthentication(token) != true
@@ -965,18 +965,21 @@ public class TaskController {
 	}
 	 
 	
-	public String getfinalWiegtage(String dueDate,int weightage) {
+	public String getfinalWiegtage(String dueDate,int weightage) throws ParseException {
 		String finalWeightage="";
-		if(new Date(dueDate).before(new Date(System.currentTimeMillis()))){
-			int diff=new Date(System.currentTimeMillis()).getDate()- new Date(dueDate).getDate();
+		 Date date1=new SimpleDateFormat("yyyy-MM-dd").parse(dueDate);  
+		System.out.println(date1);
+		if(date1.before(new Date(System.currentTimeMillis()))){
+			int diff=new Date(System.currentTimeMillis()).getDate()- date1.getDate();
 			finalWeightage=""+diff*weightage;
 		}
 		return finalWeightage;
 	}
 	
-	public String getfinalWiegtageforCLose(String dueDate,int weightage,Date endDate) {
+	public String getfinalWiegtageforCLose(String dueDate,int weightage,Date endDate) throws ParseException {
 		String finalWeightage="";
-			int diff=endDate.getDate()- new Date(dueDate).getDate();
+		 Date date1=new SimpleDateFormat("yyyy-MM-dd").parse(dueDate);  
+			int diff=endDate.getDate()- date1.getDate();
 			finalWeightage=""+diff*weightage;
 		return finalWeightage;
 	}
