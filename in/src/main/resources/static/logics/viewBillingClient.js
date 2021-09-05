@@ -1,35 +1,23 @@
-var isActive = 1;
-
 $( document ).ready( function () {
 	populateData();
-    if ( $( this ).is( ":checked" ) ) {
-        $( this ).val( "0" );
-        isActive = 0;
-        $( '#isActiveLabel' ).text( 'Client is De-activated' );
-    } else {
-        $( this ).val( "1" );
-        isActive = 1;
-        $( '#isActiveLabel' ).text( 'Client is Activated' );
-    }
-
-    $( "#isActive" ).change( function ( e ) {
-        if ( $( this ).is( ":checked" ) ) {
-            $( this ).val( "0" );
-            isActive = 0;
-            $( '#isActiveLabel' ).text( 'Client is De-activated' );
-        } else {
-            $( this ).val( "1" );
-            isActive = 1;
-            $( '#isActiveLabel' ).text( 'Client is Activated' );
-        }
-    } );
-
 } )// jquery end
+
+function splitClientHandler(value){
+	var valueSplit = value.split('-');
+	return valueSplit;
+}
+
+function isActiveBilling(value){
+	if(value == 1){
+		return 'Active';
+	}else{
+		return 'Deactive'
+	}
+}
 
 function populateData () {
     //$('#table_id').dataTable().destroy();
     $( '#table_id tbody' ).empty();
-    var count = 0;
     $.ajax( {
         type: "GET",
         url: getBillingClientsURL,
@@ -42,19 +30,14 @@ function populateData () {
             checkSession( data.success );
 			console.log('billing client data', data)
             $.each( data.body, function ( i, obj ) {
-                count++;
+					splitClientHandler(obj.client);
                 var div_data = '<tr>'
-                    + '<td>' + obj.projectName + '</td>'
-                    + '<td>' + obj.partyName + '</td>'
-                    + '<td>' + obj.weightage + '</td>'
-                    + '<td>' + obj.responsibilityName + '</td>'
-					+ '<td>' + obj.exceutionName + '</td>'
-					+ '<td>' + obj.intimationName + '</td>'
-					+ '<td>' + obj.consultingName + '</td>'
-                    + '<td>' + formatDateHandler( obj.dueDate ) + '</td>'
-                    + '<td>' + isTaskDescription( obj.taskDescription ) + '</td>'
-                    + '<td>' + obj.status + '</td>'
-                    + '<td> <a onClick="redirectToTaskDetails(' + obj.taskId + ')" class="btn pointer">View</a></td>'
+					
+                    + '<td>' + splitClientHandler(obj.client)[0]+ '</td>'
+                    + '<td>' + splitClientHandler(obj.client)[1] + '</td>'
+                    + '<td>' + splitClientHandler(obj.client)[2] + '</td>'
+					+ '<td>' + isActiveBilling(obj.isActive) + '</td>'
+                    + '<td> <a onClick="redirectToBillingClient(' + obj.id + ')" class="btn pointer">View</a></td>'
                     + '</tr>';
                 $( div_data ).appendTo( '#populateGrid' );
                 
@@ -62,3 +45,8 @@ function populateData () {
         }
     } );
 };
+
+function redirectToBillingClient ( id ) {
+    window.location = 'addBillingClient';
+    sessionStorage.setItem( 'billingId', id );
+}

@@ -11,7 +11,6 @@ jQuery( function () {
 function populateData ( url ) {
     //$('#table_id').dataTable().destroy();
     $( '#table_id tbody' ).empty();
-    var count = 0;
     $.ajax( {
         type: "GET",
         url: url,
@@ -22,9 +21,7 @@ function populateData ( url ) {
         },
         success: function ( data ) {
             checkSession( data.success );
-			console.log('task details data', data)
-            $.each( data.body, function ( i, obj ) {
-                count++;
+			$.each( data.body, function ( i, obj ) {
                 var div_data = '<tr>'
                     + '<td>' + obj.projectName + '</td>'
                     + '<td>' + obj.partyName + '</td>'
