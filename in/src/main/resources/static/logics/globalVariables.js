@@ -9,7 +9,7 @@ var postLoginURL = envVar + 'login';
 var getAccessURL = envVar + 'access';
 var postProfileURL = envVar + 'userDetails';
 //profile view
-var getUsersProfileURL = envVar + 'users';
+var getUsersProfileURL = envVar + 'users'; // old api
 var getUserProfileByIdURL = envVar + 'userDetailsSelf';
 var getUserDetailByIdURL = envVar + 'userDetailById';
 var postEditUserDetailsURL = envVar + 'editUserDetails';
@@ -30,6 +30,11 @@ var getTaskDetailsByUserTodayURL = envVar + 'taskDetailsByUserToday';
 var getTaskDetailsByUserWeekURL = envVar + 'taskDetailsByUserWeek';
 //overdue task
 var getTaskDetailsByUserByDueDateURL = envVar + 'taskDetailsByUserByDueDate';
+
+// Billing CLient
+var getBillingByIdURL = envVar + 'getBillingById';
+var postAddBillingClientURL = envVar + 'addBillingClient';
+var postEditBillingClientURL = envVar + 'editBillingClient';
 
 //create task
 var getBillingClientsURL = envVar + 'billingClients';

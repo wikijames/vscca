@@ -19,7 +19,7 @@ $(document).ready(function() {
 
 			if (response.success == 200) {
 				window.location = 'dashboard';
-				Cookies.set('token', response.token, { expires: 30 / 1440 });
+				Cookies.set('token', response.token, { expires: 480 / 1440 });
 				sessionStorage.setItem('token', response.token);
 				sessionStorage.setItem('roles', response.body)
 			} else if (response.success == 500) {

@@ -29,7 +29,7 @@ $(document).ready(function(){
 				"Authorization": accessToken
 		  	},
 	        success: function (data) {
-		checkSession(data.success);
+				console.log('billing client get data = ', data);
 			    $.each(data.body,function(i,obj)
 	            {
 					var div_data="<option value="+obj.client+">"+obj.client+"</option>";

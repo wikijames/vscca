@@ -2,28 +2,28 @@ var responsibilityValue = 0;
 var executionValue = 0;
 var consultingValue = 0;
 var intimationValue = 0;
-var isActive = 0;
+var isActive = 1;
 
 $(document).ready(function(){
 
     if ( $( this ).is( ":checked" ) ) {
-        $( this ).val( "1" );
-        isActive = 1;
-        $( '#isActiveLabel' ).text( 'User is De-activated' );
-    } else {
         $( this ).val( "0" );
         isActive = 0;
+        $( '#isActiveLabel' ).text( 'User is De-activated' );
+    } else {
+        $( this ).val( "1" );
+        isActive = 1;
         $( '#isActiveLabel' ).text( 'User is Activated' );
     }
 
     $( "#isActive" ).change( function ( e ) {
         if ( $( this ).is( ":checked" ) ) {
-            $( this ).val( "1" );
-            isActive = 1;
-            $( '#isActiveLabel' ).text( 'User is De-activated' );
-        } else {
             $( this ).val( "0" );
             isActive = 0;
+            $( '#isActiveLabel' ).text( 'User is De-activated' );
+        } else {
+            $( this ).val( "1" );
+            isActive = 1;
             $( '#isActiveLabel' ).text( 'User is Activated' );
         }
     } );
