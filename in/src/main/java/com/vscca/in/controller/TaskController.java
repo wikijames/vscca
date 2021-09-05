@@ -153,7 +153,7 @@ public class TaskController {
 				e1.printStackTrace();
 			}
 			try {
-				taskInfo.setDueDate(formatter.parse(formatter.format(new Date(taskDto.getDueDate()))));
+				taskInfo.setDueDate(new SimpleDateFormat("dd-MM-yyyy").parse(taskDto.getDueDate()));
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
