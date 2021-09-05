@@ -106,7 +106,7 @@ function roleBaseAccess() {
     }else if (userRole == 'admin') {
 		$('.changePasswordTopNav').remove();
         $('.passwordNavforUsers').remove();
-	} else if (userRole.toLowerCase == 'supervisor') {
+	} else if (userRole == 'supervisor') {
 		$('.adminPanelTopNav').remove();
         $('#forAdmin').remove();
         $('.forAdmin').remove();
