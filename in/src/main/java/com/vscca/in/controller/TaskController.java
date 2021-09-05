@@ -955,7 +955,7 @@ public class TaskController {
 
 	public String getNameByEmailId(String emailId) {
 		UserDetails userDetails = userDetailsService.findByEmailId(emailId);
-		String name = userDetails.getFirstName() + "" + userDetails.getLastName();
+		String name = userDetails.getFirstName().toString() + "" + userDetails.getLastName().toString();
 		return name;
 	}
 	 

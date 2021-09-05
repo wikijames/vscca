@@ -10,5 +10,7 @@ import com.vscca.in.model.BillingClient;
 public interface BillingClientService {
 	
 	List<BillingClient> findAll();
+	
+	BillingClient save(BillingClient billingClient);
 
 }
