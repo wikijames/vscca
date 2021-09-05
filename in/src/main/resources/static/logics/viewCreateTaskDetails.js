@@ -23,7 +23,7 @@ function disableFormInputHandler(){
 
 	}
 
-	if(userRole == 'TeamMember' && ($.trim($('#remarks').val()).length <= 0)){
+	if(userRole.toLowerCase() == 'teammember' && ($.trim($('#remarks').val()).length <= 0)){
 
 		$('.remarksColumn').addClass('hide');
 
@@ -51,7 +51,7 @@ function convertDate(value,name){
 				checkSession(data.success);
 				$.each(data.body,function(i,obj)
                 {
-					console.log('data.body', data.body);
+//					console.log('data.body', data.body);
 					$("#save").attr('title', obj.taskId);
 					$('#taskId').val(obj.taskId);
 					$('#projectName').val(obj.projectName);

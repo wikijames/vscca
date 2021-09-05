@@ -142,7 +142,7 @@ $(document).ready(function(){
 		var formattedDueDate;
 		$("#endDate").change(function(){
 			var dueDate = $(this).val();
-            console.log('duedate',dueDate);
+//            console.log('duedate',dueDate);
 			    var date = new Date(dueDate);
 			    var month = date.getMonth() + 1;
 			    var day = date.getDate();
@@ -156,7 +156,7 @@ $(document).ready(function(){
 	$("#save").click(function(e) {
 	    e.preventDefault(); // avoid to execute the actual submit of the form.
 		var taskId = $("#save").attr('title');
-		console.log('task id in edit', taskId);
+//		console.log('task id in edit', taskId);
 		if(taskId !== ''){
 			var settings = {
 		    "url": postEditTaskURL,

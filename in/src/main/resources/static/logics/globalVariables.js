@@ -1,9 +1,8 @@
 //var envVar = "http://192.168.0.108:8080/vscca/";
 var envVar = "http://localhost:8080/vscca/";
-var userRoleInSession = sessionStorage.getItem('roles');
-var userRole = userRoleInSession.toLowerCase();
-var accessToken = sessionStorage.getItem('token')
-
+var userRole = sessionStorage.getItem( 'roles' );
+//var userRole = userRoleInSession.toLowerCase();
+var accessToken = sessionStorage.getItem( 'token' )
 //login
 var postLoginURL = envVar + 'login';
 //profile add
@@ -21,6 +20,17 @@ var getResponsibilityURL = envVar + 'taskDetails';
 var getExceutionURL = envVar + 'taskDetailsExceution';
 var getIntimationURL = envVar + 'taskDetailsIntimation';
 var getConsultingURL = envVar + 'taskDetailsConsulting';
+//view all task to admin
+var getTaskDetailsURL = envVar + 'taskDetails';
+// your ownTask
+var getTaskDetailsByUserURL = envVar + 'taskDetailsByUser';
+// todays task
+var getTaskDetailsByUserTodayURL = envVar + 'taskDetailsByUserToday';
+// weekly task
+var getTaskDetailsByUserWeekURL = envVar + 'taskDetailsByUserWeek';
+//overdue task
+var getTaskDetailsByUserByDueDateURL = envVar + 'taskDetailsByUserByDueDate';
+
 //create task
 var getBillingClientsURL = envVar + 'billingClients';
 var getTasksURL = envVar + 'tasks';
@@ -42,118 +52,3 @@ var getUsersURL = envVar + 'users';
 
 // Billing client
 var postBillingClientURL = envVar + '';
-
-function checkSession(value) {
-	var cookies = Cookies.get("token");
-	if (cookies == null || cookies == undefined || value == 401 || value == 500) {
-		sessionStorage.clear();
-		window.location = '/vscca';
-		alert('Your session has been expired, Please login in again to continue...');
-	}
-}
-
-
-function Logout() {
-	$.ajax({
-		type: "GET",
-		url: getLogoutURL,
-		dataType: "json",
-		"headers": {
-			"Content-Type": "application/json",
-			"Authorization": accessToken
-		},
-		success: function() {
-			if (data.success === 200) {
-				sessionStorage.clear();
-				window.location = '/vscca';
-			} else {
-				sessionStorage.clear();
-				window.location = '/vscca';
-			}
-
-		},
-		error: function(e) {
-			sessionStorage.clear();
-			window.location = '/vscca';
-		}
-	});
-	sessionStorage.clear();
-	window.location = '/vscca';
-};
-
-function topNavUserName() {
-	$.ajax({
-		type: "GET",
-		url: getUserProfileByIdURL,
-		dataType: "json",
-		"headers": {
-			"Content-Type": "application/json",
-			"Authorization": accessToken
-		},
-		success: function(data) {
-			checkSession(data.success);
-			var obj = data.body;
-            $('#topNavuserName').append(obj.firstName + ' ' + obj.lastName);
-		}
-	});
-
-};
-
-function roleBaseAccess() {
-	if(userRole == null || userRole == '' || userRole == undefined){
-        sessionStorage.clear();
-		window.location = '/vscca';
-    }else if (userRole == 'admin') {
-		$('.changePasswordTopNav').remove();
-        $('.passwordNavforUsers').remove();
-	} else if (userRole == 'supervisor') {
-		$('.adminPanelTopNav').remove();
-        $('#forAdmin').remove();
-        $('.forAdmin').remove();
-        $('.passwordNavforAdmin').remove();
-	} else if (userRole == 'teammember') {
-		$('.adminPanelTopNav').remove();
-        $('#forAdmin').remove();
-        $('.notForTM').remove();
-        $('.passwordNavforAdmin').remove();
-	}
-};
-
-function taskNavLoadHandler(value){
-    $('#taskNameChangeHeading').text('');
-    if(value == 'all'){
-        alert('all');
-        $('#taskNameChangeHeading').text('All Task');
-    }else if (value == 'today'){
-        alert('today');
-        $('#taskNameChangeHeading').text("Today's Task");
-    }else if (value == 'week'){
-        alert('week');
-        $('#taskNameChangeHeading').text("7 Day's Plan");
-    }else if (value == 'overdue'){
-        alert('overdue');
-        $('#taskNameChangeHeading').text("Overdue");
-    }
-};
-
-function showTaskbyTypeHandler(value){
-    if ((window.location.href.indexOf("myProfile") > -1) || (window.location.href.indexOf("password") > -1) || ((window.location.href.indexOf("reports") > -1))) {
-        window.location = 'dashboard'
-        taskNavLoadHandler(value);
-    }else if(window.location.href.indexOf("dashboard") > -1){
-        taskNavLoadHandler(value);
-    }
-};
-
-$(document).ready(function() {
-    roleBaseAccess();
-	topNavUserName();
-
-    $(".datepicker").datepicker({
-        format: "dd-mm-yyyy",
-      });
-
-	setInterval(function() {
-		checkSession();
-	}, 300000);
-})// ready ends

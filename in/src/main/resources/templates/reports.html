@@ -34,18 +34,44 @@
               <div class="card-header border-0">
                 <div class="row">
                   <div class="col-lg-9">
-                    <h3 class="mb-0">
-                      View <span id="taskNameChangeHeading"></span>
-                    </h3>
+                    <h3 class="mb-0">Reports</h3>
                   </div>
-                  <!-- <div class="col-lg-3">
-	              <select id="viewType" class="form-control" onChange="viewType()">
-	                 <option value="responsibility">Responsibility</option>
-	                 <option value="exceution">Execution</option>
-	                 <option value="intimation">Intimation</option>
-	                 <option value="consulting">Consulting</option>
-	               </select>
-              </div> -->
+                  <div class="col-lg-3">
+                    <select
+                      id="viewType"
+                      class="form-control"
+                      onChange="viewType()"
+                    >
+                      <option value="responsibility">Responsibility</option>
+                      <option value="exceution">Execution</option>
+                      <option value="intimation">Intimation</option>
+                      <option value="consulting">Consulting</option>
+                    </select>
+                  </div>
+
+                 <div class="input-daterange datepicker row align-items-center">
+				    <div class="col">
+				        <div class="form-group">
+				            <div class="input-group">
+				                <div class="input-group-prepend">
+				                    <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
+				                </div>
+				                <input class="form-control" placeholder="Start date" type="text" value="06/18/2020">
+				            </div>
+				        </div>
+				    </div>
+				    <div class="col">
+				        <div class="form-group">
+				            <div class="input-group">
+				                <div class="input-group-prepend">
+				                    <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
+				                </div>
+				                <input class="form-control" placeholder="End date" type="text" value="06/22/2020">
+				            </div>
+				        </div>
+				    </div>
+				</div>
+
                 </div>
               </div>
               <!-- Light table -->
@@ -59,25 +85,6 @@
                       <th scope="col" class="sort" data-sort="projectName">
                         Project Name
                       </th>
-                      <th scope="col" class="sort" data-sort="partyName">
-                        Party Name
-                      </th>
-                      <th scope="col" class="sort" data-sort="weightage">
-                        Weightage
-                      </th>
-                      <th scope="col" class="sort" data-sort="userType">
-                        user Type
-                      </th>
-                      <th scope="col" class="sort" data-sort="dueDate">
-                        Due Date
-                      </th>
-                      <th scope="col" class="sort" data-sort="description">
-                        Description
-                      </th>
-                      <th scope="col" class="sort" data-sort="status">
-                        Status
-                      </th>
-                      <th scope="col">View/Edit</th>
                     </tr>
                   </thead>
                   <tbody id="populateGrid" class="list"></tbody>
@@ -118,14 +125,6 @@
       </div>
     </div>
     <!-- scripts -->
-    <div th:replace="fragments/footer :: dashboard-scripts"></div>
-    <script th:src="@{/logics/profile.js}"></script>
-    <script
-      th:src="@{/vendor/datatables.net/js/jquery.dataTables.min.js}"
-    ></script>
-    <script
-      th:src="@{/vendor/datatables.net-bs4/js/dataTables.bootstrap4.min.js}"
-    ></script>
-    <script th:src="@{/logics/viewTask.js}"></script>
+<!--     <script th:src="@{/logics/reports.js}"></script> -->
   </body>
 </html>

@@ -25,7 +25,7 @@ $( document ).ready( function () {
         var confirmPassword = $( '#confirmPassword' ).val();
 
         if(password == confirmPassword){
-            if ( userRole == 'admin' ) {
+            if ( userRole.toLowerCase() == 'admin' ) {
                 var settings = passwordChangeOptionForAdminHandler(settings);
             } else {
                 var settings = userPasswordResetHandler( settings );

@@ -6,17 +6,17 @@ $(document).ready(function(){
 })// ready ends
 
 function disableProfileFormInputHandler(){
-	console.log('userRole',userRole);
-	if(userRole == 'admin' ){
+//	console.log('userRole',userRole);
+	if(userRole.toLowerCase() == 'admin' ){
 		//$('#profileForm').find('input, textarea, button, select').attr('disabled','disabled');
 		//$('#profileForm').find('input, textarea, button, select').attr('readonly','readonly');
 //		getViewOwnProfile()
-	}else if(userRole == 'supervisor' ){
+	}else if(userRole.toLowerCase() == 'supervisor' ){
 		$('#profileForm').find('input, textarea, button, select').attr('disabled','disabled');
 		$('#profileForm').find('input, textarea, button, select').attr('readonly','readonly');
 		$('#saveProfile').remove();
 //		getViewOwnProfile()
-	}else if(userRole == 'teammember'){
+	}else if(userRole.toLowerCase() == 'teammember'){
 		$('#profileForm').find('input, textarea, button, select').attr('disabled','disabled');
 		$('#profileForm').find('input, textarea, button, select').attr('readonly','readonly');
 		$('#saveProfile').remove();

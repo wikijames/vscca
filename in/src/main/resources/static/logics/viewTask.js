@@ -1,28 +1,90 @@
 jQuery( function () {
-    populateDataHandler();
+//    populateDataHandler();
 
     setTimeout( function () {
         dataTableFilterHandler();
+		//alert('hi')
     }, 1000 );
-
-
-    // $('#table_id').DataTable( {
-    //     dom: 'Bfrtip',
-    //     buttons: [
-    //         'copy', 'csv', 'excel', 'pdf', 'print'
-    //     ]
-    // } );
 
 } )// jquery end
 
+function populateData ( url ) {
+    //$('#table_id').dataTable().destroy();
+    $( '#table_id tbody' ).empty();
+    var count = 0;
+    $.ajax( {
+        type: "GET",
+        url: url,
+        dataType: "json",
+        "headers": {
+            "Content-Type": "application/json",
+            "Authorization": accessToken
+        },
+        success: function ( data ) {
+            checkSession( data.success );
+			console.log('task details data', data)
+            $.each( data.body, function ( i, obj ) {
+                count++;
+                var div_data = '<tr>'
+                    + '<td>' + obj.projectName + '</td>'
+                    + '<td>' + obj.partyName + '</td>'
+                    + '<td>' + obj.weightage + '</td>'
+                    + '<td>' + obj.responsibilityName + '</td>'
+					+ '<td>' + obj.exceutionName + '</td>'
+					+ '<td>' + obj.intimationName + '</td>'
+					+ '<td>' + obj.consultingName + '</td>'
+                    + '<td>' + formatDateHandler( obj.dueDate ) + '</td>'
+                    + '<td>' + isTaskDescription( obj.taskDescription ) + '</td>'
+                    + '<td>' + obj.status + '</td>'
+                    + '<td> <a onClick="redirectToTaskDetails(' + obj.taskId + ')" class="btn pointer">View</a></td>'
+                    + '</tr>';
+                $( div_data ).appendTo( '#populateGrid' );
+                
+            } );
+        }
+    } );
+};
+
+function taskNavLoadHandler ( value ) {
+    $( '#taskNameChangeHeading' ).text( '' );
+    if ( value == 'all' ) {
+        alert( 'all' );
+        $( '#taskNameChangeHeading' ).text( 'Your Tasks' );
+		return populateData( getResponsibilityURL )
+    } else if ( value == 'today' ) {
+        alert( 'today' );
+        $( '#taskNameChangeHeading' ).text( "Today's Task" );
+		return populateData(getTaskDetailsByUserTodayURL);
+    } else if ( value == 'week' ) {
+        alert( 'week' );
+        $( '#taskNameChangeHeading' ).text( "7 Day's Plan" );
+		return populateData(getTaskDetailsByUserWeekURL);
+    } else if ( value == 'overdue' ) {
+        alert( 'overdue' );
+        $( '#taskNameChangeHeading' ).text( "Overdue" );
+		return populateData(getTaskDetailsByUserByDueDateURL);
+    }
+};
+
+function showTaskbyTypeHandler ( value ) {
+    if ( ( window.location.href.indexOf( "myProfile" ) > -1 ) || ( window.location.href.indexOf( "password" ) > -1 ) ||  ( window.location.href.indexOf( "reports" ) > -1 ) ) {
+        window.location = 'dashboard'
+        taskNavLoadHandler( value );
+    } else if ( window.location.href.indexOf( "dashboard" ) > -1 ) {
+        taskNavLoadHandler( value );
+    }
+};
 
 function dataTableFilterHandler () {
     //Data table filter
     $( '#table_id' ).DataTable( {
-        // dom: 'Bfrtip',
-        // buttons: [
-        //     'copy', 'csv', 'excel', 'pdf', 'print'
-        // ],
+//        dom: 'Bfrtip',
+//        buttons: [
+//             {
+//            extend: 'excelHtml5',
+//            autoFilter: true
+//       		 }
+//        ],
         initComplete: function () {
             this.api().columns().every( function () {
                 var column = this;
@@ -71,128 +133,7 @@ function dataTableFilterHandler () {
                     ddmenu.append( $( '<li>' ).append( $label ) );
                 } );
             } );
-        }
-    } );
-};
-
-function formatDateHandler ( value ) {
-    console.log( 'duedate', value );
-    var date = new Date( value );
-    var month = date.getMonth() + 1;
-    var day = date.getDate();
-    var year = date.getFullYear();
-    var result = day + "-" + month + "-" + year;
-    console.log( 'v result', result );
-    return result;
-};
-function isTaskDescription ( value ) {
-    if ( value != null || value != '' || value != undefined ) {
-        return 'Yes';
-    } else {
-        return 'No'
-    }
-};
-function viewTaskTypeHandler () {
-    var value = $( '#viewType' ).val();
-    $( '#taskNameChangeHeading' ).text( 'Your task' );
-    if ( value == 'responsibility' ) {
-        $( '#taskNameChangeHeading' ).text( 'Your task' );
-        return populateData( getResponsibilityURL );
-    }
-    else if ( value == 'exceution' ) {
-        $( '#taskNameChangeHeading' ).text( "Today's Task" );
-        return populateData( getExceutionURL );
-    }
-    else if ( value == 'intimation' ) {
-        $( '#taskNameChangeHeading' ).text( "7 Days's Plan" );
-        return populateData( getIntimationURL );
-    }
-    else if ( value == 'consulting' ) {
-        $( '#taskNameChangeHeading' ).text( "Overdue Task" );
-        return populateData( getConsultingURL );
-    }
-}
-
-function viewType () {
-    var value = $( '#viewType' ).val();
-    if ( value == 'responsibility' ) {
-        return populateData( getResponsibilityURL );
-    }
-    else if ( value == 'exceution' ) {
-        return populateData( getExceutionURL );
-    }
-    else if ( value == 'intimation' ) {
-        return populateData( getIntimationURL );
-    }
-    else if ( value == 'consulting' ) {
-        return populateData( getConsultingURL );
-    }
-}
-
-function populateData ( url ) {
-    //$('#table_id').dataTable().destroy();
-    $( '#table_id tbody' ).empty();
-    var count = 0;
-    $.ajax( {
-        type: "GET",
-        url: url,
-        dataType: "json",
-        "headers": {
-            "Content-Type": "application/json",
-            "Authorization": accessToken
         },
-        success: function ( data ) {
-            checkSession( data.success );
-            $.each( data.body, function ( i, obj ) {
-                count++;
-                var div_data = '<tr>'
-                    + '<td>' + obj.projectName + '</td>'
-                    + '<td>' + obj.partyName + '</td>'
-                    + '<td>' + obj.weightage + '</td>'
-                    + '<td>' + obj.responsibility + '</td>'
-                    + '<td>' + formatDateHandler( obj.dueDate ) + '</td>'
-                    + '<td>' + isTaskDescription( obj.taskDescription ) + '</td>'
-                    + '<td>' + obj.status + '</td>'
-                    + '<td> <a onClick="redirectToTaskDetails(' + obj.taskId + ')" class="btn pointer">View</a></td>'
-                    + '</tr>';
-                $( div_data ).appendTo( '#populateGrid' );
-                console.log(count, 'data div', data.body )
-            } );
-        }
-    } );
-};
-
-function populateDataHandler () {
-    //data table - view all task
-    $('#taskNameChangeHeading').text('All Task');
-    $( '#table_id tbody' ).empty();
-    var count;
-    $.ajax( {
-        type: "GET",
-        url: getResponsibilityURL,
-        dataType: "json",
-        "headers": {
-            "Content-Type": "application/json",
-            "Authorization": accessToken
-        },
-        success: function ( data ) {
-            checkSession( data.success );
-            $.each( data.body, function ( i, obj ) {
-                count = i++;
-                var div_data = '<tr>'
-                    + '<td>' + obj.projectName + '</td>'
-                    + '<td>' + obj.partyName + '</td>'
-                    + '<td>' + obj.weightage + '</td>'
-                    + '<td>' + obj.responsibility + '</td>'
-                    + '<td>' + formatDateHandler( obj.dueDate ) + '</td>'
-                    + '<td>' + isTaskDescription( obj.taskDescription ) + '</td>'
-                    + '<td>' + obj.status + '</td>'
-                    + '<td> <a onClick="redirectToTaskDetails(' + obj.taskId + ')" class="btn pointer">View</a></td>'
-                    + '</tr>';
-                $( div_data ).appendTo( '#populateGrid' );
-                console.log(count, 'data div', data.body )
-            } );
-        }
     } );
 };
 
@@ -204,9 +145,26 @@ function cbDropdown ( column ) {
     } ).appendTo( column ) );
 };
 
+function formatDateHandler ( value ) {
+    //console.log( 'duedate', value );
+    var date = new Date( value );
+    var month = date.getMonth() + 1;
+    var day = date.getDate();
+    var year = date.getFullYear();
+    var result = day + "-" + month + "-" + year;
+    //console.log( 'v result', result );
+    return result;
+};
+
+function isTaskDescription ( value ) {
+    if ( value != null || value != '' || value != undefined ) {
+        return 'Yes';
+    } else {
+        return 'No'
+    }
+};
 
 function redirectToTaskDetails ( id ) {
     window.location = 'createTaskForm';
     sessionStorage.setItem( 'taskId', id );
 }
-

@@ -56,8 +56,17 @@
                       <th scope="col" class="sort" data-sort="weightage">
                         Weightage
                       </th>
-                      <th scope="col" class="sort" data-sort="userType">
-                        user Type
+                      <th scope="col" class="sort" data-sort="responsibility">
+                        Responsibility
+                      </th>
+                      <th scope="col" class="sort" data-sort="execution">
+                        Execution
+                      </th>
+                      <th scope="col" class="sort" data-sort="intimation">
+                        Intimation
+                      </th>
+                      <th scope="col" class="sort" data-sort="consulting">
+                        Consulting
                       </th>
                       <th scope="col" class="sort" data-sort="dueDate">
                         Due Date
@@ -110,12 +119,12 @@
     </div>
     <!-- scripts -->
     <div th:replace="fragments/footer :: dashboard-scripts"></div>
-    <script
-      th:src="@{/vendor/datatables.net/js/jquery.dataTables.min.js}"
-    ></script>
-    <script
-      th:src="@{/vendor/datatables.net-bs4/js/dataTables.bootstrap4.min.js}"
-    ></script>
+<!--     <script -->
+<!--       th:src="@{/vendor/datatables.net/js/jquery.dataTables.min.js}" -->
+<!--     ></script> -->
+<!--     <script -->
+<!--       th:src="@{/vendor/datatables.net-bs4/js/dataTables.bootstrap4.min.js}" -->
+<!--     ></script> -->
     <script th:src="@{/logics/viewTask.js}"></script>
   </body>
 </html>
