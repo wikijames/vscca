@@ -24,7 +24,13 @@ public class BillingClientServiceImpl implements BillingClientService {
 	@Override
 	public BillingClient save(BillingClient billingClient) {
 		// TODO Auto-generated method stub
-		return null;
+		return billingClientRepository.save(billingClient);
+	}
+
+	@Override
+	public BillingClient getById(Long id) {
+		// TODO Auto-generated method stub
+		return billingClientRepository.getById(id);
 	}
 
 }

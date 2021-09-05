@@ -12,5 +12,7 @@ public interface BillingClientService {
 	List<BillingClient> findAll();
 	
 	BillingClient save(BillingClient billingClient);
+	
+	BillingClient getById(Long id);
 
 }

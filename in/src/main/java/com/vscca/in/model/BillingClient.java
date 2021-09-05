@@ -18,6 +18,9 @@ public class BillingClient {
 	
 	@Column(name="client")
 	private String client;
+	
+	@Column(name="is_active")
+	private String isActive;
 
 	public long getId() {
 		return Id;
@@ -34,6 +37,15 @@ public class BillingClient {
 	public void setClient(String client) {
 		this.client = client;
 	}
+
+	public String getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(String isActive) {
+		this.isActive = isActive;
+	}
+	
 	
 	
 	
