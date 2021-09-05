@@ -5,8 +5,9 @@
       <div class="row align-items-center py-4">
         <div class="col-lg-1 col-7">
           <a
-            class="mainlink mainlink-links mainlink-dark"
-            th:href="@{/dashboard}"
+            class="mainlink mainlink-links mainlink-dark pointer"
+            th:href="@{/dashboard}" 
+            
           >
             <span class="mainlink-item">
               <i class="fas fa-home"></i> Home
@@ -16,7 +17,7 @@
         <div class="col-lg-2 col-7">
           <a
             class="mainlink mainlink-links mainlink-dark pointer"
-            onclick="showTaskbyTypeHandler('all')"
+            th:href="@{/dashboard/yourTask}" 
           >
             <span class="mainlink-item">
               <i class="ni ni-book-bookmark"></i> Your Task
@@ -26,7 +27,7 @@
         <div class="col-lg-2 col-7">
           <a
             class="mainlink mainlink-links mainlink-dark pointer"
-            onclick="showTaskbyTypeHandler('today')"
+            th:href="@{/dashboard/today}" 
           >
             <span class="mainlink-item">
               <i class="ni ni-book-bookmark"></i> Today's Task
@@ -36,7 +37,7 @@
         <div class="col-lg-2 col-7">
           <a
             class="mainlink mainlink-links mainlink-dark pointer"
-            onclick="showTaskbyTypeHandler('week')"
+            th:href="@{/dashboard/week}" 
           >
             <span class="mainlink-item">
               <i class="ni ni-book-bookmark"></i> 7 Day's Plan
@@ -46,7 +47,7 @@
         <div class="col-lg-2 col-7">
           <a
             class="mainlink mainlink-links mainlink-dark pointer"
-            onclick="showTaskbyTypeHandler('overdue')"
+            th:href="@{/dashboard/overdue}" 
           >
             <span class="mainlink-item">
               <i class="ni ni-book-bookmark"></i> Overdue

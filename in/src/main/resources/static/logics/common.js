@@ -74,35 +74,52 @@ function roleBaseAccess () {
     }
 };
 
-//function taskNavLoadHandler ( value ) {
-//    $( '#taskNameChangeHeading' ).text( '' );
-//    if ( value == 'all' ) {
-//        alert( 'all' );
-//        $( '#taskNameChangeHeading' ).text( 'Your Tasks' );
-//    } else if ( value == 'today' ) {
-//        alert( 'today' );
-//        $( '#taskNameChangeHeading' ).text( "Today's Task" );
-//    } else if ( value == 'week' ) {
-//        alert( 'week' );
-//        $( '#taskNameChangeHeading' ).text( "7 Day's Plan" );
-//    } else if ( value == 'overdue' ) {
-//        alert( 'overdue' );
-//        $( '#taskNameChangeHeading' ).text( "Overdue" );
-//    }
-//};
-//
-//function showTaskbyTypeHandler ( value ) {
+function taskNavLoadHandler ( value ) {
+	 if ( userRole == 'Admin' && value == 'dashboard') {
+	    alert( 'admin' );
+	    $( '#taskNameChangeHeading' ).text( 'All Tasks' );
+		return populateData( getTaskDetailsByUserURL );
+	}else if ( userRole != 'Admin' && value == 'dashboard'){
+		alert( 'yourTask as not admin' );
+        $( '#taskNameChangeHeading' ).text( 'Your Tasks' );
+		return populateData( getTaskDetailsByUserURL );
+	}else if ( value == 'yourTask' ) {
+        alert( 'yourTask' );
+        $( '#taskNameChangeHeading' ).text( 'Your Tasks' );
+		return populateData( getTaskDetailsByUserURL );
+    } else if ( value == 'today' ) {
+        alert( 'today' );
+        $( '#taskNameChangeHeading' ).text( "Today's Task" );
+		return populateData(getTaskDetailsByUserTodayURL);
+    } else if ( value == 'week' ) {
+        alert( 'week' );
+        $( '#taskNameChangeHeading' ).text( "7 Day's Plan" );
+		return populateData(getTaskDetailsByUserWeekURL);
+    } else if ( value == 'overdue' ) {
+        alert( 'overdue' );
+        $( '#taskNameChangeHeading' ).text( "Overdue" );
+		return populateData(getTaskDetailsByUserByDueDateURL);
+    }
+};
+
+function showTaskbyTypeHandler () {
+	var pathname = window.location.pathname; // Returns path only (/path/example.html)
+	var value = pathname.split('/').filter(e => e).slice(-1);
+	value = value[0];
+	taskNavLoadHandler( value );
+	console.log(value,'======',pathname);
 //    if ( ( window.location.href.indexOf( "myProfile" ) > -1 ) || ( window.location.href.indexOf( "password" ) > -1 ) ||  ( window.location.href.indexOf( "reports" ) > -1 ) ) {
 //        window.location = 'dashboard'
 //        taskNavLoadHandler( value );
 //    } else if ( window.location.href.indexOf( "dashboard" ) > -1 ) {
 //        taskNavLoadHandler( value );
 //    }
-//};
+};
 
 $( document ).ready( function () {
     roleBaseAccess();
     topNavUserName();
+	showTaskbyTypeHandler();
     $( ".datepicker" ).datepicker( {
         format: "dd-mm-yyyy",
     } );

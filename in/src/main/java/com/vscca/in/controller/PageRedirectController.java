@@ -19,6 +19,26 @@ public class PageRedirectController {
 	   public String dashboard() {
 		   return "dashboard";
 	   }
+	@CrossOrigin
+	@RequestMapping(value = "/dashboard/today", method = RequestMethod.GET)
+	   public String dashboardToday() {
+		   return "dashboard";
+	   }
+	@CrossOrigin
+	@RequestMapping(value = "/dashboard/week", method = RequestMethod.GET)
+	   public String dashboardWeek() {
+		   return "dashboard";
+	   }
+	@CrossOrigin
+	@RequestMapping(value = "/dashboard/overdue", method = RequestMethod.GET)
+	   public String dashboardOverdue() {
+		   return "dashboard";
+	   }
+	@CrossOrigin
+	@RequestMapping(value = "/dashboard/yourTask", method = RequestMethod.GET)
+	   public String dashboardYourTask() {
+		   return "dashboard";
+	   }
 
 	@CrossOrigin
 	@RequestMapping(value = "/profile", method = RequestMethod.GET)

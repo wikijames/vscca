@@ -45,35 +45,38 @@ function populateData ( url ) {
     } );
 };
 
-function taskNavLoadHandler ( value ) {
-    $( '#taskNameChangeHeading' ).text( '' );
-    if ( value == 'all' ) {
-        alert( 'all' );
-        $( '#taskNameChangeHeading' ).text( 'Your Tasks' );
-		return populateData( getResponsibilityURL )
-    } else if ( value == 'today' ) {
-        alert( 'today' );
-        $( '#taskNameChangeHeading' ).text( "Today's Task" );
-		return populateData(getTaskDetailsByUserTodayURL);
-    } else if ( value == 'week' ) {
-        alert( 'week' );
-        $( '#taskNameChangeHeading' ).text( "7 Day's Plan" );
-		return populateData(getTaskDetailsByUserWeekURL);
-    } else if ( value == 'overdue' ) {
-        alert( 'overdue' );
-        $( '#taskNameChangeHeading' ).text( "Overdue" );
-		return populateData(getTaskDetailsByUserByDueDateURL);
-    }
-};
-
-function showTaskbyTypeHandler ( value ) {
-    if ( ( window.location.href.indexOf( "myProfile" ) > -1 ) || ( window.location.href.indexOf( "password" ) > -1 ) ||  ( window.location.href.indexOf( "reports" ) > -1 ) ) {
-        window.location = 'dashboard'
-        taskNavLoadHandler( value );
-    } else if ( window.location.href.indexOf( "dashboard" ) > -1 ) {
-        taskNavLoadHandler( value );
-    }
-};
+//function taskNavLoadHandler ( value ) {
+//	 if ( userRole == 'Admin' && value == 'dashboard') {
+//	    alert( 'admin' );
+//	    $( '#taskNameChangeHeading' ).text( 'All Tasks' );
+//		return populateData( getTaskDetailsByUserURL );
+//	}else if ( value == 'all' ) {
+//        alert( 'all' );
+//        $( '#taskNameChangeHeading' ).text( 'Your Tasks' );
+//		return populateData( getTaskDetailsByUserURL );
+//    } else if ( value == 'today' ) {
+//        alert( 'today' );
+//        $( '#taskNameChangeHeading' ).text( "Today's Task" );
+//		return populateData(getTaskDetailsByUserTodayURL);
+//    } else if ( value == 'week' ) {
+//        alert( 'week' );
+//        $( '#taskNameChangeHeading' ).text( "7 Day's Plan" );
+//		return populateData(getTaskDetailsByUserWeekURL);
+//    } else if ( value == 'overdue' ) {
+//        alert( 'overdue' );
+//        $( '#taskNameChangeHeading' ).text( "Overdue" );
+//		return populateData(getTaskDetailsByUserByDueDateURL);
+//    }
+//};
+//
+//function showTaskbyTypeHandler ( value ) {
+//    if ( ( window.location.href.indexOf( "myProfile" ) > -1 ) || ( window.location.href.indexOf( "password" ) > -1 ) ||  ( window.location.href.indexOf( "reports" ) > -1 ) ) {
+//        window.location = 'dashboard'
+//        taskNavLoadHandler( value );
+//    } else if ( window.location.href.indexOf( "dashboard" ) > -1 ) {
+//        taskNavLoadHandler( value );
+//    }
+//};
 
 function dataTableFilterHandler () {
     //Data table filter
