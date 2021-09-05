@@ -20,5 +20,6 @@ public interface BillingClientRepository extends JpaRepository<BillingClient, Lo
 	
 	BillingClient save(BillingClient billingClient);
 	
+	@Query(value="select * from vscca.billing_client where id=?",nativeQuery=true)
 	BillingClient getById(Long id);
 }

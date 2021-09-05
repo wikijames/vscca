@@ -104,8 +104,8 @@ public class BillingClientController {
 			response.setSuccess(401);
 			response.setMessage("Unauthorized");
 		} else {
-			BillingClient billingClient = new BillingClient();
-			billingClient.setId(billingClientDto.getId());
+			BillingClient billingClient =billingClientService.getById(billingClientDto.getId());
+			
 			billingClient.setClient(billingClientDto.getPartyName() + "-" + billingClientDto.getLedgerNo() + "-"
 					+ billingClientDto.getPageNo());
 			billingClient.setIsActive(billingClientDto.getIsActive());

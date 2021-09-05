@@ -1,7 +1,7 @@
 package com.vscca.in.dto;
 
 public class UserDto {
-	
+	private long id;
 	private String firstName;
 	
 	private String lastName;
@@ -123,6 +123,13 @@ public class UserDto {
 	public void setIsActive(int isActive) {
 		this.isActive = isActive;
 	}
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
+	
 	
 	
 
