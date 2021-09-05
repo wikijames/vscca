@@ -21,4 +21,10 @@ public class BillingClientServiceImpl implements BillingClientService {
 		return billingClientRepository.findAll();
 	}
 
+	@Override
+	public BillingClient save(BillingClient billingClient) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
