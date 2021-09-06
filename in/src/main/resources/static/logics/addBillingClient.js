@@ -1,30 +1,28 @@
-var isActive;
+var isActiveValue;
 $( document ).ready( function () {
-	var billingId = sessionStorage.getItem('billingId');
-	if(billingId != null || billingId != '' || billingId != undefined){
+	var sessionBillingId = sessionStorage.getItem('billingId');
+	if(sessionBillingId != null){
 		getViewBillingClientById();		
-	}else{
-		isActive = 0;
 	}
 //	
     if ( $( '#isActive' ).is( ":checked" ) ) {
             $( this ).val( "1" );
-            isActive = 1;
+            isActiveValue = 1;
 //			$( '#isActiveLabel' ).text( 'Client is Activated' );
         } else {
             $( this ).val( "0" );
-            isActive = 0;
+            isActiveValue = 0;
 //			$( '#isActiveLabel' ).text( 'Client is De-activated' );
         }
 
     $( "#isActive" ).change( function ( e ) {
         if ( $( this ).is( ":checked" ) ) {
             $( this ).val( "1" );
-            isActive = 1;
+            isActiveValue = 1;
 //			$( '#isActiveLabel' ).text( 'Client is Activated' );
         } else {
             $( this ).val( "0" );
-            isActive = 0;
+            isActiveValue = 0;
 //			$( '#isActiveLabel' ).text( 'Client is De-activated' );
         }
     } );
@@ -33,10 +31,18 @@ $( document ).ready( function () {
 
     $( '#save' ).click( function ( e ) {
 		e.preventDefault();
-		var savebillingId = $("#save").attr('title');
-		if(savebillingId != null || savebillingId != '' || savebillingId != undefined){
-			 // avoid to execute the actual submit of the form.
-        var settings = {
+		if(sessionBillingId != null){
+			 updateBillingClientHandler()
+		}else{
+			addBillingClientHandler()
+		}
+    });
+
+} )// jquery end
+
+function updateBillingClientHandler(){
+	        var savebillingId = $("#save").attr('title');
+			var settings = {
             "url": postEditBillingClientURL,
             "method": "POST",
             "timeout": 0,
@@ -49,7 +55,7 @@ $( document ).ready( function () {
                 "partyName": $( '#partyName' ).val(),
                 "ledgerNo": $( '#ledgerNumber' ).val(),
                 "pageNo": $( '#pageNumber' ).val(),
-                "isActive":isActive,
+                "isActive":$( '#isActive' ).val(),
             } ),
         };
 
@@ -63,8 +69,9 @@ $( document ).ready( function () {
                 alert( 'something went wrong.' + data );
             }
         } );
-		}else{
-			 // avoid to execute the actual submit of the form.
+};
+function addBillingClientHandler(){
+		 // avoid to execute the actual submit of the form.
         var settings = {
             "url": postAddBillingClientURL,
             "method": "POST",
@@ -91,13 +98,7 @@ $( document ).ready( function () {
                 alert( 'something went wrong.' + data );
             }
         } );
-		}
-        
-    } );
-
-} )// jquery end
-
-
+};
 function splitClientHandler(value){
 	console.log('spli', value);
 	var valueSplit = value.split('-');
@@ -107,19 +108,27 @@ function splitClientHandler(value){
 	return valueSplit;
 }
 
-function isActiveBilling(value){
-	if(value == 1){
-		$( '#isActiveLabel' ).text( 'Client is Activated' );
-		return 'Active';
-	}else{
-		$( '#isActiveLabel' ).text( 'Client is De-activated' );
-		return 'Deactive'
-	}
-}
+//function isActiveBilling(value){
+//	if(value == 1){
+//		$( '#isActiveLabel' ).text( 'Client is Activated' );
+//		return 'Active';
+//	}else{
+//		$( '#isActiveLabel' ).text( 'Client is De-activated' );
+//		return 'Deactive'
+//	}
+//}
 
+function isCheckedActive(value){
+	if(value == 1){
+		$('#isActive').prop("checked", true);
+		$('#isActive').val( "1" );
+		isActiveValue = 1;
+		console.log('Ints', value);
+	}
+};
 	function getViewBillingClientById(){
 		var id = sessionStorage.getItem('billingId');
-		if(id != null || id != '' || id != undefined){
+		if(id != null){
 	$.ajax({
         type: "GET",
         url:getBillingByIdURL+'?id='+id,
@@ -135,7 +144,8 @@ function isActiveBilling(value){
 					$('#partyName').val(splitClientHandler(obj.client)[0]);
 					$('#ledgerNumber').val(splitClientHandler(obj.client)[1]);
 					$('#pageNumber').val(splitClientHandler(obj.client)[2]);
-					$('#isActive').val(obj.isActive);
+					isCheckedActive(obj.isActive);
+//					$('#isActive').val(obj.isActive);
 				setTimeout(function(){
 					sessionStorage.removeItem('billingId');
 				},3000)
