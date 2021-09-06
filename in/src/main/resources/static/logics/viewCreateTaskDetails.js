@@ -23,8 +23,20 @@ function disableFormInputHandler(){
 	if(userRole.toLowerCase() == 'teammember' && ($.trim($('#remarks').val()).length <= 0)){
 		$('.remarksColumn').addClass('hide');
 	}
+	disableEnableHandler();
 };
-
+function disableEnableHandler(){
+	 if (( userRole == 'Admin' ) || ( userRole == 'Supervisor' )){
+     		$('.taskInformation,.clientInformation,.commentsSection').find('input, textarea, button, select').attr('disabled',false);
+			$('.taskInformation,.clientInformation,.commentsSection').find('input, textarea, button, select').attr('readonly',false);
+   
+    } else if ( userRole == 'TeamMember' ) {
+        $('.remarksColumn').addClass('hide');
+    }else if ( userRole == null || userRole == undefined){
+        sessionStorage.clear();
+        window.location = '/vscca';
+    }
+}
 function convertDate(value,name){
 	const date = new Date(value).toLocaleDateString().split('/');
 	const formattedDate = ('0' + date[1]).slice(-2)+'-'+('0' + date[0]).slice(-2)+'-'+date[2];
@@ -68,9 +80,9 @@ function convertDate(value,name){
 					convertDate(obj.dueDate,'endDate');
 					convertDate(obj.endDate,'completedDate');
 				});
-//				setTimeout(function(){
-//					sessionStorage.removeItem('taskId');
-//				},3000)
+				setTimeout(function(){
+					sessionStorage.removeItem('taskId');
+				},3000)
             }
       });
 	};

@@ -78,7 +78,7 @@ function roleBaseAccess () {
 function taskNavLoadHandler ( value ) {
 	 if ( userRole == 'Admin' && value == 'dashboard') {
 	    $( '#taskNameChangeHeading' ).text( 'All Tasks' );
-		return populateData( getTaskDetailsByUserURL );
+		return populateData( getTaskDetailsURL );
 	}else if ( userRole != 'Admin' && value == 'dashboard'){
         $( '#taskNameChangeHeading' ).text( 'Your Tasks' );
 		return populateData( getTaskDetailsByUserURL );

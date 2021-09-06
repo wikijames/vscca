@@ -8,6 +8,10 @@ function todayDate(){
 }
 
 $(document).ready(function(){
+	var sessionTaskId = sessionStorage.getItem('taskId');
+	if(sessionTaskId != null){
+		getViewTaskById();	
+	}
 $('.billingClientNameClass').select2({});
   $.ajax({
     type: "GET",
@@ -145,6 +149,19 @@ $("#endDate").change(function(){
 				"Authorization": accessToken
 		  	},
 		  "data": JSON.stringify({
+			"projectName": $('#projectName').val(),
+			    "partyName": $('#partyName').val(),
+			    "weightage": $('#weightage').val(),
+			    "taskDescription": $('#description').val(),
+			    "taskType": $('#taskType').val(),
+			    "billingClient": $('#billingClientName').val(),
+			    //"createdAt": todayDate(),
+			    "dueDate": formattedDueDate,
+			    "responsibility": $('#responsibility').val(),
+			    "intimation": $('#intimation').val(),
+			    "exceution": $('#execution').val(),
+			    "consulting": $('#consulting').val(),
+
 			"status": $('#status').val(),
 			"remarks": $('#remarks').val(),
 			"delayReason": $('#reasonForDelay').val(),

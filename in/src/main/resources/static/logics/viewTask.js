@@ -165,6 +165,6 @@ function isTaskDescription ( value ) {
 };
 
 function redirectToTaskDetails ( id ) {
-    window.location = 'createTaskForm';
+	window.location.pathname = 'vscca/createTaskForm';
     sessionStorage.setItem( 'taskId', id );
 }
