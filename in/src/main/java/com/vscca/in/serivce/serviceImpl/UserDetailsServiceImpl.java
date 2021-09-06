@@ -57,4 +57,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		return userDetailsRepository.findAll();
 	}
 
+	@Override
+	public UserDetails getById(Long id) {
+		// TODO Auto-generated method stub
+		return userDetailsRepository.getById(id);
+	}
+
 }

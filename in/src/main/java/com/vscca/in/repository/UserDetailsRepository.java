@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import com.vscca.in.model.TaskInfo;
 import com.vscca.in.model.UserDetails;
 
 @Repository
@@ -32,5 +33,8 @@ public interface UserDetailsRepository extends JpaRepository<UserDetails, Long>{
 
 	@Query(value="select * from vscca.user_details where intimation= 1",nativeQuery=true)
 	List<UserDetails> userDetailsByIntimation();
+	
+	@Query(value="select * from vscca.user_Details where id=?",nativeQuery=true)
+	UserDetails getById(Long id);
 	
 }

@@ -234,7 +234,7 @@ public class UserDetailsController {
 				response.setSuccess(401);
 				response.setMessage("Unauthorized");
 			}else {
-			UserDetails userDetails=userDetailsService.findByEmailId(userDto.getEmailId());
+			UserDetails userDetails=userDetailsService.getById(userDto.getId());
 			if(userDto.getFirstName()!= null && !userDto.getFirstName().equals("")) {
 			userDetails.setFirstName(userDto.getFirstName());
 			}

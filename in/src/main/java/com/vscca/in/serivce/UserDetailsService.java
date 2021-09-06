@@ -27,5 +27,7 @@ public interface UserDetailsService {
 	UserDetails findByEmailId(String emailId);
 	
 	List<UserDetails>findAll();
+	
+	UserDetails getById(Long id);
 
 }
