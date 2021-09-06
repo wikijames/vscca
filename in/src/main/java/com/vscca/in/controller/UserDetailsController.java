@@ -210,14 +210,14 @@ public class UserDetailsController {
 	
 	@CrossOrigin
 	@GetMapping("/userDetailById")
-	public ResponseDto getUsersById(HttpServletRequest req,@RequestParam String emailId) {
+	public ResponseDto getUsersById(HttpServletRequest req,@RequestParam String id) {
 		ResponseDto response= new ResponseDto();
 		String token= req.getHeader(VsccaConstants.TOKEN_HEADER);
 				if(token == null && TokenValidation.getAuthentication(token) != true || getTokenAuthentication(token) != true) {
 				response.setSuccess(401);
 				response.setMessage("Unauthorized");
 			}else {
-		UserDetails userDetails=userDetailsService.findByEmailId(emailId);
+		UserDetails userDetails=userDetailsService.getById(Long.parseLong(id));
 		response.setSuccess(200);
 		response.setBody(userDetails);
 		response.setMessage("success");
