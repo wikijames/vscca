@@ -3,34 +3,35 @@ var executionValue = 0;
 var consultingValue = 0;
 var intimationValue = 0;
 var sessionProfileId;
+var isActiveValue;
 
 $(document).ready(function(){
 	sessionProfileId = sessionStorage.getItem('profileId');
 	if(sessionProfileId != null){
 		setTimeout(function(){
 			viewProfileByIdHandler();
-		},1000);		
+		},500);		
 	}
 console.log('vprofileId ', sessionProfileId);
 
     if ( $( '#isActive' ).is( ":checked" ) ) {
         $( this ).val( "1" );
-        isActive = 0;
+        isActiveValue = 1;
 //        $( '#isActiveLabel' ).text( 'User is De-activated' );
     } else {
         $( this ).val( "0" );
-        isActive = 0;
+        isActiveValue = 0;
 //        $( '#isActiveLabel' ).text( 'User is Activated' );
     }
 
     $( "#isActive" ).change( function ( e ) {
         if ( $( this ).is( ":checked" ) ) {
             $( this ).val( "1" );
-            isActive = 1;
+            isActiveValue = 1;
 //            $( '#isActiveLabel' ).text( 'User is De-activated' );
         } else {
             $( this ).val( "0" );
-            isActive = 0;
+            isActiveValue = 0;
 //            $( '#isActiveLabel' ).text( 'User is Activated' );
         }
     } );
@@ -158,7 +159,7 @@ function submitData(e){
 	};
 	
 function updateProfileHandler(){
-	var saveProfileId = $("#save").attr('title');
+	var saveProfileId = $("#saveProfile").attr('title');
 	var settings = {
 		    "url": postEditUserDetailsURL,
 			  "method": "POST",
@@ -183,7 +184,8 @@ function updateProfileHandler(){
 		    "intimation": intimationValue,
 		    "aboutMe": $('#aboutMe').val(),
 		    "accessType": $('#accessType').val(),
-		    "location": $('#location').val()
+		    "location": $('#location').val(),
+			"isActive":$( '#isActive' ).val() ,
 		  }),
 		};
 			$.ajax(settings).done(function (response) {
@@ -222,7 +224,8 @@ function createNewProfileHandler(){
 		    "intimation": intimationValue,
 		    "aboutMe": $('#aboutMe').val(),
 		    "accessType": $('#accessType').val(),
-		    "location": $('#location').val()
+		    "location": $('#location').val(),
+			"isActive":$( '#isActive' ).val() ,
 		  }),
 		};	
 			$.ajax(settings).done(function (response) {
@@ -269,15 +272,24 @@ function isCheckedInt(value){
 		console.log('Ints', value);
 	}
 };
+function isCheckedActive(value){
+	if(value == 1){
+		$('#isActive').prop("checked", true);
+		$('#isActive').val( "1" );
+		isActiveValue = 1;
+		console.log('is active profile', value);
+	}
+};
+
 	
 function viewProfileByIdHandler(){
 		//current user email id 
-		var emailId = sessionStorage.getItem('emailId');
+//		var emailId = sessionStorage.getItem('emailId');
 		var id = sessionStorage.getItem('profileId');
 		if(id != null){
 	$.ajax({
         type: "GET",
-        url:getUserDetailByIdURL+'?emailId='+emailId,
+        url:getUserDetailByIdURL+'?id='+id,
         dataType: "json",
         "headers": {
 		    	"Content-Type": "application/json",
@@ -286,7 +298,7 @@ function viewProfileByIdHandler(){
 			success: function (data) {
 					var obj = data.body;
 					console.log('get user profile data view', obj);
-					$("#save").attr('title', obj.id);
+					$("#saveProfile").attr('title', obj.id),
 					$('#profileId').val(obj.id);
 					$('#firstName').val(obj.firstName),
 				    $('#lastName').val(obj.lastName),
@@ -302,7 +314,8 @@ function viewProfileByIdHandler(){
 //					$("#intimation").val(obj.intimation),
 				    $('#aboutMe').val(obj.aboutMe),
 				    $('#accessType').val(obj.accessType),
-				    $('#location').val(obj.location)
+				    $('#location').val(obj.location),
+					isCheckedActive(obj.isActive);
 					isCheckedRes(obj.responsibility);
 				    isCheckedExe(obj.execution); 
 					isCheckedCon(obj.consulting);

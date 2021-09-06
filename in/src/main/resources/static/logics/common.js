@@ -49,7 +49,6 @@ function topNavUserName () {
             var obj = data.body;
             
             $( '#topNavuserName' ).append( obj.firstName + ' ' + obj.lastName );
-			sessionStorage.setItem( 'emailId',obj.emailId );
         }
     } );
 };

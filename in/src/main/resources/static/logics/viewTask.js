@@ -21,6 +21,7 @@ function populateData ( url ) {
         },
         success: function ( data ) {
             checkSession( data.success );
+console.log('view task data=======================', data);
 			$.each( data.body, function ( i, obj ) {
                 var div_data = '<tr>'
                     + '<td>' + obj.projectName + '</td>'

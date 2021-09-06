@@ -173,7 +173,7 @@ $("#endDate").change(function(){
 				//console.log(response);
 				if(response.success == 200 ){
 					$("#createForm")[0].reset();
-					window.location = 'viewTaskGrid'
+					window.location = 'dashboard'
 					alert('Task has been updated succesfully');
 				}else if(reponse.success === 401 ){
 					checkSession();

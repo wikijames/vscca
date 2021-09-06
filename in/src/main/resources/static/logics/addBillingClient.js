@@ -2,7 +2,9 @@ var isActiveValue;
 $( document ).ready( function () {
 	var sessionBillingId = sessionStorage.getItem('billingId');
 	if(sessionBillingId != null){
-		getViewBillingClientById();		
+		setTimeout(function(){
+			getViewBillingClientById();
+		},500);	
 	}
 //	
     if ( $( '#isActive' ).is( ":checked" ) ) {

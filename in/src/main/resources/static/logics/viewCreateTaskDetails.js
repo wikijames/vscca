@@ -1,6 +1,8 @@
 
 $(document).ready(function(){
 	disableFormInputHandler();
+	$('#finalWeightage').attr('disabled','disabled');
+	$('#finalWeightage').attr('readonly','readonly');
 })// ready ends
 
 function disableFormInputHandler(){
@@ -77,6 +79,7 @@ function convertDate(value,name){
 					$('#reasonForDelay').val(obj.delayReason);
 					$('#completedDate').val(obj.endDate);
 					$('#remarks').val(obj.remarks);
+					$('#finalWeightage').val(obj.finalWeightage);
 					convertDate(obj.dueDate,'endDate');
 					convertDate(obj.endDate,'completedDate');
 				});
