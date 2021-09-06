@@ -76,4 +76,10 @@ public class TaskInfoServiceImpl implements TaskInfoService {
 		return taskInfoRepository.findTaskDetailsForUsersByDueDate(emailId);
 	}
 
+	@Override
+	public TaskInfo getById(Long id) {
+		// TODO Auto-generated method stub
+		return taskInfoRepository.getById(id);
+	}
+
 }

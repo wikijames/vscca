@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.vscca.in.model.BillingClient;
 import com.vscca.in.model.TaskInfo;
 
 @Repository
@@ -71,4 +72,7 @@ public interface TaskInfoRepository extends JpaRepository<TaskInfo, Long> {
 			+ " from vscca.task_status group by task_id) as tid where ts.task_id=tid.task_id and tid.end_date=ts.end_date\r\n"
 			+ " and ti.id=tud.task_id and ts.task_id=ti.id and ? in (tud.responsibility ,tud.intimation ,tud.exceution ,tud.consulting) and ti.due_date < CURDATE()",nativeQuery=true)
 	List<Object[]> findTaskDetailsForUsersByDueDate(String emailId);
+	
+	@Query(value="select * from vscca.task_info where id=?",nativeQuery=true)
+	TaskInfo getById(Long id);
 }

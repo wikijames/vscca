@@ -69,6 +69,7 @@ public class BillingClientController {
 			BillingClient billingClient = new BillingClient();
 			billingClient.setClient(billingClientDto.getPartyName() + "-" + billingClientDto.getLedgerNo() + "-"
 					+ billingClientDto.getPageNo());
+			billingClient.setIsActive(billingClientDto.getIsActive());
 			billingClientService.save(billingClient);
 			response.setSuccess(200);
 			response.setMessage("success");

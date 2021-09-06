@@ -19,4 +19,10 @@ public class TaskUserDetailsServiceImpl implements TaskUserDetailsService {
 		return taskUserDetailsRepository.save(taskUserDetails);
 	}
 
+	@Override
+	public TaskUserDetails getById(Long taskId) {
+		// TODO Auto-generated method stub
+		return taskUserDetailsRepository.getById(taskId);
+	}
+
 }

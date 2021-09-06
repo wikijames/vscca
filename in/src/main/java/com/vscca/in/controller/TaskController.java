@@ -494,7 +494,8 @@ public class TaskController {
 
 	@CrossOrigin
 	@GetMapping("/taskDetailsById")
-	public ResponseDto getTaskDetailsConsulting(HttpServletRequest req, @RequestParam String taskId) throws ParseException {
+	public ResponseDto getTaskDetailsConsulting(HttpServletRequest req, @RequestParam String taskId)
+			throws ParseException {
 		ResponseDto response = new ResponseDto();
 		String token = req.getHeader(VsccaConstants.TOKEN_HEADER);
 		if (token == null && TokenValidation.getAuthentication(token) != true
@@ -532,9 +533,10 @@ public class TaskController {
 				}
 				if (result[8] != null) {
 					taskDto.setDueDate(result[8].toString());
-					if(result[9].toString().equalsIgnoreCase("close")) {
-						taskDto.setFinalWeightage(getfinalWiegtageforCLose(result[8].toString(),(Integer) result[3],(Date) result[12]));
-					}else {
+					if (result[9].toString().equalsIgnoreCase("close")) {
+						taskDto.setFinalWeightage(
+								getfinalWiegtageforCLose(result[8].toString(), (Integer) result[3], (Date) result[12]));
+					} else {
 						taskDto.setFinalWeightage(getfinalWiegtage(result[8].toString(), (Integer) result[3]));
 					}
 				}
@@ -574,7 +576,7 @@ public class TaskController {
 
 	@CrossOrigin
 	@PostMapping("/editTask")
-	public ResponseDto editTask(HttpServletRequest req, @RequestBody TaskDto taskDto) {
+	public ResponseDto editTask(HttpServletRequest req, @RequestBody TaskDto taskDto) throws ParseException {
 		ResponseDto response = new ResponseDto();
 		String token = req.getHeader(VsccaConstants.TOKEN_HEADER);
 		TaskStatus taskStatus = new TaskStatus();
@@ -583,30 +585,55 @@ public class TaskController {
 			response.setSuccess(401);
 			response.setMessage("Unauthorized");
 		} else {
+			TaskInfo taskInfo = taskInfoService.getById(taskDto.getTaskId());
 
-//		taskInfo.setProjectName(taskDto.getProjectName());
-//		taskInfo.setPartyName(taskDto.getPartyName());
-//		taskInfo.setWeightage(taskDto.getWeightage());
-			SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-			Date date = new Date();
-//		taskInfo.setCreatedAt(date);
-//		taskInfo.setDueDate(new Date(new SimpleDateFormat("dd/MM/yyyy").format(taskDto.getDueDate())));
-//		taskInfo.setBillingClient(taskDto.getBillingClient());
-//		taskInfo.setTaskType(taskDto.getTaskType());
-//		taskInfo.setTaskDescription(taskDto.getTaskDescription());
-//		taskId = taskInfoService.save(taskInfo);
-//		taskUserDetails.setTaskId(taskId.getId());
-//		taskUserDetails.setResponsibility(taskDto.getResponsibility());
-//		taskUserDetails.setConsulting(taskDto.getConsulting());
-//		taskUserDetails.setExceution(taskDto.getExceution());
-//		taskUserDetails.setIntimation(taskDto.getIntimation());
-//		taskStatus.setTaskId(taskId.getId());
+			TaskUserDetails taskUserDetails = taskUserDetailsService.getById(taskDto.getTaskId());
+			if(taskDto.getProjectName() != null && !taskDto.getProjectName().equals("")) {
+			taskInfo.setProjectName(taskDto.getProjectName());
+			}
+			if(taskDto.getPartyName() != null && !taskDto.getPartyName().equals("")) {
+			taskInfo.setPartyName(taskDto.getPartyName());
+			}
+			if(taskDto.getWeightage() != 0) {
+			taskInfo.setWeightage(taskDto.getWeightage());
+			}
+			if(taskDto.getDueDate() != null && !taskDto.getDueDate().equals("")) {
+			
+			Date date1 = new SimpleDateFormat("dd-MM-yyyy").parse(taskDto.getDueDate());
+			taskInfo.setDueDate(date1);
+			}
+			if(taskDto.getBillingClient() != null && !taskDto.getBillingClient().equals("")) {
+			taskInfo.setBillingClient(taskDto.getBillingClient());
+			}
+			if(taskDto.getTaskType() != null && !taskDto.getTaskType().equals("")) {
+			taskInfo.setTaskType(taskDto.getTaskType());
+			}
+			if(taskDto.getTaskDescription() != null && !taskDto.getTaskDescription().equals("")) {
+			taskInfo.setTaskDescription(taskDto.getTaskDescription());
+			}
+			if(taskDto.getResponsibility() != null && !taskDto.getResponsibility().equals("")) {
+			taskUserDetails.setResponsibility(taskDto.getResponsibility());
+			}
+			if(taskDto.getConsulting() != null && !taskDto.getConsulting().equals("")) {
+			taskUserDetails.setConsulting(taskDto.getConsulting());
+			}
+			if(taskDto.getExceution() != null && !taskDto.getExceution().equals("")) {
+			taskUserDetails.setExceution(taskDto.getExceution());
+			}
+			if(taskDto.getProjectName() != null && !taskDto.getProjectName().equals("")) {
+			taskUserDetails.setIntimation(taskDto.getIntimation());
+			}
+			if(taskDto.getStatus() != null && !taskDto.getStatus().equals("")) {
+				SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+				Date date = new Date();
 			taskStatus.setStatus(taskDto.getStatus());
 			taskStatus.setTaskId(taskDto.getTaskId());
 			taskStatus.setEndDate(date);
 			taskStatus.setRemarks(taskDto.getRemarks());
 			taskStatus.setDelayReason(taskDto.getDelayReason());
-			// taskUserDetailsService.save(taskUserDetails);
+			}
+			taskInfoService.save(taskInfo);
+			taskUserDetailsService.save(taskUserDetails);
 			taskStatusService.save(taskStatus);
 			response.setSuccess(200);
 			response.setMessage("success");
@@ -655,9 +682,10 @@ public class TaskController {
 				}
 				if (result[8] != null) {
 					taskDto.setDueDate(result[8].toString());
-					if(result[9].toString().equalsIgnoreCase("close")) {
-						taskDto.setFinalWeightage(getfinalWiegtageforCLose(result[8].toString(),(Integer) result[3],(Date) result[12]));
-					}else {
+					if (result[9].toString().equalsIgnoreCase("close")) {
+						taskDto.setFinalWeightage(
+								getfinalWiegtageforCLose(result[8].toString(), (Integer) result[3], (Date) result[12]));
+					} else {
 						taskDto.setFinalWeightage(getfinalWiegtage(result[8].toString(), (Integer) result[3]));
 					}
 				}
@@ -741,9 +769,10 @@ public class TaskController {
 				}
 				if (result[8] != null) {
 					taskDto.setDueDate(result[8].toString());
-					if(result[9].toString().equalsIgnoreCase("close")) {
-						taskDto.setFinalWeightage(getfinalWiegtageforCLose(result[8].toString(),(Integer) result[3],(Date) result[12]));
-					}else {
+					if (result[9].toString().equalsIgnoreCase("close")) {
+						taskDto.setFinalWeightage(
+								getfinalWiegtageforCLose(result[8].toString(), (Integer) result[3], (Date) result[12]));
+					} else {
 						taskDto.setFinalWeightage(getfinalWiegtage(result[8].toString(), (Integer) result[3]));
 					}
 				}
@@ -827,9 +856,10 @@ public class TaskController {
 				}
 				if (result[8] != null) {
 					taskDto.setDueDate(result[8].toString());
-					if(result[9].toString().equalsIgnoreCase("close")) {
-						taskDto.setFinalWeightage(getfinalWiegtageforCLose(result[8].toString(),(Integer) result[3],(Date) result[12]));
-					}else {
+					if (result[9].toString().equalsIgnoreCase("close")) {
+						taskDto.setFinalWeightage(
+								getfinalWiegtageforCLose(result[8].toString(), (Integer) result[3], (Date) result[12]));
+					} else {
 						taskDto.setFinalWeightage(getfinalWiegtage(result[8].toString(), (Integer) result[3]));
 					}
 				}
@@ -913,9 +943,10 @@ public class TaskController {
 				}
 				if (result[8] != null) {
 					taskDto.setDueDate(result[8].toString());
-					if(result[9].toString().equalsIgnoreCase("close")) {
-						taskDto.setFinalWeightage(getfinalWiegtageforCLose(result[8].toString(),(Integer) result[3],(Date) result[12]));
-					}else {
+					if (result[9].toString().equalsIgnoreCase("close")) {
+						taskDto.setFinalWeightage(
+								getfinalWiegtageforCLose(result[8].toString(), (Integer) result[3], (Date) result[12]));
+					} else {
 						taskDto.setFinalWeightage(getfinalWiegtage(result[8].toString(), (Integer) result[3]));
 					}
 				}
@@ -959,29 +990,31 @@ public class TaskController {
 	}
 
 	public String getNameByEmailId(String emailId) {
+		String name = "";
 		UserDetails userDetails = userDetailsService.findByEmailId(emailId);
-		String name = userDetails.getFirstName() + " " + userDetails.getLastName();
+		if (userDetails != null) {
+			name = userDetails.getFirstName() + " " + userDetails.getLastName();
+		}
 		return name;
 	}
-	 
-	
-	public String getfinalWiegtage(String dueDate,int weightage) throws ParseException {
-		String finalWeightage="";
-		 Date date1=new SimpleDateFormat("yyyy-MM-dd").parse(dueDate);  
+
+	public String getfinalWiegtage(String dueDate, int weightage) throws ParseException {
+		String finalWeightage = "";
+		Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(dueDate);
 		System.out.println(date1);
-		if(date1.before(new Date(System.currentTimeMillis()))){
-			int diff=new Date(System.currentTimeMillis()).getDate()- date1.getDate();
-			finalWeightage=""+diff*weightage;
+		if (date1.before(new Date(System.currentTimeMillis()))) {
+			int diff = new Date(System.currentTimeMillis()).getDate() - date1.getDate();
+			finalWeightage = "" + diff * weightage;
 		}
 		return finalWeightage;
 	}
-	
-	public String getfinalWiegtageforCLose(String dueDate,int weightage,Date endDate) throws ParseException {
-		String finalWeightage="";
-		 Date date1=new SimpleDateFormat("yyyy-MM-dd").parse(dueDate);  
-			int diff=endDate.getDate()- date1.getDate();
-			finalWeightage=""+diff*weightage;
+
+	public String getfinalWiegtageforCLose(String dueDate, int weightage, Date endDate) throws ParseException {
+		String finalWeightage = "";
+		Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(dueDate);
+		int diff = endDate.getDate() - date1.getDate();
+		finalWeightage = "" + diff * weightage;
 		return finalWeightage;
 	}
-	
+
 }

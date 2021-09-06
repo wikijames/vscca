@@ -29,4 +29,6 @@ public interface TaskInfoService {
 	List<Object[]> findTaskDetailsForUsersWeek(String emailId);
 	
 	List<Object[]> findTaskDetailsForUsersByDueDate(String emailId);
+	
+	TaskInfo getById(Long id);
 }
