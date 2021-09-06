@@ -7,149 +7,127 @@ function todayDate(){
 	return today = dd + '/' + mm + '/' + yyyy;
 }
 
-//function showContainer(){
-//	if(roles === 'admin'){
-//		$('.show-container').show();
-//	}else if(role === 'team'){
-//		$('.show-container').hide();
-//	}
-//}
-
 $(document).ready(function(){
-	//console.log('todayDate()',todayDate())
-		// populate billingClients Dropdown
+$('.billingClientNameClass').select2({});
+  $.ajax({
+    type: "GET",
+    url:getBillingClientsURL,
+    dataType: "json",
+	 "headers": {
+    	"Content-Type": "application/json",
+		"Authorization": accessToken
+  	},
+    success: function (data) {
+	    $.each(data.body,function(i,obj)
+        {
+			var div_data="<option value="+obj.client+">"+obj.client+"</option>";
+        $(div_data).appendTo('.billingClientNameClass');
+        });
+        }
+  });
 
-        $('.billingClientNameClass').select2({});
-		  $.ajax({
-	        type: "GET",
-	        url:getBillingClientsURL,
-	        dataType: "json",
-			 "headers": {
-		    	"Content-Type": "application/json",
-				"Authorization": accessToken
-		  	},
-	        success: function (data) {
-				console.log('billing client get data = ', data);
-			    $.each(data.body,function(i,obj)
-	            {
-					var div_data="<option value="+obj.client+">"+obj.client+"</option>";
-	            $(div_data).appendTo('.billingClientNameClass');
-	            });
-	            }
-	      });
+	// populate tasks Type Dropdown
+  $.ajax({
+    type: "GET",
+    url:getTasksURL,
+    dataType: "json",
+    "headers": {
+    	"Content-Type": "application/json",
+		"Authorization": accessToken
+  	},
+	success: function (data) {
+        $.each(data.body,function(i,obj)
+        {
+         var div_data="<option value="+obj.task+">"+obj.task+"</option>";
+        $(div_data).appendTo('#taskType');
+        });
+        }
+  });
 
-		// populate tasks Type Dropdown
-		  $.ajax({
-            type: "GET",
-            url:getTasksURL,
-            dataType: "json",
-            "headers": {
-		    	"Content-Type": "application/json",
-				"Authorization": accessToken
-		  	},
-			success: function (data) {
-				checkSession(data.success);
-                $.each(data.body,function(i,obj)
-                {
-                 var div_data="<option value="+obj.task+">"+obj.task+"</option>";
-                $(div_data).appendTo('#taskType');
-                });
-                }
-          });
+	// populate responsiblityUsers Dropdown
+	  $.ajax({
+        type: "GET",
+        url:getResponsiblityUsersURL,
+        dataType: "json",
+        "headers": {
+	    	"Content-Type": "application/json",
+			"Authorization": accessToken
+	  	},
+		success: function (data) {
+            $.each(data.body,function(i,obj)
+            {
+             var div_data="<option value="+obj.emailId+">"+obj.firstName+" "+obj.lastName+"</option>";
+            $(div_data).appendTo('#responsibility');
+            });
+            }
+      });
 
-		// populate responsiblityUsers Dropdown
-		  $.ajax({
-            type: "GET",
-            url:getResponsiblityUsersURL,
-            dataType: "json",
-            "headers": {
-		    	"Content-Type": "application/json",
-				"Authorization": accessToken
-		  	},
-			success: function (data) {
-				checkSession(data.success);
-			//console.log('responsiblityUsers',data.body)
-                $.each(data.body,function(i,obj)
-                {
-                 var div_data="<option value="+obj.emailId+">"+obj.firstName+" "+obj.lastName+"</option>";
-                $(div_data).appendTo('#responsibility');
-                });
-                }
-          });
+// populate executionUsers Dropdown
+  $.ajax({
+    type: "GET",
+    url:getExecutionUsersURL,
+    dataType: "json",
+    "headers": {
+    	"Content-Type": "application/json",
+		"Authorization": accessToken
+  	},
+	success: function (data) {
+        $.each(data.body,function(i,obj)
+        {
+         var div_data="<option value="+obj.emailId+">"+obj.firstName+" "+obj.lastName+"</option>";
+        $(div_data).appendTo('#execution');
+        });
+        }
+  });
 
-		// populate executionUsers Dropdown
-		  $.ajax({
-            type: "GET",
-            url:getExecutionUsersURL,
-            dataType: "json",
-            "headers": {
-		    	"Content-Type": "application/json",
-				"Authorization": accessToken
-		  	},
-			success: function (data) {
-				checkSession(data.success);
-			//console.log('executionUsers',data.body)
-                $.each(data.body,function(i,obj)
-                {
-                 var div_data="<option value="+obj.emailId+">"+obj.firstName+" "+obj.lastName+"</option>";
-                $(div_data).appendTo('#execution');
-                });
-                }
-          });
+// populate consultingUsers Dropdown
+  $.ajax({
+    type: "GET",
+    url:getConsultingUsersURL,
+    dataType: "json",
+    "headers": {
+    	"Content-Type": "application/json",
+		"Authorization": accessToken
+  	},
+	success: function (data) {
+        $.each(data.body,function(i,obj)
+        {
+         var div_data="<option value="+obj.emailId+">"+obj.firstName+" "+obj.lastName+"</option>";
+        $(div_data).appendTo('#consulting');
+        });
+        }
+  });
 
-		// populate consultingUsers Dropdown
-		  $.ajax({
-            type: "GET",
-            url:getConsultingUsersURL,
-            dataType: "json",
-            "headers": {
-		    	"Content-Type": "application/json",
-				"Authorization": accessToken
-		  	},
-			success: function (data) {
-				checkSession(data.success);
-			//console.log('consultingUsers',data.body)
-                $.each(data.body,function(i,obj)
-                {
-                 var div_data="<option value="+obj.emailId+">"+obj.firstName+" "+obj.lastName+"</option>";
-                $(div_data).appendTo('#consulting');
-                });
-                }
-          });
-
-		// populate intimationuser Dropdown
-		  $.ajax({
-            type: "GET",
-            url:getIntimationUsersURL,
-            dataType: "json",
-            "headers": {
-		    	"Content-Type": "application/json",
-				"Authorization": accessToken
-		  	},
-			success: function (data) {
-				checkSession(data.success);
-			//console.log('intimationuser',data.body)
-                $.each(data.body,function(i,obj)
-                {
-                 var div_data="<option value="+obj.emailId+">"+obj.firstName+" "+obj.lastName+"</option>";
-                $(div_data).appendTo('#intimation');
-                });
-                }
-          });
+// populate intimationuser Dropdown
+  $.ajax({
+    type: "GET",
+    url:getIntimationUsersURL,
+    dataType: "json",
+    "headers": {
+    	"Content-Type": "application/json",
+		"Authorization": accessToken
+  	},
+	success: function (data) {
+        $.each(data.body,function(i,obj)
+        {
+         var div_data="<option value="+obj.emailId+">"+obj.firstName+" "+obj.lastName+"</option>";
+        $(div_data).appendTo('#intimation');
+        });
+        }
+  });
 
 
 
-		var formattedDueDate;
-		$("#endDate").change(function(){
-			var dueDate = $(this).val();
-//            console.log('duedate',dueDate);
-			    var date = new Date(dueDate);
-			    var month = date.getMonth() + 1;
-			    var day = date.getDate();
-			    var year = date.getFullYear();
-				var result = day + "-" + month + "-" + year;
-				formattedDueDate = dueDate;
-		});
+var formattedDueDate;
+$("#endDate").change(function(){
+	var dueDate = $(this).val();
+	    var date = new Date(dueDate);
+	    var month = date.getMonth() + 1;
+	    var day = date.getDate();
+	    var year = date.getFullYear();
+		var result = day + "-" + month + "-" + year;
+		formattedDueDate = dueDate;
+});
 
 
  // this is the id of the form
@@ -224,7 +202,5 @@ $(document).ready(function(){
 					}
 				});
 		}
-
-
 });
 })//ready ends

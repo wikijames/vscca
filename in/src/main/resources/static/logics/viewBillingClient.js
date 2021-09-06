@@ -37,7 +37,7 @@ function populateData () {
                     + '<td>' + splitClientHandler(obj.client)[1] + '</td>'
                     + '<td>' + splitClientHandler(obj.client)[2] + '</td>'
 					+ '<td>' + isActiveBilling(obj.isActive) + '</td>'
-                    + '<td> <a onClick="redirectToBillingClient(' + obj.id + ')" class="btn pointer">View</a></td>'
+                    + '<td> <a onClick="redirectToBillingClient(' + obj.id + ')" class="btn pointer">View/Edit</a></td>'
                     + '</tr>';
                 $( div_data ).appendTo( '#populateGrid' );
                 

@@ -67,6 +67,11 @@
                             class="form-control"
                             placeholder="First name"
                           />
+                          <input
+                            type="hidden"
+                            id="profileId"
+                            class="form-control"
+                          />
                         </div>
                       </div>
                       <div class="col-lg-4">
@@ -116,12 +121,13 @@
                             id="isActive"
                             name="isActive"
                             checked="checked"
+                            onclick="isActiveHandler();"
                           />
                           <label
-                            id="isActiveLabel"
+                            id=""
                             class="form-control-label"
                             for="isActive"
-                          ></label>
+                          >Check to Active and Uncheck to Deactive User Profile</label>
                         </div>
                       </div>
                     </div>
@@ -138,6 +144,7 @@
                             class=""
                             id="responsibility"
                             name="responsibility"
+                            onclick="responsibilityHandler();"
                           />
                           <label class="form-control-label" for="responsibility"
                             >Responsibility</label
@@ -147,6 +154,7 @@
                             class=""
                             id="execution"
                             name="execution"
+                            onclick="executionHandler();"
                           />
                           <label class="form-control-label" for="execution">
                             Execution</label
@@ -156,6 +164,7 @@
                             class=""
                             id="consulting"
                             name="consulting"
+                            onclick="consultingHandler();"
                           />
                           <label class="form-control-label" for="consulting">
                             consulting</label
@@ -165,6 +174,7 @@
                             class=""
                             id="intimation"
                             name="intimation"
+                            onclick="intimationHandler();"
                           />
                           <label class="form-control-label" for="intimation">
                             Intimation</label
@@ -262,7 +272,7 @@
     </div>
     <!-- scripts -->
     <div th:replace="fragments/footer :: dashboard-scripts"></div>
-    <script th:src="@{/logics/profile.js}"></script>
-    <script th:src="@{/logics/viewCreateProfileDetails.js}"></script>
+    <script th:src="@{/logics/createProfile.js}"></script>
+<!--     <script th:src="@{/logics/viewCreateProfileDetails.js}"></script> -->
   </body>
 </html>

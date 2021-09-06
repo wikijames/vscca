@@ -1,14 +1,13 @@
-var isActive = 0;
-
+var isActive;
 $( document ).ready( function () {
 	var billingId = sessionStorage.getItem('billingId');
-	if(billingId != null || billingId != '' | billingId != undefined){
+	if(billingId != null || billingId != '' || billingId != undefined){
 		getViewBillingClientById();		
 	}else{
-		alert('no id');
+		isActive = 0;
 	}
 //	
-    if ( $( this ).is( ":checked" ) ) {
+    if ( $( '#isActive' ).is( ":checked" ) ) {
             $( this ).val( "1" );
             isActive = 1;
 //			$( '#isActiveLabel' ).text( 'Client is Activated' );
@@ -35,8 +34,7 @@ $( document ).ready( function () {
     $( '#save' ).click( function ( e ) {
 		e.preventDefault();
 		var savebillingId = $("#save").attr('title');
-		
-		if(savebillingId != ''){
+		if(savebillingId != null || savebillingId != '' || savebillingId != undefined){
 			 // avoid to execute the actual submit of the form.
         var settings = {
             "url": postEditBillingClientURL,
@@ -51,7 +49,7 @@ $( document ).ready( function () {
                 "partyName": $( '#partyName' ).val(),
                 "ledgerNo": $( '#ledgerNumber' ).val(),
                 "pageNo": $( '#pageNumber' ).val(),
-                "isActive":$( '#isActive' ).val() ,
+                "isActive":isActive,
             } ),
         };
 
@@ -121,7 +119,7 @@ function isActiveBilling(value){
 
 	function getViewBillingClientById(){
 		var id = sessionStorage.getItem('billingId');
-		if(id != null){
+		if(id != null || id != '' || id != undefined){
 	$.ajax({
         type: "GET",
         url:getBillingByIdURL+'?id='+id,

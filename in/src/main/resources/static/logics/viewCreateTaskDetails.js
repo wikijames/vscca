@@ -18,15 +18,10 @@ function disableFormInputHandler(){
 		$('#save').remove();
 
 	}else if(taskId == null &&  taskCompletedDate == ''){
-
 		$('.commentsSection').remove();
-
 	}
-
 	if(userRole.toLowerCase() == 'teammember' && ($.trim($('#remarks').val()).length <= 0)){
-
 		$('.remarksColumn').addClass('hide');
-
 	}
 };
 
@@ -36,6 +31,8 @@ function convertDate(value,name){
 	$('#'+name).prop('type','text');
 	$('#'+name).val(formattedDate);
 }
+
+
 	function getViewTaskById(){
 		var id = sessionStorage.getItem('taskId');
 		if(id != null){

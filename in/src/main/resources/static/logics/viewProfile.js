@@ -25,14 +25,14 @@ function populateData(){
 				"Authorization": accessToken
 		  	},
 			success: function (data) {
-				checkSession(data.success);
-               $.each(data.body,function(i,obj)
+				console.log('get user profile data view', data);
+				$.each(data.body,function(i,obj)
                 {
 	 		  var div_data = '<tr>'
 					+ '<td>' + obj.firstName + ' ' + obj.lastName +'</td>'
                     + '<td>' + obj.accessType + '</td>'
 					+ '<td>' + isActiveUser(obj.isActive) + '</td>'
-					+ '<td> <a onClick="redirectToProfileDetails(' + obj.id+ ')" class="btn pointer">View</a></td>'
+					+ '<td> <a onClick="redirectToProfileDetails(' + obj.id+ ')" class="btn pointer">View/Edit</a></td>'
 					+ '</tr>';
 			    $(div_data).appendTo('#populateGrid');
                 });

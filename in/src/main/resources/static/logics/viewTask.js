@@ -33,7 +33,7 @@ function populateData ( url ) {
                     + '<td>' + formatDateHandler( obj.dueDate ) + '</td>'
                     + '<td>' + isTaskDescription( obj.taskDescription ) + '</td>'
                     + '<td>' + obj.status + '</td>'
-                    + '<td> <a onClick="redirectToTaskDetails(' + obj.taskId + ')" class="btn pointer">View</a></td>'
+                    + '<td> <a onClick="redirectToTaskDetails(' + obj.taskId + ')" class="btn pointer">View/Edit</a></td>'
                     + '</tr>';
                 $( div_data ).appendTo( '#populateGrid' );
                 

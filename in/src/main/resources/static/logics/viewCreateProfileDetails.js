@@ -1,28 +1,11 @@
 
 $(document).ready(function(){
+	
+	
 //	disableProfileFormInputHandler();
 	//getViewOwnProfile();
 	//$('#responsibility').prop('checked', true);
 })// ready ends
-
-function disableProfileFormInputHandler(){
-//	console.log('userRole',userRole);
-	if(userRole.toLowerCase() == 'admin' ){
-		//$('#profileForm').find('input, textarea, button, select').attr('disabled','disabled');
-		//$('#profileForm').find('input, textarea, button, select').attr('readonly','readonly');
-//		getViewOwnProfile()
-	}else if(userRole.toLowerCase() == 'supervisor' ){
-		$('#profileForm').find('input, textarea, button, select').attr('disabled','disabled');
-		$('#profileForm').find('input, textarea, button, select').attr('readonly','readonly');
-		$('#saveProfile').remove();
-//		getViewOwnProfile()
-	}else if(userRole.toLowerCase() == 'teammember'){
-		$('#profileForm').find('input, textarea, button, select').attr('disabled','disabled');
-		$('#profileForm').find('input, textarea, button, select').attr('readonly','readonly');
-		$('#saveProfile').remove();
-//		getViewOwnProfile()
-	}
-};
 
 function isCheckedType(value){
 	if(value == 1){
@@ -30,7 +13,7 @@ function isCheckedType(value){
 	}
 }
 
-function getViewOwnProfile(){
+function viewProfileByIdHandler(){
 	$.ajax({
         type: "GET",
         url:getUserProfileByIdURL,
