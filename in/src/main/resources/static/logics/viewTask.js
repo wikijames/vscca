@@ -33,7 +33,7 @@ console.log('view task data=======================', data);
 					+ '<td>' + obj.consultingName + '</td>'
                     + '<td>' + formatDateHandler( obj.dueDate ) + '</td>'
                     + '<td>' + isTaskDescription( obj.taskDescription ) + '</td>'
-                    + '<td>' + obj.status + '</td>'
+                    + '<td>' + sortStatusText(obj.status) + '</td>'
                     + '<td> <a onClick="redirectToTaskDetails(' + obj.taskId + ')" class="btn pointer">View/Edit</a></td>'
                     + '</tr>';
                 $( div_data ).appendTo( '#populateGrid' );
@@ -42,6 +42,33 @@ console.log('view task data=======================', data);
         }
     } );
 };
+
+function sortStatusText(value){
+	if( value ==  `ShortWork`){
+        return 'Short Work';
+    }
+	if( value ==  `coming`){
+        return 'In Process';
+    }
+	if( value ==  `WorkOnClientEnd`){
+        return 'Work On Client End';
+    }
+	if( value ==  `Done`){
+        return 'Done';
+    }
+	if( value ==  `ReadyToCheck`){
+        return 'Ready To Check';
+    }
+	if( value ==  `DiscussionWithSatishJi`){
+        return 'Discussion With Satish Ji';
+    }
+	if( value ==  `ReadyToUpload`){
+        return 'Ready To Upload'
+    }
+	else{
+		return value;
+	}
+}
 
 //function taskNavLoadHandler ( value ) {
 //	 if ( userRole == 'Admin' && value == 'dashboard') {
@@ -79,6 +106,32 @@ console.log('view task data=======================', data);
 function dataTableFilterHandler () {
     //Data table filter
     $( '#table_id' ).DataTable( {
+	"createdRow": function( row, data, dataIndex){
+                if( data[9] ==  `ShortWork`){
+                    $(row).addClass('ShortWork');
+                }
+				if( data[9] ==  `InProcess`){
+                    $(row).addClass('InProcess');
+                }
+				if( data[9] ==  `WorkOnClientEnd`){
+                    $(row).addClass('WorkOnClientEnd');
+                }
+				if( data[9] ==  `Done`){
+                    $(row).addClass('Done');
+                }
+				if( data[9] ==  `ReadyToCheck`){
+                    $(row).addClass('ReadyToCheck');
+                }
+				if( data[9] ==  `DiscussionWithSatishJi`){
+                    $(row).addClass('DiscussionWithSatishJi');
+                }
+				if( data[9] ==  `ReadyToUpload`){
+                    $(row).addClass('ReadyToUpload');
+                }else{
+					$(row).addClass('whiteRow');
+				}
+            },
+			"bPaginate": false,
 //        dom: 'Bfrtip',
 //        buttons: [
 //             {
@@ -158,7 +211,8 @@ function formatDateHandler ( value ) {
 };
 
 function isTaskDescription ( value ) {
-    if ( value != null || value != '' || value != undefined ) {
+	
+    if ( value.trim() ) {
         return 'Yes';
     } else {
         return 'No'

@@ -211,11 +211,13 @@
                             >Status</label
                           >
                           <select id="status" class="form-control">
-                            <option value="Coming">Coming</option>
-                            <option value="Overdue">Overdue</option>
-                            <option value="ReadyToClose">Ready To Close</option>
-                            <option value="Final">Final</option>
-                            <option value="Close">Close</option>
+                            <option value="ShortWork">Short Work</option>
+                            <option value="InProcess">In Process</option>
+                            <option value="WorkOnClientEnd">Work On Client End</option>
+                            <option value="Done">Done</option>
+                            <option value="ReadyToCheck">Ready To Check</option>
+                            <option value="DiscussionWithSatishJi">Discussion With Satish Ji</option>
+                            <option value="ReadyToUpload">Ready To Upload</option>
                           </select>
                         </div>
                       </div>
@@ -296,9 +298,10 @@
     <script>
       $(document).ready(function () {
         // $.fn.datepicker.defaults.format = "yyyy/dd/mm";
-        // $(".datepicker").datepicker({
-        //   format: "dd-mm-yyyy",
-        // });
+        $(".datepicker").datepicker({
+//           format: "dd-mm-yyyy";
+        	 startDate: new Date()
+        });
       });
     </script>
   </body>

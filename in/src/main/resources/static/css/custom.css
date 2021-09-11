@@ -69,6 +69,8 @@ a:not([href]) {
   font-size: 0.75rem;
 }
 
+.table thead th:first-child > .cb-dropdown-wrap,
+.table thead th:nth-child(9) > .cb-dropdown-wrap, 
 .table thead th:last-child > .cb-dropdown-wrap {
   display: none;
 }
@@ -76,6 +78,7 @@ a:not([href]) {
   max-height: 80px; /* At most, around 3/4 visible items. */
   position: relative;
   height: 19px;
+  margin-top: 10px;
 }
 
 .cb-dropdown,
@@ -83,7 +86,14 @@ a:not([href]) {
   margin: 0;
   padding: 0;
   list-style: none;
+  
 }
+.cb-dropdown li:nth-child(1n){
+	background: #fff;
+} 
+.cb-dropdown li:nth-child(2n){
+	background: #e2e7ff;
+} 
 
 .cb-dropdown {
   position: absolute;
@@ -92,16 +102,17 @@ a:not([href]) {
   height: 100%;
   overflow: hidden;
   background: #fff;
-  border: 1px solid #888;
+  border: 1px solid #e9ecef;
 }
 
 /* For selected filter. */
 .active .cb-dropdown {
   background: pink;
+  width: 125%;
 }
 
 .cb-dropdown-wrap:hover .cb-dropdown {
-  height: 80px;
+  height: 150px;
   overflow: auto;
   transition: 0.2s height ease-in-out;
 }
@@ -116,6 +127,7 @@ a:not([href]) {
   position: relative;
   cursor: pointer;
   line-height: 19px; /* Match height of .cb-dropdown-wrap */
+  margin-bottom:0;
 }
 
 .cb-dropdown li label > input {
@@ -123,6 +135,7 @@ a:not([href]) {
   right: 0;
   top: 0;
   width: 16px;
+  height: 19px;
 }
 
 .cb-dropdown li label > span {
@@ -134,6 +147,8 @@ a:not([href]) {
   font-weight: normal;
   text-align: left;
   color: #000;
+  display:inline-block;
+  white-space: initial;
 }
 
 /* This fixes the vertical aligning of the sorting icon. */
@@ -144,3 +159,31 @@ table.dataTable thead .sorting_asc_disabled,
 table.dataTable thead .sorting_desc_disabled {
   background-position: 100% 10px;
 }
+.table th, .table td{
+	padding: 0;
+}
+.whiteRow{
+	background: #fff;
+}
+.ShortWork{
+	background: #b8d2ff;
+}
+.InProcess{
+	background: #ffd2ff;
+}
+.WorkOnClientEnd{
+	background: #ffcece;
+}
+.Done{
+	background: #c6ffad;
+}
+.ReadyToCheck{
+	background: #ffffa7;
+}
+.DiscussionWithSatishJi{
+	background: #baffff;
+}
+.ReadyToUpload{
+	background: #ffebd7;
+}
+
