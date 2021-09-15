@@ -3,6 +3,7 @@ function checkSession ( value ) {
     if ( cookies == null || cookies == undefined || value == 401 || value == 500 ) {
         sessionStorage.clear();
         window.location = '/vscca';
+		Logout ();
         alert( 'Your session has been expired, Please login in again to continue...' );
     }
 }
@@ -115,6 +116,7 @@ $( document ).ready( function () {
 	showTaskbyTypeHandler();
     $( ".datepicker" ).datepicker( {
         format: "dd-mm-yyyy",
+		startDate: new Date()
     } );
 
     setInterval( function () {
