@@ -130,20 +130,15 @@ function dataTableFilterHandler () {
 					$(row).addClass('whiteRow');
 				}
             },
+			"order": [[ 7, "asc" ]],
 			"bPaginate": false,
         dom: 'Bfrtip',
 		buttons: [
-			'copy', 'csv', 'excel', 'pdf', 'print'
+			'excel'
 			],
     	colReorder: true,
-//        buttons: [
-//             {
-//            extend: 'excelHtml5',
-//            autoFilter: true
-//       		 }
-//        ],
         initComplete: function () {
-            this.api().columns().every( function () {
+            this.api().columns([1,2,3,4,5,6,7,9]).every( function () {
                 var column = this;
                 var ddmenu = cbDropdown( $( column.header() ) )
                     .on( 'change', ':checkbox', function () {
@@ -191,6 +186,14 @@ function dataTableFilterHandler () {
                 } );
             } );
         },
+//		exportOptions: { 
+//		            format: {
+//		                header: function ( data, column, row )
+//		                    {
+//		                        return data.substring(data.indexOf("value")+9,data.indexOf("</option"));
+//		                    }
+//		             }
+//		        },
     } );
 };
 

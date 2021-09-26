@@ -69,11 +69,11 @@ a:not([href]) {
   font-size: 0.75rem;
 }
 
-.table thead th:first-child > .cb-dropdown-wrap,
+/*.table thead th:first-child > .cb-dropdown-wrap,
 .table thead th:nth-child(9) > .cb-dropdown-wrap, 
 .table thead th:last-child > .cb-dropdown-wrap {
   display: none;
-}
+}*/
 .cb-dropdown-wrap {
   max-height: 80px; /* At most, around 3/4 visible items. */
   position: relative;
