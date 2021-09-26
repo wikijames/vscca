@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.vscca.in.dto.DayBookDto;
 import com.vscca.in.dto.ResponseDto;
 import com.vscca.in.dto.TaskDto;
 import com.vscca.in.model.BillingClient;
@@ -988,6 +989,88 @@ public class TaskController {
 		}
 		return response;
 	}
+	
+	
+	@CrossOrigin
+	@GetMapping("/taskDetailsDayBook")
+	public ResponseDto getTaskDetailsDayBook(HttpServletRequest req,@RequestBody DayBookDto dayBookDto) {
+		ResponseDto response = new ResponseDto();
+		String token = req.getHeader(VsccaConstants.TOKEN_HEADER);
+		if (token == null && TokenValidation.getAuthentication(token) != true
+				|| getTokenAuthentication(token) != true) {
+			response.setSuccess(401);
+			response.setMessage("Unauthorized");
+		} else {
+			List<Object[]> taskDetails = taskInfoService.findTaskDetailsDayBook(dayBookDto.getStartDate(), dayBookDto.getEndDate());
+			List<TaskDto> task = new ArrayList<TaskDto>();
+			for (Object[] result : taskDetails) {
+				TaskDto taskDto = new TaskDto();
+				if (result[0] != null) {
+					taskDto.setTaskId(((BigInteger) result[0]).longValue());
+				}
+				if (result[1] != null) {
+					taskDto.setProjectName(result[1].toString());
+				}
+				if (result[2] != null) {
+					taskDto.setPartyName(result[2].toString());
+				}
+				if (result[3] != null) {
+					taskDto.setWeightage((Integer) result[3]);
+				}
+				if (result[4] != null) {
+					taskDto.setTaskDescription(result[4].toString());
+				}
+				if (result[5] != null) {
+					taskDto.setTaskType(result[5].toString());
+				}
+				if (result[6] != null) {
+					taskDto.setBillingClient(result[6].toString());
+				}
+				if (result[7] != null) {
+					taskDto.setCreatedAt((Date) result[7]);
+				}
+				if (result[8] != null) {
+					taskDto.setDueDate(result[8].toString());
+				}
+				if (result[9] != null) {
+					taskDto.setStatus(result[9].toString());
+				}
+				if (result[10] != null) {
+					taskDto.setDelayReason(result[10].toString());
+				}
+				if (result[11] != null) {
+					taskDto.setRemarks(result[11].toString());
+				}
+				if (result[12] != null) {
+					taskDto.setEndDate((Date) result[12]);
+				}
+				if (result[13] != null) {
+					taskDto.setResponsibility(result[13].toString());
+					taskDto.setResponsibilityName(getNameByEmailId(result[13].toString()));
+				}
+
+				if (result[14] != null) {
+					taskDto.setIntimation(result[14].toString());
+					taskDto.setIntimationName(getNameByEmailId(result[14].toString()));
+				}
+				if (result[15] != null) {
+					taskDto.setExceution(result[15].toString());
+					taskDto.setExceutionName(getNameByEmailId(result[15].toString()));
+				}
+				if (result[16] != null) {
+					taskDto.setConsulting(result[16].toString());
+					taskDto.setConsultingName(getNameByEmailId(result[16].toString()));
+				}
+				task.add(taskDto);
+			}
+
+			response.setSuccess(200);
+			response.setBody(task);
+			response.setMessage("success");
+		}
+		return response;
+	}
+
 
 	public String getNameByEmailId(String emailId) {
 		String name = "";

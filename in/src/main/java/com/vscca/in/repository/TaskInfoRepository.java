@@ -44,7 +44,7 @@ public interface TaskInfoRepository extends JpaRepository<TaskInfo, Long> {
 			+ "tud.responsibility,tud.intimation,tud.exceution,tud.consulting from vscca.task_status as ts,\r\n"
 			+ " vscca.task_info as ti ,vscca.task_user_details as tud,(select max(end_date) as end_date,task_id \r\n"
 			+ " from vscca.task_status group by task_id) as tid where ts.task_id=tid.task_id and tid.end_date=ts.end_date\r\n"
-			+ " and ti.id=tud.task_id and ts.task_id=ti.id and ? in (tud.responsibility ,tud.intimation ,tud.exceution ,tud.consulting)",nativeQuery=true)
+			+ " and ti.id=tud.task_id and ts.task_id=ti.id and ? in (tud.responsibility ,tud.intimation ,tud.exceution ,tud.consulting) order by ti.due_date desc ",nativeQuery=true)
 	List<Object[]> findTaskDetailsByUser(String emailId);
 	
 	@Query(value="select ts.task_id, ti.project_name,ti.party_name,ti.weightage,ti.task_description,ti.task_type,\r\n"
@@ -52,7 +52,7 @@ public interface TaskInfoRepository extends JpaRepository<TaskInfo, Long> {
 			+ "tud.responsibility,tud.intimation,tud.exceution,tud.consulting from vscca.task_status as ts,\r\n"
 			+ " vscca.task_info as ti ,vscca.task_user_details as tud,(select max(end_date) as end_date,task_id \r\n"
 			+ " from vscca.task_status group by task_id) as tid where ts.task_id=tid.task_id and tid.end_date=ts.end_date\r\n"
-			+ " and ti.id=tud.task_id and ts.task_id=ti.id and ? in (tud.responsibility ,tud.intimation ,tud.exceution ,tud.consulting) and ti.due_date = CURDATE()",nativeQuery=true)
+			+ " and ti.id=tud.task_id and ts.task_id=ti.id and ? in (tud.responsibility ,tud.intimation ,tud.exceution ,tud.consulting) and ti.due_date = CURDATE() order by ti.due_date des",nativeQuery=true)
 	List<Object[]> findTaskDetailsForUsersToday(String emailId);
 	
 	
@@ -62,7 +62,7 @@ public interface TaskInfoRepository extends JpaRepository<TaskInfo, Long> {
 			+ "tud.responsibility,tud.intimation,tud.exceution,tud.consulting from vscca.task_status as ts,\r\n"
 			+ " vscca.task_info as ti ,vscca.task_user_details as tud,(select max(end_date) as end_date,task_id \r\n"
 			+ " from vscca.task_status group by task_id) as tid where ts.task_id=tid.task_id and tid.end_date=ts.end_date\r\n"
-			+ " and ti.id=tud.task_id and ts.task_id=ti.id and ? in (tud.responsibility ,tud.intimation ,tud.exceution ,tud.consulting) and ti.due_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY)",nativeQuery=true)
+			+ " and ti.id=tud.task_id and ts.task_id=ti.id and ? in (tud.responsibility ,tud.intimation ,tud.exceution ,tud.consulting) and ti.due_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY) order by ti.due_date des",nativeQuery=true)
 	List<Object[]> findTaskDetailsForUsersWeek(String emailId);
 	
 	@Query(value="select ts.task_id, ti.project_name,ti.party_name,ti.weightage,ti.task_description,ti.task_type,\r\n"
@@ -70,9 +70,12 @@ public interface TaskInfoRepository extends JpaRepository<TaskInfo, Long> {
 			+ "tud.responsibility,tud.intimation,tud.exceution,tud.consulting from vscca.task_status as ts,\r\n"
 			+ " vscca.task_info as ti ,vscca.task_user_details as tud,(select max(end_date) as end_date,task_id \r\n"
 			+ " from vscca.task_status group by task_id) as tid where ts.task_id=tid.task_id and tid.end_date=ts.end_date\r\n"
-			+ " and ti.id=tud.task_id and ts.task_id=ti.id and ? in (tud.responsibility ,tud.intimation ,tud.exceution ,tud.consulting) and ti.due_date < CURDATE()",nativeQuery=true)
+			+ " and ti.id=tud.task_id and ts.task_id=ti.id and ? in (tud.responsibility ,tud.intimation ,tud.exceution ,tud.consulting) and ti.due_date < CURDATE() order by ti.due_date des",nativeQuery=true)
 	List<Object[]> findTaskDetailsForUsersByDueDate(String emailId);
 	
 	@Query(value="select * from vscca.task_info where id=?",nativeQuery=true)
 	TaskInfo getById(Long id);
+	
+	@Query(value="select ts.task_id, ti.project_name,ti.party_name,ti.weightage,ti.task_description,ti.task_type,ti.billing_client,ti.created_at,ti.due_date,ts.status,ts.delay_reason,ts.remarks,ts.end_date,tud.responsibility,tud.intimation,tud.exceution,tud.consulting from vscca.task_status as ts, vscca.task_info as ti ,vscca.task_user_details as tud,(select max(end_date) as end_date,task_id from vscca.task_status group by task_id) as tid where ts.task_id=tid.task_id and tid.end_date=ts.end_date and ti.id=tud.task_id and ts.task_id=ti.id and ts.status ='Done' and ts.status='Final' and ti.created_at<=? and ts.end_date >=?",nativeQuery=true)
+	List<Object[]> findTaskDetailsDayBook(String startDate, String endDate);
 }

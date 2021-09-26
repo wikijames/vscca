@@ -31,4 +31,6 @@ public interface TaskInfoService {
 	List<Object[]> findTaskDetailsForUsersByDueDate(String emailId);
 	
 	TaskInfo getById(Long id);
+	
+	List<Object[]> findTaskDetailsDayBook(String startDate, String endDate);
 }

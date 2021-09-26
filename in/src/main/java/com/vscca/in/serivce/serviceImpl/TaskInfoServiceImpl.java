@@ -82,4 +82,10 @@ public class TaskInfoServiceImpl implements TaskInfoService {
 		return taskInfoRepository.getById(id);
 	}
 
+	@Override
+	public List<Object[]> findTaskDetailsDayBook(String startDate, String endDate) {
+		// TODO Auto-generated method stub
+		return taskInfoRepository.findTaskDetailsDayBook(startDate, endDate);
+	}
+
 }
