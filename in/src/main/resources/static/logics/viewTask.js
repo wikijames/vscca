@@ -131,7 +131,11 @@ function dataTableFilterHandler () {
 				}
             },
 			"bPaginate": false,
-//        dom: 'Bfrtip',
+        dom: 'Bfrtip',
+		buttons: [
+			'copy', 'csv', 'excel', 'pdf', 'print'
+			],
+    	colReorder: true,
 //        buttons: [
 //             {
 //            extend: 'excelHtml5',
