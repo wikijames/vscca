@@ -37,40 +37,30 @@
                     <h3 class="mb-0">Reports</h3>
                   </div>
                   <div class="col-lg-3">
-                    <select
-                      id="viewType"
-                      class="form-control"
-                      onChange="viewType()"
-                    >
-                      <option value="responsibility">Responsibility</option>
-                      <option value="exceution">Execution</option>
-                      <option value="intimation">Intimation</option>
-                      <option value="consulting">Consulting</option>
-                    </select>
                   </div>
-
-                 <div class="input-daterange datepicker row align-items-center">
-				    <div class="col">
-				        <div class="form-group">
-				            <div class="input-group">
-				                <div class="input-group-prepend">
-				                    <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
-				                </div>
-				                <input class="form-control" placeholder="Start date" type="text" value="06/18/2020">
-				            </div>
-				        </div>
-				    </div>
-				    <div class="col">
-				        <div class="form-group">
-				            <div class="input-group">
-				                <div class="input-group-prepend">
-				                    <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
-				                </div>
-				                <input class="form-control" placeholder="End date" type="text" value="06/22/2020">
-				            </div>
-				        </div>
-				    </div>
-				</div>
+					
+					<div class="input-daterange datepicker row align-items-center">
+					    <div class="col">
+					        <div class="form-group">
+					            <div class="input-group">
+					                <div class="input-group-prepend">
+					                    <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
+					                </div>
+					                <input class="form-control" placeholder="Start date" type="text" value="06/18/2020">
+					            </div>
+					        </div>
+					    </div>
+					    <div class="col">
+					        <div class="form-group">
+					            <div class="input-group">
+					                <div class="input-group-prepend">
+					                    <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
+					                </div>
+					                <input class="form-control" placeholder="End date" type="text" value="06/22/2020">
+					            </div>
+					        </div>
+					    </div>
+					</div>
 
                 </div>
               </div>
@@ -124,7 +114,18 @@
         <div th:replace="fragments/footer :: dashboard-footer"></div>
       </div>
     </div>
+    
+    <div th:replace="fragments/footer :: dashboard-scripts"></div>
     <!-- scripts -->
 <!--     <script th:src="@{/logics/reports.js}"></script> -->
+    <script>
+//       $(document).ready(function () {
+//         // $.fn.datepicker.defaults.format = "yyyy/dd/mm";
+//         $(".datepicker").datepicker({
+// //           format: "dd-mm-yyyy";
+//         	 startDate: new Date()
+//         });
+//       });
+    </script>
   </body>
 </html>
