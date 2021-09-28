@@ -34,7 +34,7 @@ public class LocationController {
 	public ResponseDto getAccess(HttpServletRequest req) {
 		ResponseDto response = new ResponseDto();
 		String token= req.getHeader(VsccaConstants.TOKEN_HEADER);
-		if(token == null && TokenValidation.getAuthentication(token) != true || getTokenAuthentication(token) != true) {
+		if(token == null || TokenValidation.getAuthentication(token) != true || getTokenAuthentication(token) != true) {
 				response.setSuccess(401);
 				response.setMessage("Unauthorized");
 			}else {

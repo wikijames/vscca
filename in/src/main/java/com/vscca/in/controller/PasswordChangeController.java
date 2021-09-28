@@ -32,7 +32,7 @@ public class PasswordChangeController {
 	public ResponseDto passwordChange(HttpServletRequest req, @RequestBody RequestDto requestDto) {
 		ResponseDto response= new ResponseDto();
 		String token = req.getHeader(VsccaConstants.TOKEN_HEADER);
-		if (token == null && TokenValidation.getAuthentication(token) != true
+		if (token == null || TokenValidation.getAuthentication(token) != true
 				|| getTokenAuthentication(token) != true) {
 			response.setSuccess(401);
 			response.setMessage("Unauthorized");
@@ -57,7 +57,7 @@ public class PasswordChangeController {
 	public ResponseDto passwordChangeSelf(HttpServletRequest req, @RequestBody RequestDto requestDto) {
 		ResponseDto response= new ResponseDto();
 		String token = req.getHeader(VsccaConstants.TOKEN_HEADER);
-		if (token == null && TokenValidation.getAuthentication(token) != true
+		if (token == null || TokenValidation.getAuthentication(token) != true
 				|| getTokenAuthentication(token) != true) {
 			response.setSuccess(401);
 			response.setMessage("Unauthorized");

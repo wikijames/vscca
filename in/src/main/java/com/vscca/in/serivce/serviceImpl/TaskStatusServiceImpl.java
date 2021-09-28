@@ -19,4 +19,10 @@ public class TaskStatusServiceImpl implements TaskStatusService{
 		return taskStatusRepository.save(taskStatus);
 	}
 
+	@Override
+	public void deleteByTaskId(Long taskId) {
+		// TODO Auto-generated method stub
+		taskStatusRepository.deleteByTaskId(taskId);
+	}
+
 }

@@ -41,7 +41,8 @@ public class LoginController {
 			// System.out.println(loginTable.getUserName());
 			if (requestDto.getUserName().equalsIgnoreCase(loginTable.getUserName())
 					&& requestDto.getPassword().equals(loginTable.getPassword())) {
-				final int EXPIRATIONTIME = 1000 * 60 * 60 * 1800 * 1;// 30 Days
+				//final long EXPIRATIONTIME = 1000 * 60 * 60 * 720 * 1;// 30 Days
+				final long EXPIRATIONTIME= 2592000000L;
 				String jwtToken = Jwts.builder().setSubject(loginTable.getUserName())
 						.setExpiration(new Date(System.currentTimeMillis() + EXPIRATIONTIME)).claim("roles", "user")
 						.setIssuedAt(new Date()).signWith(SignatureAlgorithm.HS256, VsccaConstants.secretKey).compact();
