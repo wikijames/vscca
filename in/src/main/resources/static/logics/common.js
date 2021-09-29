@@ -65,6 +65,7 @@ function roleBaseAccess () {
         $( '.forAdmin' ).remove();
         $( '.passwordNavforAdmin' ).remove();
     } else if ( userRole == 'TeamMember' ) {
+		$(".createTaskFormStatus option[value='Done']").hide();
         $( '.adminPanelTopNav' ).remove();
         $( '#forAdmin' ).remove();
         $( '.notForTM' ).remove();

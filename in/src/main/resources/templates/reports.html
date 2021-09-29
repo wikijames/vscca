@@ -36,7 +36,7 @@
                   <div class="col-lg-12">
                     <h3 class="mb-0">Daybook Report</h3>
                   </div>
-                      <div class="col-lg-3">
+                      <div class="col-lg-4">
 	                  <div class="input-daterange datepicker row align-items-center">
 						    <div class="col">
 						        <div class="form-group">
@@ -69,7 +69,7 @@
 					  <div class="col-lg-3">
 					  <label class="form-control-label" 
                             ></label>
-						   		<button type="button" id="populateDaybook">Search</button>
+						   		<button type="button" class="search-btn" id="populateDaybook">Generate Daybook</button>
 						   </div>
 						    
                 </div>
@@ -82,8 +82,29 @@
                 >
                   <thead class="thead-light">
                     <tr>
-                      <th scope="col" class="sort" data-sort="projectName">
+                       <th scope="col" class="sort" data-sort="projectName">
                         Project Name
+                      </th>
+                      <th scope="col" class="sort" data-sort="partyName">
+                        Party Name
+                      </th>
+                      <th scope="col" class="sort" data-sort="responsibility">
+                        Responsibility
+                      </th>
+                      <th scope="col" class="sort" data-sort="execution">
+                        Execution
+                      </th>
+                      <th scope="col" class="sort" data-sort="intimation">
+                        Intimation
+                      </th>
+                      <th scope="col" class="sort" data-sort="consulting">
+                        Consulting
+                      </th>
+                      <th scope="col" class="sort" data-sort="dueDate">
+                        Due Date
+                      </th>
+                      <th scope="col" class="sort" data-sort="completedDate">
+                        Completed Date
                       </th>
                     </tr>
                   </thead>

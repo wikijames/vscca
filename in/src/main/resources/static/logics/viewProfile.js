@@ -50,15 +50,20 @@ function redirectToProfileDetails(id){
 function dataTableFilterHandler () {
     //Data table filter
     $( '#table_id' ).DataTable( {
-//        dom: 'Bfrtip',
+        dom: 'Bfrtip',
 //        buttons: [
 //             {
 //            extend: 'excelHtml5',
 //            autoFilter: true
 //       		 }
 //        ],
+		"bPaginate": false,
+		buttons: [
+			'excel'
+			],
+    	colReorder: true,
         initComplete: function () {
-            this.api().columns().every( function () {
+            this.api().columns([0,1,2]).every( function () {
                 var column = this;
                 var ddmenu = cbDropdown( $( column.header() ) )
                     .on( 'change', ':checkbox', function () {

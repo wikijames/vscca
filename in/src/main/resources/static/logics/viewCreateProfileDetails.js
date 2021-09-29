@@ -5,6 +5,7 @@ $(document).ready(function(){
 //	disableProfileFormInputHandler();
 	//getViewOwnProfile();
 	//$('#responsibility').prop('checked', true);
+	
 })// ready ends
 
 function isCheckedType(value){

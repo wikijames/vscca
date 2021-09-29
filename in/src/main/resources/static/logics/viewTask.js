@@ -46,7 +46,7 @@ function sortStatusText(value){
 	if( value ==  `ShortWork`){
         return 'Short Work';
     }
-	if( value ==  `coming`){
+	if( value ==  `InProcess`){
         return 'In Process';
     }
 	if( value ==  `WorkOnClientEnd`){
@@ -69,62 +69,29 @@ function sortStatusText(value){
 	}
 }
 
-//function taskNavLoadHandler ( value ) {
-//	 if ( userRole == 'Admin' && value == 'dashboard') {
-//	    alert( 'admin' );
-//	    $( '#taskNameChangeHeading' ).text( 'All Tasks' );
-//		return populateData( getTaskDetailsByUserURL );
-//	}else if ( value == 'all' ) {
-//        alert( 'all' );
-//        $( '#taskNameChangeHeading' ).text( 'Your Tasks' );
-//		return populateData( getTaskDetailsByUserURL );
-//    } else if ( value == 'today' ) {
-//        alert( 'today' );
-//        $( '#taskNameChangeHeading' ).text( "Today's Task" );
-//		return populateData(getTaskDetailsByUserTodayURL);
-//    } else if ( value == 'week' ) {
-//        alert( 'week' );
-//        $( '#taskNameChangeHeading' ).text( "7 Day's Plan" );
-//		return populateData(getTaskDetailsByUserWeekURL);
-//    } else if ( value == 'overdue' ) {
-//        alert( 'overdue' );
-//        $( '#taskNameChangeHeading' ).text( "Overdue" );
-//		return populateData(getTaskDetailsByUserByDueDateURL);
-//    }
-//};
-//
-//function showTaskbyTypeHandler ( value ) {
-//    if ( ( window.location.href.indexOf( "myProfile" ) > -1 ) || ( window.location.href.indexOf( "password" ) > -1 ) ||  ( window.location.href.indexOf( "reports" ) > -1 ) ) {
-//        window.location = 'dashboard'
-//        taskNavLoadHandler( value );
-//    } else if ( window.location.href.indexOf( "dashboard" ) > -1 ) {
-//        taskNavLoadHandler( value );
-//    }
-//};
-
 function dataTableFilterHandler () {
     //Data table filter
     $( '#table_id' ).DataTable( {
 	"createdRow": function( row, data, dataIndex){
-                if( data[9] ==  'ShortWork'){
+                if( data[9] ==  'Short Work'){
                     $(row).addClass('ShortWork');
                 }
-				if( data[9] ==  'InProcess'){
+				else if( data[9] ==  'In Process'){
                     $(row).addClass('InProcess');
                 }
-				if( data[9] ==  'WorkOnClientEnd'){
+				else if( data[9] ==  'Work On Client End'){
                     $(row).addClass('WorkOnClientEnd');
                 }
-				if( data[9] ==  'Done'){
+				else if( data[9] ==  'Done'){
                     $(row).addClass('Done');
                 }
-				if( data[9] ==  'ReadyToCheck'){
+				else if( data[9] ==  'Ready To Check'){
                     $(row).addClass('ReadyToCheck');
                 }
-				if( data[9] ==  'DiscussionWithSatishJi'){
+				else if( data[9] ==  'Discussion With Satish Ji'){
                     $(row).addClass('DiscussionWithSatishJi');
                 }
-				if( data[9] ==  'ReadyToUpload'){
+				else if( data[9] ==  'Ready To Upload'){
                     $(row).addClass('ReadyToUpload');
                 }else{
 					$(row).addClass('whiteRow');

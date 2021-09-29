@@ -11,9 +11,12 @@ jQuery( function () {
 	$("#populateDaybook").click(function(e) {
 	    e.preventDefault(); // avoid to execute the actual submit of the form.
 //		var taskId = $("#save").attr('title');
-//		var startDate = $('#startDate').val()
-//		var endDate = $('#endDate').val();
-
+		var startDate = $('#startDate').val()
+		var endDate = $('#endDate').val();
+			
+			if(startDate == '' || endDate == ''){
+				alert('Please select date to generate daybook');
+			}else{
 			var settings = {
 		    "url": postTaskDetailsDayBookURL,
 			  "method": "POST",
@@ -29,19 +32,16 @@ jQuery( function () {
 		};
 			$.ajax(settings).done(function (response) {
 				if(response.success == 200 ){
-					$.each( data.body, function ( i, obj ) {
+					$.each( response.body, function ( i, obj ) {
 		                var div_data = '<tr>'
 		                    + '<td>' + obj.projectName + '</td>'
 		                    + '<td>' + obj.partyName + '</td>'
-		                    + '<td>' + obj.weightage + '</td>'
 		                    + '<td>' + obj.responsibilityName + '</td>'
 							+ '<td>' + obj.exceutionName + '</td>'
 							+ '<td>' + obj.intimationName + '</td>'
 							+ '<td>' + obj.consultingName + '</td>'
 		                    + '<td>' + formatDateHandler( obj.dueDate ) + '</td>'
-		                    + '<td>' + isTaskDescription( obj.taskDescription ) + '</td>'
-		                    + '<td>' + sortStatusText(obj.status) + '</td>'
-		                    + '<td> <a onClick="redirectToTaskDetails(' + obj.taskId + ')" class="btn pointer">View/Edit</a></td>'
+							+ '<td>' + formatDateHandler( obj.completedDate ) + '</td>'
 		                    + '</tr>';
 		                $( div_data ).appendTo( '#populateGrid' );
 		                
@@ -53,6 +53,8 @@ jQuery( function () {
 					alert('something went wrong.'+ data);
 				}
 			});
+			
+			}
 		});
 
 } )// jquery end
@@ -166,22 +168,22 @@ function dataTableFilterHandler () {
                 if( data[9] ==  'ShortWork'){
                     $(row).addClass('ShortWork');
                 }
-				if( data[9] ==  'InProcess'){
+				else if( data[9] ==  'InProcess'){
                     $(row).addClass('InProcess');
                 }
-				if( data[9] ==  'WorkOnClientEnd'){
+				else if( data[9] ==  'WorkOnClientEnd'){
                     $(row).addClass('WorkOnClientEnd');
                 }
-				if( data[9] ==  'Done'){
+				else if( data[9] ==  'Done'){
                     $(row).addClass('Done');
                 }
-				if( data[9] ==  'ReadyToCheck'){
+				else if( data[9] ==  'ReadyToCheck'){
                     $(row).addClass('ReadyToCheck');
                 }
-				if( data[9] ==  'DiscussionWithSatishJi'){
+				else if( data[9] ==  'DiscussionWithSatishJi'){
                     $(row).addClass('DiscussionWithSatishJi');
                 }
-				if( data[9] ==  'ReadyToUpload'){
+				else if( data[9] ==  'ReadyToUpload'){
                     $(row).addClass('ReadyToUpload');
                 }else{
 					$(row).addClass('whiteRow');

@@ -209,7 +209,7 @@ $("#endDate").change(function(){
 
 					//console.log(response);
 					if(response.success == 200 ){
-						window.location = 'viewTaskGrid';
+						window.location = 'dashboard';
 						$("#createForm")[0].reset();
 						alert('Task has been created succesfully');
 					}else if(reponse.success === 401 ){
