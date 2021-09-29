@@ -6,68 +6,125 @@ jQuery( function () {
 		//alert('hi')
     }, 1000 );
 
+
+// this is the id of the form
+	$("#populateDaybook").click(function(e) {
+	    e.preventDefault(); // avoid to execute the actual submit of the form.
+//		var taskId = $("#save").attr('title');
+//		var startDate = $('#startDate').val()
+//		var endDate = $('#endDate').val();
+
+			var settings = {
+		    "url": postTaskDetailsDayBookURL,
+			  "method": "POST",
+			  "timeout": 0,
+			"headers": {
+		    	"Content-Type": "application/json",
+				"Authorization": accessToken
+		  	},
+		  "data": JSON.stringify({
+			"startDate" : '2021-08-01',
+			"endDate" : '2021-09-30'
+		  }),
+		};
+			$.ajax(settings).done(function (response) {
+				if(response.success == 200 ){
+					$.each( data.body, function ( i, obj ) {
+		                var div_data = '<tr>'
+		                    + '<td>' + obj.projectName + '</td>'
+		                    + '<td>' + obj.partyName + '</td>'
+		                    + '<td>' + obj.weightage + '</td>'
+		                    + '<td>' + obj.responsibilityName + '</td>'
+							+ '<td>' + obj.exceutionName + '</td>'
+							+ '<td>' + obj.intimationName + '</td>'
+							+ '<td>' + obj.consultingName + '</td>'
+		                    + '<td>' + formatDateHandler( obj.dueDate ) + '</td>'
+		                    + '<td>' + isTaskDescription( obj.taskDescription ) + '</td>'
+		                    + '<td>' + sortStatusText(obj.status) + '</td>'
+		                    + '<td> <a onClick="redirectToTaskDetails(' + obj.taskId + ')" class="btn pointer">View/Edit</a></td>'
+		                    + '</tr>';
+		                $( div_data ).appendTo( '#populateGrid' );
+		                
+		            });
+					alert('Daybook loaded');
+				}else if(reponse.success === 401 ){
+					checkSession();
+				}else{
+					alert('something went wrong.'+ data);
+				}
+			});
+		});
+
 } )// jquery end
 
-function populateData ( url ) {
-    //$('#table_id').dataTable().destroy();
-    $( '#table_id tbody' ).empty();
-    $.ajax( {
-        type: "GET",
-        url: url,
-        dataType: "json",
-        "headers": {
-            "Content-Type": "application/json",
-            "Authorization": accessToken
-        },
-        success: function ( data ) {
-            checkSession( data.success );
-			$.each( data.body, function ( i, obj ) {
-                var div_data = '<tr>'
-                    + '<td>' + obj.projectName + '</td>'
-                    + '<td>' + obj.partyName + '</td>'
-                    + '<td>' + obj.weightage + '</td>'
-                    + '<td>' + obj.responsibilityName + '</td>'
-					+ '<td>' + obj.exceutionName + '</td>'
-					+ '<td>' + obj.intimationName + '</td>'
-					+ '<td>' + obj.consultingName + '</td>'
-                    + '<td>' + formatDateHandler( obj.dueDate ) + '</td>'
-                    + '<td>' + isTaskDescription( obj.taskDescription ) + '</td>'
-                    + '<td>' + sortStatusText(obj.status) + '</td>'
-                    + '<td> <a onClick="redirectToTaskDetails(' + obj.taskId + ')" class="btn pointer">View/Edit</a></td>'
-                    + '</tr>';
-                $( div_data ).appendTo( '#populateGrid' );
-                
-            } );
-        }
-    } );
-};
+//function populateData () {
+//    //$('#table_id').dataTable().destroy();
+//	var startDate = $('#startDate').val();
+//	var endDate = $('#endDate').val();
+////	var data = {
+////		"startDate": $('#startDate').val(),
+////		"endDate": $('#endDate').val()
+////	}
+//
+//    $( '#table_id tbody' ).empty();
+//    $.ajax( {
+//        type: "GET",
+//        url: getTaskDetailsDayBookURL,
+////		data: data,
+//        dataType: "json",
+//        "headers": {
+//            "Content-Type": "application/json",
+//            "Authorization": accessToken
+//        },
+//        success: function ( data ) {
+//			$.each( data.body, function ( i, obj ) {
+//				console.log('data', obj);
+//                var div_data = '<tr>'
+//                    + '<td>' + obj.projectName + '</td>'
+//                    + '<td>' + obj.partyName + '</td>'
+//                    + '<td>' + obj.weightage + '</td>'
+//                    + '<td>' + obj.responsibilityName + '</td>'
+//					+ '<td>' + obj.exceutionName + '</td>'
+//					+ '<td>' + obj.intimationName + '</td>'
+//					+ '<td>' + obj.consultingName + '</td>'
+//                    + '<td>' + formatDateHandler( obj.dueDate ) + '</td>'
+//                    + '<td>' + isTaskDescription( obj.taskDescription ) + '</td>'
+//                    + '<td>' + sortStatusText(obj.status) + '</td>'
+//                    + '<td> <a onClick="redirectToTaskDetails(' + obj.taskId + ')" class="btn pointer">View/Edit</a></td>'
+//                    + '</tr>';
+//                $( div_data ).appendTo( '#populateGrid' );
+//                
+//            } );
+//        }
+//    } );
+//};
 
-function sortStatusText(value){
-	if( value ==  `ShortWork`){
-        return 'Short Work';
-    }
-	if( value ==  `coming`){
-        return 'In Process';
-    }
-	if( value ==  `WorkOnClientEnd`){
-        return 'Work On Client End';
-    }
-	if( value ==  `Done`){
-        return 'Done';
-    }
-	if( value ==  `ReadyToCheck`){
-        return 'Ready To Check';
-    }
-	if( value ==  `DiscussionWithSatishJi`){
-        return 'Discussion With Satish Ji';
-    }
-	if( value ==  `ReadyToUpload`){
-        return 'Ready To Upload'
-    }
-	else{
-		return value;
-	}
-}
+//function sortStatusText(value){
+//	if( value ==  `ShortWork`){
+//        return 'Short Work';
+//    }
+//	if( value ==  `coming`){
+//        return 'In Process';
+//    }
+//	if( value ==  `WorkOnClientEnd`){
+//        return 'Work On Client End';
+//    }
+//	if( value ==  `Done`){
+//        return 'Done';
+//    }
+//	if( value ==  `ReadyToCheck`){
+//        return 'Ready To Check';
+//    }
+//	if( value ==  `DiscussionWithSatishJi`){
+//        return 'Discussion With Satish Ji';
+//    }
+//	if( value ==  `ReadyToUpload`){
+//        return 'Ready To Upload'
+//    }
+//	else{
+//		return value;
+//	}
+//}
 
 //function taskNavLoadHandler ( value ) {
 //	 if ( userRole == 'Admin' && value == 'dashboard') {

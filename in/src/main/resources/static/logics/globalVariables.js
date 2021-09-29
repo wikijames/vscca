@@ -58,3 +58,6 @@ var getUsersURL = envVar + 'users';
 // Billing client
 var postBillingClientURL = envVar + '';
 
+//reports Books
+var postTaskDetailsDayBookURL = envVar + 'taskDetailsDayBook';
+

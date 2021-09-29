@@ -992,7 +992,7 @@ public class TaskController {
 	
 	
 	@CrossOrigin
-	@GetMapping("/taskDetailsDayBook")
+	@PostMapping("/taskDetailsDayBook")
 	public ResponseDto getTaskDetailsDayBook(HttpServletRequest req,@RequestBody DayBookDto dayBookDto) {
 		ResponseDto response = new ResponseDto();
 		String token = req.getHeader(VsccaConstants.TOKEN_HEADER);
