@@ -88,4 +88,10 @@ public class TaskInfoServiceImpl implements TaskInfoService {
 		return taskInfoRepository.findTaskDetailsDayBook(startDate, endDate);
 	}
 
+	@Override
+	public void deleteById(Long id) {
+		 taskInfoRepository.deleteById(id);
+		
+	}
+
 }

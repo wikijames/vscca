@@ -60,8 +60,8 @@ public class BillingClientController {
 
 		ResponseDto response = new ResponseDto();
 		String token = req.getHeader(VsccaConstants.TOKEN_HEADER);
-		if (token == null && TokenValidation.getAuthentication(token) != true
-				&& getTokenAuthentication(token) != true) {
+		if (token == null || TokenValidation.getAuthentication(token) != true
+				|| getTokenAuthentication(token) != true) {
 			response.setSuccess(401);
 			response.setMessage("Unauthorized");
 		} else {
@@ -82,7 +82,7 @@ public class BillingClientController {
 	public ResponseDto getBillingById(HttpServletRequest req, @RequestParam String id) {
 		ResponseDto response = new ResponseDto();
 		String token = req.getHeader(VsccaConstants.TOKEN_HEADER);
-		if (token == null && TokenValidation.getAuthentication(token) != true
+		if (token == null || TokenValidation.getAuthentication(token) != true
 				|| getTokenAuthentication(token) != true) {
 			response.setSuccess(401);
 			response.setMessage("Unauthorized");
@@ -100,7 +100,7 @@ public class BillingClientController {
 	public ResponseDto editBillingClient(HttpServletRequest req, @RequestBody BillingClientDto billingClientDto) {
 		ResponseDto response = new ResponseDto();
 		String token = req.getHeader(VsccaConstants.TOKEN_HEADER);
-		if (token == null && TokenValidation.getAuthentication(token) != true
+		if (token == null || TokenValidation.getAuthentication(token) != true
 				|| getTokenAuthentication(token) != true) {
 			response.setSuccess(401);
 			response.setMessage("Unauthorized");

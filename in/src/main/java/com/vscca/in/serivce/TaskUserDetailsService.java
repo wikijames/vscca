@@ -7,4 +7,6 @@ public interface TaskUserDetailsService {
 	TaskUserDetails save(TaskUserDetails taskUserDetails);
 	
 	TaskUserDetails getById(Long taskId);
+	
+	void deleteByTaskId(Long taskId);
 }

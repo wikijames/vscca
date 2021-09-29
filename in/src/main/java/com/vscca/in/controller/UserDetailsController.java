@@ -40,7 +40,7 @@ public class UserDetailsController {
 	public ResponseDto postLogin(HttpServletRequest req,@RequestBody UserDto userDto) {
 		ResponseDto response= new ResponseDto();
 		String token= req.getHeader(VsccaConstants.TOKEN_HEADER);
-		if(token == null && TokenValidation.getAuthentication(token) != true || getTokenAuthentication(token) != true) {
+		if(token == null || TokenValidation.getAuthentication(token) != true || getTokenAuthentication(token) != true) {
 				response.setSuccess(401);
 				response.setMessage("Unauthorized");
 			}else {
@@ -85,7 +85,7 @@ public class UserDetailsController {
 	public ResponseDto userDetailsByconsulting(HttpServletRequest req) {
 		ResponseDto response= new ResponseDto();
 		String token= req.getHeader(VsccaConstants.TOKEN_HEADER);
-		if(token == null && TokenValidation.getAuthentication(token) != true || getTokenAuthentication(token) != true) {
+		if(token == null || TokenValidation.getAuthentication(token) != true || getTokenAuthentication(token) != true) {
 				response.setSuccess(401);
 				response.setMessage("Unauthorized");
 			}else {
@@ -102,7 +102,7 @@ public class UserDetailsController {
 	public ResponseDto userDetailsByResponsibility(HttpServletRequest req) {
 		ResponseDto response= new ResponseDto();
 		String token= req.getHeader(VsccaConstants.TOKEN_HEADER);
-		if(token == null && TokenValidation.getAuthentication(token) != true || getTokenAuthentication(token) != true) {
+		if(token == null || TokenValidation.getAuthentication(token) != true || getTokenAuthentication(token) != true) {
 				response.setSuccess(401);
 				response.setMessage("Unauthorized");
 			}else {
@@ -120,7 +120,7 @@ public class UserDetailsController {
 	public ResponseDto userDetailsByExceution(HttpServletRequest req) {
 		ResponseDto response= new ResponseDto();
 		String token= req.getHeader(VsccaConstants.TOKEN_HEADER);
-		if(token == null && TokenValidation.getAuthentication(token) != true || getTokenAuthentication(token) != true) {
+		if(token == null || TokenValidation.getAuthentication(token) != true || getTokenAuthentication(token) != true) {
 				response.setSuccess(401);
 				response.setMessage("Unauthorized");
 			}else {
@@ -138,7 +138,7 @@ public class UserDetailsController {
 	public ResponseDto userDetailsByIntemation(HttpServletRequest req) {
 		ResponseDto response= new ResponseDto();
 		String token= req.getHeader(VsccaConstants.TOKEN_HEADER);
-				if(token == null && TokenValidation.getAuthentication(token) != true || getTokenAuthentication(token) != true) {
+				if(token == null || TokenValidation.getAuthentication(token) != true || getTokenAuthentication(token) != true) {
 				response.setSuccess(401);
 				response.setMessage("Unauthorized");
 			}else {
@@ -177,7 +177,7 @@ public class UserDetailsController {
 	public ResponseDto getUsers(HttpServletRequest req) {
 		ResponseDto response= new ResponseDto();
 		String token= req.getHeader(VsccaConstants.TOKEN_HEADER);
-		if(token == null && TokenValidation.getAuthentication(token) != true || getTokenAuthentication(token) != true) {
+		if(token == null || TokenValidation.getAuthentication(token) != true || getTokenAuthentication(token) != true) {
 				response.setSuccess(401);
 				response.setMessage("Unauthorized");
 			}else {
@@ -194,7 +194,7 @@ public class UserDetailsController {
 	public ResponseDto getUserDetailsSelf(HttpServletRequest req) {
 		ResponseDto response= new ResponseDto();
 		String token= req.getHeader(VsccaConstants.TOKEN_HEADER);
-				if(token == null && TokenValidation.getAuthentication(token) != true || getTokenAuthentication(token) != true) {
+				if(token == null || TokenValidation.getAuthentication(token) != true || getTokenAuthentication(token) != true) {
 				response.setSuccess(401);
 				response.setMessage("Unauthorized");
 			}else {
@@ -213,7 +213,7 @@ public class UserDetailsController {
 	public ResponseDto getUsersById(HttpServletRequest req,@RequestParam String id) {
 		ResponseDto response= new ResponseDto();
 		String token= req.getHeader(VsccaConstants.TOKEN_HEADER);
-				if(token == null && TokenValidation.getAuthentication(token) != true || getTokenAuthentication(token) != true) {
+				if(token == null || TokenValidation.getAuthentication(token) != true || getTokenAuthentication(token) != true) {
 				response.setSuccess(401);
 				response.setMessage("Unauthorized");
 			}else {
@@ -230,7 +230,7 @@ public class UserDetailsController {
 	public ResponseDto editUserDetails(HttpServletRequest req, @RequestBody UserDto userDto) {
 		ResponseDto response= new ResponseDto();
 		String token= req.getHeader(VsccaConstants.TOKEN_HEADER);
-		if(token == null && TokenValidation.getAuthentication(token) != true || getTokenAuthentication(token) != true) {
+		if(token == null || TokenValidation.getAuthentication(token) != true || getTokenAuthentication(token) != true) {
 				response.setSuccess(401);
 				response.setMessage("Unauthorized");
 			}else {

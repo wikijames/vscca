@@ -94,7 +94,7 @@ public class TaskController {
 	public ResponseDto getTaskType(HttpServletRequest req) {
 		ResponseDto response = new ResponseDto();
 		String token = req.getHeader(VsccaConstants.TOKEN_HEADER);
-		if (token == null && TokenValidation.getAuthentication(token) != true
+		if (token == null || TokenValidation.getAuthentication(token) != true
 				|| getTokenAuthentication(token) != true) {
 			response.setSuccess(401);
 			response.setMessage("Unauthorized");
@@ -112,7 +112,7 @@ public class TaskController {
 	public ResponseDto getBillingClients(HttpServletRequest req) {
 		ResponseDto response = new ResponseDto();
 		String token = req.getHeader(VsccaConstants.TOKEN_HEADER);
-		if (token == null && TokenValidation.getAuthentication(token) != true
+		if (token == null || TokenValidation.getAuthentication(token) != true
 				|| getTokenAuthentication(token) != true) {
 			response.setSuccess(401);
 			response.setMessage("Unauthorized");
@@ -136,7 +136,7 @@ public class TaskController {
 		TaskInfo taskId = new TaskInfo();
 		TaskUserDetails taskUserDetails = new TaskUserDetails();
 		TaskStatus taskStatus = new TaskStatus();
-		if (token == null && TokenValidation.getAuthentication(token) != true
+		if (token == null || TokenValidation.getAuthentication(token) != true
 				|| getTokenAuthentication(token) != true) {
 			response.setSuccess(401);
 			response.setMessage("Unauthorized");
@@ -189,7 +189,7 @@ public class TaskController {
 	public ResponseDto getTaskDetails(HttpServletRequest req) {
 		ResponseDto response = new ResponseDto();
 		String token = req.getHeader(VsccaConstants.TOKEN_HEADER);
-		if (token == null && TokenValidation.getAuthentication(token) != true
+		if (token == null || TokenValidation.getAuthentication(token) != true
 				|| getTokenAuthentication(token) != true) {
 			response.setSuccess(401);
 			response.setMessage("Unauthorized");
@@ -499,7 +499,7 @@ public class TaskController {
 			throws ParseException {
 		ResponseDto response = new ResponseDto();
 		String token = req.getHeader(VsccaConstants.TOKEN_HEADER);
-		if (token == null && TokenValidation.getAuthentication(token) != true
+		if (token == null || TokenValidation.getAuthentication(token) != true
 				|| getTokenAuthentication(token) != true) {
 			response.setSuccess(401);
 			response.setMessage("Unauthorized");
@@ -581,7 +581,7 @@ public class TaskController {
 		ResponseDto response = new ResponseDto();
 		String token = req.getHeader(VsccaConstants.TOKEN_HEADER);
 		TaskStatus taskStatus = new TaskStatus();
-		if (token == null && TokenValidation.getAuthentication(token) != true
+		if (token == null || TokenValidation.getAuthentication(token) != true
 				|| getTokenAuthentication(token) != true) {
 			response.setSuccess(401);
 			response.setMessage("Unauthorized");
@@ -647,7 +647,7 @@ public class TaskController {
 	public ResponseDto getTaskDetailsUser(HttpServletRequest req) throws ParseException {
 		ResponseDto response = new ResponseDto();
 		String token = req.getHeader(VsccaConstants.TOKEN_HEADER);
-		if (token == null && TokenValidation.getAuthentication(token) != true
+		if (token == null || TokenValidation.getAuthentication(token) != true
 				|| getTokenAuthentication(token) != true) {
 			response.setSuccess(401);
 			response.setMessage("Unauthorized");
@@ -734,7 +734,7 @@ public class TaskController {
 	public ResponseDto getTaskDetailsUserToday(HttpServletRequest req) throws ParseException {
 		ResponseDto response = new ResponseDto();
 		String token = req.getHeader(VsccaConstants.TOKEN_HEADER);
-		if (token == null && TokenValidation.getAuthentication(token) != true
+		if (token == null || TokenValidation.getAuthentication(token) != true
 				|| getTokenAuthentication(token) != true) {
 			response.setSuccess(401);
 			response.setMessage("Unauthorized");
@@ -821,7 +821,7 @@ public class TaskController {
 	public ResponseDto getTaskDetailsUserWeek(HttpServletRequest req) throws ParseException {
 		ResponseDto response = new ResponseDto();
 		String token = req.getHeader(VsccaConstants.TOKEN_HEADER);
-		if (token == null && TokenValidation.getAuthentication(token) != true
+		if (token == null || TokenValidation.getAuthentication(token) != true
 				|| getTokenAuthentication(token) != true) {
 			response.setSuccess(401);
 			response.setMessage("Unauthorized");
@@ -908,7 +908,7 @@ public class TaskController {
 	public ResponseDto getTaskDetailsUserByDueDate(HttpServletRequest req) throws ParseException {
 		ResponseDto response = new ResponseDto();
 		String token = req.getHeader(VsccaConstants.TOKEN_HEADER);
-		if (token == null && TokenValidation.getAuthentication(token) != true
+		if (token == null || TokenValidation.getAuthentication(token) != true
 				|| getTokenAuthentication(token) != true) {
 			response.setSuccess(401);
 			response.setMessage("Unauthorized");
@@ -996,7 +996,7 @@ public class TaskController {
 	public ResponseDto getTaskDetailsDayBook(HttpServletRequest req,@RequestBody DayBookDto dayBookDto) {
 		ResponseDto response = new ResponseDto();
 		String token = req.getHeader(VsccaConstants.TOKEN_HEADER);
-		if (token == null && TokenValidation.getAuthentication(token) != true
+		if (token == null || TokenValidation.getAuthentication(token) != true
 				|| getTokenAuthentication(token) != true) {
 			response.setSuccess(401);
 			response.setMessage("Unauthorized");
@@ -1071,7 +1071,27 @@ public class TaskController {
 		return response;
 	}
 
+	@CrossOrigin
+	@GetMapping("/deleteTaskDetailsById")
+	public ResponseDto deleteTaskDetaisById(HttpServletRequest req, @RequestParam String taskId)
+			throws ParseException {
+		ResponseDto response = new ResponseDto();
+		String token = req.getHeader(VsccaConstants.TOKEN_HEADER);
+		if (token == null || TokenValidation.getAuthentication(token) != true
+				|| getTokenAuthentication(token) != true) {
+			response.setSuccess(401);
+			response.setMessage("Unauthorized");
+		} else {
+			taskInfoService.deleteById(Long.parseLong(taskId));
+			taskStatusService.deleteByTaskId(Long.parseLong(taskId));
+			taskUserDetailsService.deleteByTaskId(Long.parseLong(taskId));
+			response.setSuccess(200);
+			response.setMessage("success");
+		}
+		return response;
+	}
 
+	
 	public String getNameByEmailId(String emailId) {
 		String name = "";
 		UserDetails userDetails = userDetailsService.findByEmailId(emailId);
@@ -1084,7 +1104,6 @@ public class TaskController {
 	public String getfinalWiegtage(String dueDate, int weightage) throws ParseException {
 		String finalWeightage = "";
 		Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(dueDate);
-		System.out.println(date1);
 		if (date1.before(new Date(System.currentTimeMillis()))) {
 			int diff = new Date(System.currentTimeMillis()).getDate() - date1.getDate();
 			finalWeightage = "" + diff * weightage;

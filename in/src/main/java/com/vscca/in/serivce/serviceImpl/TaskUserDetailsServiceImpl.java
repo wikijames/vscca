@@ -25,4 +25,10 @@ public class TaskUserDetailsServiceImpl implements TaskUserDetailsService {
 		return taskUserDetailsRepository.getById(taskId);
 	}
 
+	@Override
+	public void deleteByTaskId(Long taskId) {
+		// TODO Auto-generated method stub
+		taskUserDetailsRepository.deleteByTaskId(taskId);
+	}
+
 }

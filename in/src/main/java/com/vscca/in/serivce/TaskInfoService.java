@@ -33,4 +33,6 @@ public interface TaskInfoService {
 	TaskInfo getById(Long id);
 	
 	List<Object[]> findTaskDetailsDayBook(String startDate, String endDate);
+	
+	 void deleteById(Long id);
 }
