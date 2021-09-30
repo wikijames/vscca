@@ -50,6 +50,9 @@ var getTaskDetailsByIdURL = envVar + 'taskDetailsById';
 var postEditTaskURL = envVar + 'editTask';
 var getLogoutURL = envVar + 'logout';
 
+// delete task 
+var getDeleteTaskDetailsByIdURL = envVar + 'deleteTaskDetailsById';
+
 //change password
 var postPasswordChangeSelfURL = envVar + 'passwordChangeSelf';
 var PostPasswordChangeURL = envVar + 'passwordChange';

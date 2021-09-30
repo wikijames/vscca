@@ -14,29 +14,23 @@
 <head>
   <title>Vivek Sushil &amp; Co - Login</title>
   <div th:replace="fragments/head :: head"></div>
+  <link rel="stylesheet" th:href="@{/css/login.css}" type="text/css" />
 </head>
-<body class="bg-default">
+<body class="bg-default login-body">
 
   <!-- Main content -->
   <div class="main-content">
-    <!-- Header -->
-    <div class="header bg-gradient-primary py-7 py-lg-8 pt-lg-9">
-      <div class="separator separator-bottom separator-skew zindex-100">
-        <svg x="0" y="0" viewBox="0 0 2560 100" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg">
-          <polygon class="fill-default" points="2560 0 2560 100 0 100"></polygon>
-        </svg>
-      </div>
-    </div>
+    
     <!-- Page content -->
-    <div class="container mt--8 pb-5">
+    <div class="container pb-5 login-main-holder">
       <div class="row justify-content-center">
         <div class="col-lg-5 col-md-7">
-        <h3 style="text-align:center;color: white;">Vivek Sushil & Co.</h3>
+        <h3 class="login-heading">Vivek Sushil & Co.</h3>
           <div class="card bg-secondary border-0 mb-0">
             <div class="card-body px-lg-5 py-lg-5">
               <div class="text-center text-muted mb-4">
-                <small>
-                	Login To Admin Panel 
+                <small class="login-sub-heading">
+                	Ease Office
                 </small>
               </div>
               <form role="form" action="" method="post">

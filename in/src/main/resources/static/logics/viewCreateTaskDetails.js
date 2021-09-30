@@ -18,15 +18,21 @@ function disableFormInputHandler(){
 		$('.taskInformation,.clientInformation,.commentsSection').find('input, textarea, button, select').attr('disabled','disabled');
 		$('.taskInformation,.clientInformation,.commentsSection').find('input, textarea, button, select').attr('readonly','readonly');
 		$('#save').remove();
+		$('#deleteTaskBtn').remove();
 
 	}else if(taskId == null &&  taskCompletedDate == ''){
 		$('.commentsSection').remove();
+		$('#deleteTaskBtn').remove();
+		$("#createForm")[0].reset();
+						
 	}
 	if(userRole.toLowerCase() == 'teammember' && ($.trim($('#remarks').val()).length <= 0)){
 		$('.remarksColumn').addClass('hide');
+		$('#deleteTaskBtn').remove();
 	}
 	disableEnableHandler();
 };
+
 function disableEnableHandler(){
 	 if (( userRole == 'Admin' ) || ( userRole == 'Supervisor' )){
      		$('.taskInformation,.clientInformation,.commentsSection').find('input, textarea, button, select').attr('disabled',false);
@@ -45,7 +51,6 @@ function convertDate(value,name){
 	$('#'+name).prop('type','text');
 	$('#'+name).val(formattedDate);
 }
-
 
 	function getViewTaskById(){
 		var id = sessionStorage.getItem('taskId');
@@ -88,5 +93,31 @@ function convertDate(value,name){
 				},3000)
             }
       });
+	};
+};
+
+function getViewTaskDeleteById(){
+		var id = sessionStorage.getItem('taskId');
+		if(id != null){
+			if (confirm("Are you sure?")) {
+        // your deletion code
+
+	$.ajax({
+        type: "GET",
+        url: deleteTaskDetailsById+'?taskId='+id,
+        dataType: "json",
+        "headers": {
+		    	"Content-Type": "application/json",
+				"Authorization": accessToken
+		  	},
+			success: function (data) {
+				alert('Task has been deleted succesfully');
+				window.location = 'dashboard';
+            }
+      });
+
+    }
+    return false;
+
 	};
 };

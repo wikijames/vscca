@@ -1,9 +1,5 @@
 @charset 'UTF-8';
 
-.bg-primary {
-    background-color: #120958 !important;
-}
-
 .hide {
   display: none !important;
 }
@@ -84,35 +80,11 @@ a:not([href]) {
     padding: 5px 20px;
     font-size: 14px;
     border-radius: 4px;
-    border: 1px solid #120958;
+    border: 1px solid #354edd;
 }
 
-button.dt-button:hover:not(.disabled), 
-div.dt-button:hover:not(.disabled), 
-a.dt-button:hover:not(.disabled), 
-input.dt-button:hover:not(.disabled), 
-.search-btn:hover{
-	background: #4230cd;
-	box-shadow: 0 2px 2px #ccc;
-}
-
-button.dt-button:active:not(.disabled), 
-button.dt-button.active:not(.disabled), 
-div.dt-button:active:not(.disabled), 
-div.dt-button.active:not(.disabled), 
-a.dt-button:active:not(.disabled), 
-a.dt-button.active:not(.disabled), 
-input.dt-button:active:not(.disabled), 
-input.dt-button.active:not(.disabled){
-	background: #4230cd;
-	box-shadow: 0 2px 2px #ccc;
-}
-
-button.dt-button:focus:not(.disabled), 
-div.dt-button:focus:not(.disabled), 
-a.dt-button:focus:not(.disabled), 
-input.dt-button:focus:not(.disabled){
-	background: #4230cd;
+button.dt-button:hover:not(.disabled), div.dt-button:hover:not(.disabled), a.dt-button:hover:not(.disabled), input.dt-button:hover:not(.disabled), .search-btn:hover{
+	background: #354edd;
 	box-shadow: 0 2px 2px #ccc;
 }
 
@@ -243,4 +215,62 @@ table.dataTable thead .sorting_desc_disabled {
 }
 .whiteRow{
 	background: #fff;
+}
+
+
+.login-body{
+	background: url('../img/brand/img-7.jpg') no-repeat center center;
+	background-size: cover;
+}
+
+.login-main-holder{
+	position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-top: 160px;
+    margin-left: -500px;
+    width: 1000px;
+}
+
+.login-heading{
+	text-align: center;
+    color: white;
+    font-family: 'Playfair Display', serif;
+    font-weight: 100;
+    font-size: 2.8rem;
+    text-shadow: 0 3px 3px #000;
+    line-height: 1.25;
+    letter-spacing: -.1rem;
+    text-align:center;
+    color: white
+}
+
+.login-sub-heading{
+	font-size: 1.5rem;
+    background: #fdfeff;
+    width: 100%;
+    display: inline-block;
+    color: #120958;
+    border-radius: 4px;
+    padding: 9px 5px;
+    font-family: 'Playfair Display', serif;
+    line-height: 1.25;
+    letter-spacing: 0.2rem;
+    text-transform: uppercase;
+    font-weight: bolder;
+    border: 1px solid #efecec;
+    box-shadow: 0 2px 2px #05175f1f;
+}
+
+.btn-primary {
+    color: #fff;
+    border-color: #120958;
+    background-color: #120958;
+    box-shadow: 0 4px 6px rgb(50 50 93 / 11%), 0 1px 3px rgb(0 0 0 / 8%);
+}
+
+.btn-primary:hover {
+    color: #fff;
+    border-color: #120958;
+    background-color: #4230cd;
 }

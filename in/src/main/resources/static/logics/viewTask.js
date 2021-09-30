@@ -70,6 +70,19 @@ function sortStatusText(value){
 }
 
 function dataTableFilterHandler () {
+//	var buttonCommon = {
+//        exportOptions: { 
+//		            format: {
+//		                header: function ( data, column, row )
+//		                    {
+//		                        return data.substring(data.indexOf("value")+9,data.indexOf("</option"));
+//		                    }
+//		             }
+//		        },
+//    };
+
+		
+
     //Data table filter
     $( '#table_id' ).DataTable( {
 	"createdRow": function( row, data, dataIndex){
@@ -99,10 +112,32 @@ function dataTableFilterHandler () {
             },
 			"order": [[ 7, "asc" ]],
 			"bPaginate": false,
+			stateSave: true,
         dom: 'Bfrtip',
 		buttons: [
 			'excel'
 			],
+
+//columns: [
+//            { data: 'Project Name' },
+//            { data: 'Party Name' },
+//            { data: 'Weightage' },
+//            { data: 'Responsibility' },
+//            { data: 'Execution' },
+//            { data: 'Intimation' }
+//        ],
+//        dom: 'Bfrtip',
+//        buttons: [
+//            $.extend( true, {}, buttonCommon, {
+//                extend: 'copyHtml5'
+//            } ),
+//            $.extend( true, {}, buttonCommon, {
+//                extend: 'Excel'
+//            } ),
+//            $.extend( true, {}, buttonCommon, {
+//                extend: 'pdfHtml5'
+//            } )
+//        ],
     	colReorder: true,
         initComplete: function () {
             this.api().columns([1,2,3,4,5,6,7,9]).every( function () {
@@ -153,16 +188,48 @@ function dataTableFilterHandler () {
                 } );
             } );
         },
-//		exportOptions: { 
-//		            format: {
-//		                header: function ( data, column, row )
-//		                    {
-//		                        return data.substring(data.indexOf("value")+9,data.indexOf("</option"));
-//		                    }
-//		             }
-//		        },
+
     } );
 };
+
+////$(document).ready(function() {
+//    var buttonCommon = {
+//        exportOptions: {
+//            format: {
+//                body: function ( data, row, column, node ) {
+//                    // Strip $ from salary column to make it numeric
+//                    return column === 5 ?
+//                        data.replace( /[$,]/g, '' ) :
+//                        data;
+//                }
+//            }
+//        }
+//    };
+// 
+//    $('#example').DataTable( {
+//        ajax: '../../../../examples/ajax/data/objects.txt',
+//        columns: [
+//            { data: 'name' },
+//            { data: 'position' },
+//            { data: 'office' },
+//            { data: 'extn' },
+//            { data: 'start_date' },
+//            { data: 'salary' }
+//        ],
+//        dom: 'Bfrtip',
+//        buttons: [
+//            $.extend( true, {}, buttonCommon, {
+//                extend: 'copyHtml5'
+//            } ),
+//            $.extend( true, {}, buttonCommon, {
+//                extend: 'excelHtml5'
+//            } ),
+//            $.extend( true, {}, buttonCommon, {
+//                extend: 'pdfHtml5'
+//            } )
+//        ]
+//    } );
+//} );
 
 function cbDropdown ( column ) {
     return $( '<ul>', {

@@ -27,7 +27,7 @@ function populateData(){
 				"Authorization": accessToken
 		  	},
 			success: function (data) {
-				console.log('get user profile data view', data);
+//				console.log('get user profile data view', data);
 				$.each(data.body,function(i,obj)
                 {
 	 		  var div_data = '<tr>'
