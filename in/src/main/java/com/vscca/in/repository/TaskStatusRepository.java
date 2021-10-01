@@ -12,6 +12,7 @@ public interface TaskStatusRepository extends JpaRepository<TaskStatus, Long>{
 	
 	@Transactional
 	TaskStatus save(TaskStatus taskStatus);
-
+	
+	@Transactional
 	void deleteByTaskId(Long taskId);
 }

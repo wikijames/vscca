@@ -1082,9 +1082,9 @@ public class TaskController {
 			response.setSuccess(401);
 			response.setMessage("Unauthorized");
 		} else {
-			taskInfoService.deleteById(Long.parseLong(taskId));
 			taskStatusService.deleteByTaskId(Long.parseLong(taskId));
 			taskUserDetailsService.deleteByTaskId(Long.parseLong(taskId));
+			taskInfoService.deleteById(Long.parseLong(taskId));
 			response.setSuccess(200);
 			response.setMessage("success");
 		}

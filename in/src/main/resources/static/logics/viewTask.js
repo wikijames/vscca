@@ -81,7 +81,16 @@ function dataTableFilterHandler () {
 //		        },
 //    };
 
-		
+//var buttonCommon = {
+//	exportOptions : {
+//		format : {
+//			header : function (data, column, row, node) {
+//				return data.replace(/X/g, '');
+//			}
+//		}
+//	}
+//};
+//		
 
     //Data table filter
     $( '#table_id' ).DataTable( {

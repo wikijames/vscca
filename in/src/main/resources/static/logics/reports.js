@@ -1,11 +1,4 @@
 jQuery( function () {
-//    populateDataHandler();
-
-    setTimeout( function () {
-        dataTableFilterHandler();
-		//alert('hi')
-    }, 1000 );
-
 
 // this is the id of the form
 	$("#populateDaybook").click(function(e) {
@@ -13,7 +6,7 @@ jQuery( function () {
 //		var taskId = $("#save").attr('title');
 		var startDate = $('#startDate').val()
 		var endDate = $('#endDate').val();
-			
+			$( '#table_id tbody' ).empty();
 			if(startDate == '' || endDate == ''){
 				alert('Please select date to generate daybook');
 			}else{
@@ -32,17 +25,25 @@ jQuery( function () {
 		};
 			$.ajax(settings).done(function (response) {
 				if(response.success == 200 ){
+					    setTimeout( function () {
+					        dataTableFilterHandler();
+					    }, 1000 );
 					$.each( response.body, function ( i, obj ) {
+						console.log('data restul', response.body);
 		                var div_data = '<tr>'
 		                    + '<td>' + obj.projectName + '</td>'
-		                    + '<td>' + obj.partyName + '</td>'
-		                    + '<td>' + obj.responsibilityName + '</td>'
+							+ '<td>' + obj.partyName + '</td>'
+							+ '<td>' + obj.taskType + '</td>'
+							+ '<td>' + obj.billingClient + '</td>'		                    
+							+ '<td>' + obj.responsibilityName + '</td>'
 							+ '<td>' + obj.exceutionName + '</td>'
-							+ '<td>' + obj.intimationName + '</td>'
 							+ '<td>' + obj.consultingName + '</td>'
-		                    + '<td>' + formatDateHandler( obj.dueDate ) + '</td>'
+							+ '<td>' + obj.intimationName + '</td>'
+							+ '<td>' + formatDateHandler( obj.createdAt ) + '</td>'		                    
+							+ '<td>' + formatDateHandler( obj.dueDate ) + '</td>'
 							+ '<td>' + formatDateHandler( obj.endDate ) + '</td>'
-		                    + '</tr>';
+		                    + '<td>' + obj.remarks + '</td>'
+							+ '</tr>';
 		                $( div_data ).appendTo( '#populateGrid' );
 		                
 		            });
@@ -59,137 +60,10 @@ jQuery( function () {
 
 } )// jquery end
 
-//function populateData () {
-//    //$('#table_id').dataTable().destroy();
-//	var startDate = $('#startDate').val();
-//	var endDate = $('#endDate').val();
-////	var data = {
-////		"startDate": $('#startDate').val(),
-////		"endDate": $('#endDate').val()
-////	}
-//
-//    $( '#table_id tbody' ).empty();
-//    $.ajax( {
-//        type: "GET",
-//        url: getTaskDetailsDayBookURL,
-////		data: data,
-//        dataType: "json",
-//        "headers": {
-//            "Content-Type": "application/json",
-//            "Authorization": accessToken
-//        },
-//        success: function ( data ) {
-//			$.each( data.body, function ( i, obj ) {
-//				console.log('data', obj);
-//                var div_data = '<tr>'
-//                    + '<td>' + obj.projectName + '</td>'
-//                    + '<td>' + obj.partyName + '</td>'
-//                    + '<td>' + obj.weightage + '</td>'
-//                    + '<td>' + obj.responsibilityName + '</td>'
-//					+ '<td>' + obj.exceutionName + '</td>'
-//					+ '<td>' + obj.intimationName + '</td>'
-//					+ '<td>' + obj.consultingName + '</td>'
-//                    + '<td>' + formatDateHandler( obj.dueDate ) + '</td>'
-//                    + '<td>' + isTaskDescription( obj.taskDescription ) + '</td>'
-//                    + '<td>' + sortStatusText(obj.status) + '</td>'
-//                    + '<td> <a onClick="redirectToTaskDetails(' + obj.taskId + ')" class="btn pointer">View/Edit</a></td>'
-//                    + '</tr>';
-//                $( div_data ).appendTo( '#populateGrid' );
-//                
-//            } );
-//        }
-//    } );
-//};
-
-//function sortStatusText(value){
-//	if( value ==  `ShortWork`){
-//        return 'Short Work';
-//    }
-//	if( value ==  `coming`){
-//        return 'In Process';
-//    }
-//	if( value ==  `WorkOnClientEnd`){
-//        return 'Work On Client End';
-//    }
-//	if( value ==  `Done`){
-//        return 'Done';
-//    }
-//	if( value ==  `ReadyToCheck`){
-//        return 'Ready To Check';
-//    }
-//	if( value ==  `DiscussionWithSatishJi`){
-//        return 'Discussion With Satish Ji';
-//    }
-//	if( value ==  `ReadyToUpload`){
-//        return 'Ready To Upload'
-//    }
-//	else{
-//		return value;
-//	}
-//}
-
-//function taskNavLoadHandler ( value ) {
-//	 if ( userRole == 'Admin' && value == 'dashboard') {
-//	    alert( 'admin' );
-//	    $( '#taskNameChangeHeading' ).text( 'All Tasks' );
-//		return populateData( getTaskDetailsByUserURL );
-//	}else if ( value == 'all' ) {
-//        alert( 'all' );
-//        $( '#taskNameChangeHeading' ).text( 'Your Tasks' );
-//		return populateData( getTaskDetailsByUserURL );
-//    } else if ( value == 'today' ) {
-//        alert( 'today' );
-//        $( '#taskNameChangeHeading' ).text( "Today's Task" );
-//		return populateData(getTaskDetailsByUserTodayURL);
-//    } else if ( value == 'week' ) {
-//        alert( 'week' );
-//        $( '#taskNameChangeHeading' ).text( "7 Day's Plan" );
-//		return populateData(getTaskDetailsByUserWeekURL);
-//    } else if ( value == 'overdue' ) {
-//        alert( 'overdue' );
-//        $( '#taskNameChangeHeading' ).text( "Overdue" );
-//		return populateData(getTaskDetailsByUserByDueDateURL);
-//    }
-//};
-//
-//function showTaskbyTypeHandler ( value ) {
-//    if ( ( window.location.href.indexOf( "myProfile" ) > -1 ) || ( window.location.href.indexOf( "password" ) > -1 ) ||  ( window.location.href.indexOf( "reports" ) > -1 ) ) {
-//        window.location = 'dashboard'
-//        taskNavLoadHandler( value );
-//    } else if ( window.location.href.indexOf( "dashboard" ) > -1 ) {
-//        taskNavLoadHandler( value );
-//    }
-//};
 
 function dataTableFilterHandler () {
     //Data table filter
     $( '#table_id' ).DataTable( {
-	"createdRow": function( row, data, dataIndex){
-                if( data[9] ==  'ShortWork'){
-                    $(row).addClass('ShortWork');
-                }
-				else if( data[9] ==  'InProcess'){
-                    $(row).addClass('InProcess');
-                }
-				else if( data[9] ==  'WorkOnClientEnd'){
-                    $(row).addClass('WorkOnClientEnd');
-                }
-				else if( data[9] ==  'Done'){
-                    $(row).addClass('Done');
-                }
-				else if( data[9] ==  'ReadyToCheck'){
-                    $(row).addClass('ReadyToCheck');
-                }
-				else if( data[9] ==  'DiscussionWithSatishJi'){
-                    $(row).addClass('DiscussionWithSatishJi');
-                }
-				else if( data[9] ==  'ReadyToUpload'){
-                    $(row).addClass('ReadyToUpload');
-                }else{
-					$(row).addClass('whiteRow');
-				}
-            },
-			"order": [[ 7, "asc" ]],
 			"bPaginate": false,
         dom: 'Bfrtip',
 		buttons: [

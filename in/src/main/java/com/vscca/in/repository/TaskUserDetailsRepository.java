@@ -17,5 +17,7 @@ public interface TaskUserDetailsRepository extends JpaRepository<TaskUserDetails
 	
 	@Query(value="select * from vscca.task_user_details where task_id=?",nativeQuery=true)
 	TaskUserDetails getById(Long taskId);
+	
+	@Transactional
 	void deleteByTaskId(Long taskId);
 }

@@ -97,14 +97,15 @@ function convertDate(value,name){
 };
 
 function getViewTaskDeleteById(){
-		var id = sessionStorage.getItem('taskId');
+		var id = $("#save").attr('title');
+		console.log('id',id);
 		if(id != null){
 			if (confirm("Are you sure?")) {
         // your deletion code
 
 	$.ajax({
         type: "GET",
-        url: deleteTaskDetailsById+'?taskId='+id,
+        url: getDeleteTaskDetailsByIdURL+'?taskId='+id,
         dataType: "json",
         "headers": {
 		    	"Content-Type": "application/json",
