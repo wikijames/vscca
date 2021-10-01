@@ -26,8 +26,8 @@ jQuery( function () {
 				"Authorization": accessToken
 		  	},
 		  "data": JSON.stringify({
-			"startDate" : '2021-08-01',
-			"endDate" : '2021-09-30'
+			"startDate" : formatDateHandlerInput(startDate),
+			"endDate" : formatDateHandlerInput(endDate),
 		  }),
 		};
 			$.ajax(settings).done(function (response) {
@@ -41,7 +41,7 @@ jQuery( function () {
 							+ '<td>' + obj.intimationName + '</td>'
 							+ '<td>' + obj.consultingName + '</td>'
 		                    + '<td>' + formatDateHandler( obj.dueDate ) + '</td>'
-							+ '<td>' + formatDateHandler( obj.completedDate ) + '</td>'
+							+ '<td>' + formatDateHandler( obj.endDate ) + '</td>'
 		                    + '</tr>';
 		                $( div_data ).appendTo( '#populateGrid' );
 		                
@@ -288,3 +288,14 @@ function redirectToTaskDetails ( id ) {
 	window.location.pathname = 'vscca/createTaskForm';
     sessionStorage.setItem( 'taskId', id );
 }
+
+function formatDateHandlerInput ( value ) {
+    //console.log( 'duedate', value );
+    var date = new Date( value );
+    var month = date.getMonth() + 1;
+    var day = date.getDate();
+    var year = date.getFullYear();
+    var result = year + "-" + day + "-" + month;
+    //console.log( 'v result', result );
+    return result;
+};

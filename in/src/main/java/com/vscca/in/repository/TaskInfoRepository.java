@@ -78,6 +78,6 @@ public interface TaskInfoRepository extends JpaRepository<TaskInfo, Long> {
 	@Query(value="select * from vscca.task_info where id=?",nativeQuery=true)
 	TaskInfo getById(Long id);
 	
-	@Query(value="select ts.task_id, ti.project_name,ti.party_name,ti.weightage,ti.task_description,ti.task_type,ti.billing_client,ti.created_at,ti.due_date,ts.status,ts.delay_reason,ts.remarks,ts.end_date,tud.responsibility,tud.intimation,tud.exceution,tud.consulting from vscca.task_status as ts, vscca.task_info as ti ,vscca.task_user_details as tud,(select max(end_date) as end_date,task_id from vscca.task_status group by task_id) as tid where ts.task_id=tid.task_id and tid.end_date=ts.end_date and ti.id=tud.task_id and ts.task_id=ti.id and ts.status ='Done' and ts.status='Final' and ti.created_at<=? and ts.end_date >=?",nativeQuery=true)
+	@Query(value="select ts.task_id, ti.project_name,ti.party_name,ti.weightage,ti.task_description,ti.task_type,ti.billing_client,ti.created_at,ti.due_date,ts.status,ts.delay_reason,ts.remarks,ts.end_date,tud.responsibility,tud.intimation,tud.exceution,tud.consulting from vscca.task_status as ts, vscca.task_info as ti ,vscca.task_user_details as tud,(select max(end_date) as end_date,task_id from vscca.task_status group by task_id) as tid where ts.task_id=tid.task_id and tid.end_date=ts.end_date and ti.id=tud.task_id and ts.task_id=ti.id and ts.status='Done' and ts.end_date between ? and ?",nativeQuery=true)
 	List<Object[]> findTaskDetailsDayBook(String startDate, String endDate);
 }
