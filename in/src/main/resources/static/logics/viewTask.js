@@ -240,6 +240,13 @@ function dataTableFilterHandler () {
 //    } );
 //} );
 
+function resetTableHandler(){
+	var url = window.location.pathname
+	console.log(url);
+	localStorage.removeItem("DataTables_table_id_"+url);
+	window.location.pathname = url;
+}
+
 function cbDropdown ( column ) {
     return $( '<ul>', {
         'class': 'cb-dropdown'

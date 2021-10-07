@@ -62,63 +62,86 @@ jQuery( function () {
 
 
 function dataTableFilterHandler () {
-    //Data table filter
+//	if ( $.fn.dataTable.isDataTable( '#table_id' ) ) {
+//    table = $('#table_id').DataTable(
+//	{
+//			"bPaginate": false,
+//        dom: 'Bfrtip',
+//		buttons: [
+//			'excel'
+//			],
+//    	colReorder: true,
+//		searching: false,
+//		}
+//);
+//	}
+//	else {
+//	    table = $('#table_id').DataTable( {
+//	        paging: false,
+//			searching: false,
+//	    } );
+//	}
+//    Data table filter
     $( '#table_id' ).DataTable( {
+			destroy: true,
 			"bPaginate": false,
         dom: 'Bfrtip',
 		buttons: [
 			'excel'
 			],
     	colReorder: true,
-        initComplete: function () {
-            this.api().columns([1,2,3,4,5,6,7,9]).every( function () {
-                var column = this;
-                var ddmenu = cbDropdown( $( column.header() ) )
-                    .on( 'change', ':checkbox', function () {
-                        var active;
-                        var vals = $( ':checked', ddmenu ).map( function ( index, element ) {
-                            active = true;
-                            return $.fn.dataTable.util.escapeRegex( $( element ).val() );
-                        } ).toArray().join( '|' );
-
-                        column
-                            .search( vals.length > 0 ? '^(' + vals + ')$' : '', true, false )
-                            .draw();
-
-                        // Highlight the current item if selected.
-                        if ( this.checked ) {
-                            $( this ).closest( 'li' ).addClass( 'active' );
-                        } else {
-                            $( this ).closest( 'li' ).removeClass( 'active' );
-                        }
-
-                        // Highlight the current filter if selected.
-                        var active2 = ddmenu.parent().is( '.active' );
-                        if ( active && !active2 ) {
-                            ddmenu.parent().addClass( 'active' );
-                        } else if ( !active && active2 ) {
-                            ddmenu.parent().removeClass( 'active' );
-                        }
-                    } );
-
-                column.data().unique().sort().each( function ( d, j ) {
-                    var // wrapped
-                        $label = $( '<label>' ),
-                        $text = $( '<span>', {
-                            text: d
-                        } ),
-                        $cb = $( '<input>', {
-                            type: 'checkbox',
-                            value: d
-                        } );
-
-                    $text.appendTo( $label );
-                    $cb.appendTo( $label );
-
-                    ddmenu.append( $( '<li>' ).append( $label ) );
-                } );
-            } );
-        },
+		searching: false,
+		paging: false,
+})
+//        initComplete: function () {
+//            this.api().columns([1,2,3,4,5,6,7,9]).every( function () {
+//                var column = this;
+//                var ddmenu = cbDropdown( $( column.header() ) )
+//                    .on( 'change', ':checkbox', function () {
+//                        var active;
+//                        var vals = $( ':checked', ddmenu ).map( function ( index, element ) {
+//                            active = true;
+//                            return $.fn.dataTable.util.escapeRegex( $( element ).val() );
+//                        } ).toArray().join( '|' );
+//
+//                        column
+//                            .search( vals.length > 0 ? '^(' + vals + ')$' : '', true, false )
+//                            .draw();
+//
+//                        // Highlight the current item if selected.
+//                        if ( this.checked ) {
+//                            $( this ).closest( 'li' ).addClass( 'active' );
+//                        } else {
+//                            $( this ).closest( 'li' ).removeClass( 'active' );
+//                        }
+//
+//                        // Highlight the current filter if selected.
+//                        var active2 = ddmenu.parent().is( '.active' );
+//                        if ( active && !active2 ) {
+//                            ddmenu.parent().addClass( 'active' );
+//                        } else if ( !active && active2 ) {
+//                            ddmenu.parent().removeClass( 'active' );
+//                        }
+//                    } );
+//
+//                column.data().unique().sort().each( function ( d, j ) {
+//                    var // wrapped
+//                        $label = $( '<label>' ),
+//                        $text = $( '<span>', {
+//                            text: d
+//                        } ),
+//                        $cb = $( '<input>', {
+//                            type: 'checkbox',
+//                            value: d
+//                        } );
+//
+//                    $text.appendTo( $label );
+//                    $cb.appendTo( $label );
+//
+//                    ddmenu.append( $( '<li>' ).append( $label ) );
+//                } );
+//            } );
+//        },
 //		exportOptions: { 
 //		            format: {
 //		                header: function ( data, column, row )
@@ -127,7 +150,7 @@ function dataTableFilterHandler () {
 //		                    }
 //		             }
 //		        },
-    } );
+//    } );
 };
 
 function cbDropdown ( column ) {
@@ -164,12 +187,10 @@ function redirectToTaskDetails ( id ) {
 }
 
 function formatDateHandlerInput ( value ) {
-    //console.log( 'duedate', value );
-    var date = new Date( value );
-    var month = date.getMonth() + 1;
-    var day = date.getDate();
-    var year = date.getFullYear();
-    var result = year + "-" + day + "-" + month;
-    //console.log( 'v result', result );
+    var arr = value.split('-');
+	var day = arr[0];
+	var month = arr[1];
+	var year = arr[2];
+	var result = year + "-" + month + "-" + day;
     return result;
 };
