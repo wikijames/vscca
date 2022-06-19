@@ -117,7 +117,7 @@ public class TaskController {
 			response.setSuccess(401);
 			response.setMessage("Unauthorized");
 		} else {
-			List<BillingClient> clients = billingClientService.findAll();
+			List<BillingClient> clients = billingClientService.findAllByAdmin();
 			response.setSuccess(200);
 			response.setBody(clients);
 			response.setMessage("success");
@@ -169,7 +169,7 @@ public class TaskController {
 			taskUserDetails.setExceution(taskDto.getExceution());
 			taskUserDetails.setIntimation(taskDto.getIntimation());
 			taskStatus.setTaskId(taskId.getId());
-			taskStatus.setStatus("Coming");
+			taskStatus.setStatus("In Process");
 			try {
 				taskStatus.setEndDate(formatter.parse(formatter.format(date)));
 			} catch (ParseException e) {

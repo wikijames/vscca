@@ -33,4 +33,10 @@ public class BillingClientServiceImpl implements BillingClientService {
 		return billingClientRepository.getById(id);
 	}
 
+	@Override
+	public List<BillingClient> findAllByAdmin() {
+		// TODO Auto-generated method stub
+		return billingClientRepository.findAllByAdmin();
+	}
+
 }
