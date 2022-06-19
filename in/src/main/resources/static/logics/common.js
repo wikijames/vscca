@@ -140,10 +140,7 @@ function showTaskbyTypeHandler () {
 };
 
 $(window).on('load', function () {
-    setTimeout(function(){
-	$('#loading').hide();
-},10000)
-    
+		$('#loading').hide();
 }) 
   
 $( document ).ready( function () {
