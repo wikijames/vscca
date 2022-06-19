@@ -169,7 +169,7 @@ public class TaskController {
 			taskUserDetails.setExceution(taskDto.getExceution());
 			taskUserDetails.setIntimation(taskDto.getIntimation());
 			taskStatus.setTaskId(taskId.getId());
-			taskStatus.setStatus("Coming");
+			taskStatus.setStatus("In Process");
 			try {
 				taskStatus.setEndDate(formatter.parse(formatter.format(date)));
 			} catch (ParseException e) {
