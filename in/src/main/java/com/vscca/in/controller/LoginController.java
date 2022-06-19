@@ -37,6 +37,7 @@ public class LoginController {
 	public ResponseDto postLogin(@RequestBody RequestDto requestDto) {
 		ResponseDto response = new ResponseDto();
 		if (requestDto != null) {
+			if(userDetailsService.findByEmailId(requestDto.userName).getIsActive() == 1) {
 			LoginTable loginTable = loginService.findByuserName(requestDto.getUserName());
 			// System.out.println(loginTable.getUserName());
 			if (requestDto.getUserName().equalsIgnoreCase(loginTable.getUserName())
@@ -51,7 +52,7 @@ public class LoginController {
 				response.setBody(userDetailsService.findByEmailId(requestDto.userName).getAccessType());
 				loginTable.setToken(jwtToken);
 				loginService.save(loginTable);
-			} else {
+			}} else {
 				response.setSuccess(401);
 				response.setMessage("unautherized user");
 			}

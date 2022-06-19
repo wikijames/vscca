@@ -18,6 +18,9 @@ public interface BillingClientRepository extends JpaRepository<BillingClient, Lo
 	@Query(value="select * from vscca.billing_client where is_active=1",nativeQuery=true)
 	List<BillingClient> findAll();
 	
+	@Query(value="select * from vscca.billing_client",nativeQuery=true)
+	List<BillingClient> findAllByAdmin();
+	
 	BillingClient save(BillingClient billingClient);
 	
 	@Query(value="select * from vscca.billing_client where id=?",nativeQuery=true)

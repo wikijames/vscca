@@ -117,7 +117,7 @@ public class TaskController {
 			response.setSuccess(401);
 			response.setMessage("Unauthorized");
 		} else {
-			List<BillingClient> clients = billingClientService.findAll();
+			List<BillingClient> clients = billingClientService.findAllByAdmin();
 			response.setSuccess(200);
 			response.setBody(clients);
 			response.setMessage("success");
