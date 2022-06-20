@@ -99,25 +99,25 @@ function dataTableFilterHandler () {
     $.fn.dataTable.moment( 'D-M-YYYY');
     $( '#table_id' ).DataTable( {
 	"createdRow": function( row, data, dataIndex){
-                if( data[9] ==  'Short Work'){
+                if( data[10] ==  'Short Work'){
                     $(row).addClass('ShortWork');
                 }
-				else if( data[9] ==  'In Process'){
+				else if( data[10] ==  'In Process'){
                     $(row).addClass('InProcess');
                 }
-				else if( data[9] ==  'Work On Client End'){
+				else if( data[10] ==  'Work On Client End'){
                     $(row).addClass('WorkOnClientEnd');
                 }
-				else if( data[9] ==  'Done'){
+				else if( data[10] ==  'Done'){
                     $(row).addClass('Done');
                 }
-				else if( data[9] ==  'Ready To Check'){
+				else if( data[10] ==  'Ready To Check'){
                     $(row).addClass('ReadyToCheck');
                 }
-				else if( data[9] ==  'Discussion With Satish Ji'){
+				else if( data[10] ==  'Discussion With Satish Ji'){
                     $(row).addClass('DiscussionWithSatishJi');
                 }
-				else if( data[9] ==  'Ready To Upload'){
+				else if( data[10] ==  'Ready To Upload'){
                     $(row).addClass('ReadyToUpload');
                 }else{
 					$(row).addClass('whiteRow');
