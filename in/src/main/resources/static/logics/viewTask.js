@@ -21,8 +21,9 @@ function populateData ( url ) {
         },
         success: function ( data ) {
             checkSession( data.success );
+            
 			$.each( data.body, function ( i, obj ) {
-                var div_data = '<tr>'
+				var div_data = '<tr>'
                     + '<td>' + obj.projectName + '</td>'
                     + '<td>' + obj.partyName + '</td>'
                     + '<td>' + obj.weightage + '</td>'
@@ -30,7 +31,9 @@ function populateData ( url ) {
 					+ '<td>' + obj.exceutionName + '</td>'
 					+ '<td>' + obj.intimationName + '</td>'
 					+ '<td>' + obj.consultingName + '</td>'
-                    + '<td>' + formatDateHandler( obj.dueDate ) + '</td>'
+					+ '<td>' + obj.taskType+ '</td>'
+					+ '<td>' + formatDateHandler( obj.dueDate ) + '</td>'
+                    //+ '<td>' + obj.dueDate  + '</td>'
                     + '<td>' + isTaskDescription( obj.taskDescription ) + '</td>'
                     + '<td>' + sortStatusText(obj.status) + '</td>'
                     + '<td> <a onClick="redirectToTaskDetails(' + obj.taskId + ')" class="btn pointer">View/Edit</a></td>'
@@ -93,6 +96,7 @@ function dataTableFilterHandler () {
 //		
 
     //Data table filter
+    $.fn.dataTable.moment( 'D-M-YYYY');
     $( '#table_id' ).DataTable( {
 	"createdRow": function( row, data, dataIndex){
                 if( data[9] ==  'Short Work'){
@@ -149,7 +153,7 @@ function dataTableFilterHandler () {
 //        ],
     	colReorder: true,
         initComplete: function () {
-            this.api().columns([1,2,3,4,5,6,7,9]).every( function () {
+            this.api().columns([1,2,3,4,5,6,7,8,10]).every( function () {
                 var column = this;
                 var ddmenu = cbDropdown( $( column.header() ) )
                     .on( 'change', ':checkbox', function () {
@@ -255,14 +259,17 @@ function cbDropdown ( column ) {
     } ).appendTo( column ) );
 };
 
+function addLeadingZeroOnDate(value){
+	const result = ('0' + value).slice(-2);
+	return result;
+}
+
 function formatDateHandler ( value ) {
-    //console.log( 'duedate', value );
     var date = new Date( value );
-    var month = date.getMonth() + 1;
-    var day = date.getDate();
+    var month = addLeadingZeroOnDate(date.getMonth() + 1);
+    var day = addLeadingZeroOnDate(date.getDate());
     var year = date.getFullYear();
     var result = day + "-" + month + "-" + year;
-    //console.log( 'v result', result );
     return result;
 };
 
