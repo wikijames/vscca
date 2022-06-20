@@ -9,8 +9,17 @@ function todayDate(){
 
 $(document).ready(function(){
 	var sessionTaskId = sessionStorage.getItem('taskId');
+	var responsibilityStatus = false;
+	var executionStatus = false;
+	var consulting = false;
+	var intimationStatus = false;
+	
 	if(sessionTaskId != null){
-		getViewTaskById();	
+		setTimeout(function(){
+			if(responsibilityStatus && executionStatus && consulting && intimationStatus ){
+				getViewTaskById();	
+			}	
+		},1000);
 	}
 $('.billingClientNameClass').select2({});
   $.ajax({
@@ -63,6 +72,7 @@ $('.billingClientNameClass').select2({});
              var div_data="<option value="+obj.emailId+">"+obj.firstName+" "+obj.lastName+"</option>";
             $(div_data).appendTo('#responsibility');
             });
+            responsibilityStatus = true;
             }
       });
 
@@ -81,6 +91,7 @@ $('.billingClientNameClass').select2({});
          var div_data="<option value="+obj.emailId+">"+obj.firstName+" "+obj.lastName+"</option>";
         $(div_data).appendTo('#execution');
         });
+        executionStatus = true;
         }
   });
 
@@ -93,12 +104,13 @@ $('.billingClientNameClass').select2({});
     	"Content-Type": "application/json",
 		"Authorization": accessToken
   	},
-	success: function (data) {
-        $.each(data.body,function(i,obj)
+	success: function (data,xhr) {
+		$.each(data.body,function(i,obj)
         {
          var div_data="<option value="+obj.emailId+">"+obj.firstName+" "+obj.lastName+"</option>";
         $(div_data).appendTo('#consulting');
         });
+        consulting = true;
         }
   });
 
@@ -117,6 +129,7 @@ $('.billingClientNameClass').select2({});
          var div_data="<option value="+obj.emailId+">"+obj.firstName+" "+obj.lastName+"</option>";
         $(div_data).appendTo('#intimation');
         });
+        intimationStatus = true;
         }
   });
 
