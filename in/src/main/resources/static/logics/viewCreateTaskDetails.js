@@ -13,7 +13,7 @@ function disableFormInputHandler(){
 		$('.taskInformation,.clientInformation').find('input, textarea, button, select').attr('readonly','readonly');
 		setTimeout(function(){
 			getViewTaskById();	
-		},5000);
+		},1000);
 
 	}else if(taskCompletedDate != ''){
 

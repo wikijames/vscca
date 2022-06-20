@@ -15,12 +15,11 @@ $(document).ready(function(){
 	var intimationStatus = false;
 	
 	if(sessionTaskId != null){
-		setTimeout(function(){
-			if(responsibilityStatus && executionStatus && consulting && intimationStatus ){
-				getViewTaskById();	
-			}	
-		},1000);
+		if(responsibilityStatus && executionStatus && consulting && intimationStatus ){
+		 getViewTaskById();
+		}	
 	}
+	
 $('.billingClientNameClass').select2({});
   $.ajax({
     type: "GET",
@@ -67,12 +66,12 @@ $('.billingClientNameClass').select2({});
 			"Authorization": accessToken
 	  	},
 		success: function (data) {
+			responsibilityStatus = true;
             $.each(data.body,function(i,obj)
             {
              var div_data="<option value="+obj.emailId+">"+obj.firstName+" "+obj.lastName+"</option>";
             $(div_data).appendTo('#responsibility');
             });
-            responsibilityStatus = true;
             }
       });
 
@@ -86,12 +85,12 @@ $('.billingClientNameClass').select2({});
 		"Authorization": accessToken
   	},
 	success: function (data) {
+		executionStatus = true;
         $.each(data.body,function(i,obj)
         {
          var div_data="<option value="+obj.emailId+">"+obj.firstName+" "+obj.lastName+"</option>";
         $(div_data).appendTo('#execution');
         });
-        executionStatus = true;
         }
   });
 
@@ -104,13 +103,13 @@ $('.billingClientNameClass').select2({});
     	"Content-Type": "application/json",
 		"Authorization": accessToken
   	},
-	success: function (data,xhr) {
+	success: function (data) {
+		consulting = true;
 		$.each(data.body,function(i,obj)
         {
          var div_data="<option value="+obj.emailId+">"+obj.firstName+" "+obj.lastName+"</option>";
         $(div_data).appendTo('#consulting');
         });
-        consulting = true;
         }
   });
 
@@ -124,12 +123,12 @@ $('.billingClientNameClass').select2({});
 		"Authorization": accessToken
   	},
 	success: function (data) {
+        intimationStatus = true;
         $.each(data.body,function(i,obj)
         {
          var div_data="<option value="+obj.emailId+">"+obj.firstName+" "+obj.lastName+"</option>";
         $(div_data).appendTo('#intimation');
         });
-        intimationStatus = true;
         }
   });
 
