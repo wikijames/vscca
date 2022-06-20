@@ -142,7 +142,7 @@ function showTaskbyTypeHandler () {
 $(window).on('load', function () {
 	setTimeout(function(){
 		$('#loading').hide();	
-	},500);
+	},1000);
 }) 
   
 $( document ).ready( function () {
