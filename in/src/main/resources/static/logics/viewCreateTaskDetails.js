@@ -100,7 +100,6 @@ function convertDate(value,name){
 
 function getViewTaskDeleteById(){
 		var id = $("#save").attr('title');
-		console.log('id',id);
 		if(id != null){
 			if (confirm("Are you sure?")) {
         // your deletion code
@@ -124,3 +123,39 @@ function getViewTaskDeleteById(){
 
 	};
 };
+
+function uploadBulkTask(event){
+     let formData = new FormData(document.getElementById("fileinfo"));
+     //let uploadFiles = document.getElementById('dropzoneBasicUpload').files;
+     //this.formData.append("MyKey", uploadFiles[0]);
+     
+    //if( document.getElementById("dropzoneBasicUpload").files.length == 0 ){
+    //	alert('Please select a file')
+    //}
+    //else{
+        if (confirm("Are you sure?")) {
+    // your upload code
+            $.ajax({
+				url: postUploadBulkTaskURL,
+				type: "POST",
+				data: formData,
+				"headers": {
+	                "Authorization": accessToken
+              	},
+				cache: false,
+	            contentType: false,
+	            processData: false,
+				success: function (data) {
+				    $('#output').html(data);
+					alert('Task has been uploaded succesfully');
+					//window.location = 'dashboard';
+	            },
+	            error: function(data) {
+			      console.log('error', data);
+			    }
+        })
+    }
+		$('form')[0].reset();
+		return false;
+	//}
+}
