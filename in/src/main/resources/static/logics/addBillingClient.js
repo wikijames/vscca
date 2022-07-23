@@ -155,3 +155,34 @@ function isCheckedActive(value){
       });
 	};
 };
+
+
+
+function uploadBulkBillingClients(event){
+     let formData = new FormData(document.getElementById("billingFileinfo"));
+     
+        if (confirm("Are you sure?")) {
+    // your upload code
+            $.ajax({
+				url: postUploadBulkBillingClientsURL,
+				type: "POST",
+				data: formData,
+				"headers": {
+	                "Authorization": accessToken
+              	},
+				cache: false,
+	            contentType: false,
+	            processData: false,
+				success: function (data) {
+				    $('#output').html(data);
+					alert('Billing clients has been uploaded succesfully');
+					window.location = 'dashboard';
+	            },
+	            error: function(data) {
+			      console.log('error', data);
+			    }
+        })
+    }
+		$('form')[0].reset();
+		return false;
+}

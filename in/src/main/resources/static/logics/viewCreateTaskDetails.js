@@ -126,13 +126,7 @@ function getViewTaskDeleteById(){
 
 function uploadBulkTask(event){
      let formData = new FormData(document.getElementById("fileinfo"));
-     //let uploadFiles = document.getElementById('dropzoneBasicUpload').files;
-     //this.formData.append("MyKey", uploadFiles[0]);
      
-    //if( document.getElementById("dropzoneBasicUpload").files.length == 0 ){
-    //	alert('Please select a file')
-    //}
-    //else{
         if (confirm("Are you sure?")) {
     // your upload code
             $.ajax({
@@ -157,5 +151,4 @@ function uploadBulkTask(event){
     }
 		$('form')[0].reset();
 		return false;
-	//}
 }
