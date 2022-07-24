@@ -139,6 +139,15 @@ function showTaskbyTypeHandler () {
 //    }
 };
 
+function checkFileExtension(filename){
+    var fileType = filename.split('.').pop();
+	console.log('fileExe', fileType )
+	if(fileType === "xlsx" || fileType === "xls" || fileType === "csv" ){
+		return fileType; 
+	}
+}
+
+
 $(window).on('load', function () {
 	setTimeout(function(){
 		$('#loading').hide();	

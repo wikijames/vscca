@@ -157,8 +157,21 @@ function isCheckedActive(value){
 };
 
 
+function ValidateBillingUploadFile() {
+    var fileInput = document.getElementById("file");
+    var filePath = fileInput.value;
+       if(!filePath){
+			alert('Please select a file');
+		}else if (!checkFileExtension(filePath)) {
+            alert('invalid file type not allowed');
+            fileInput.value = '';
+            return false;
+		}else{
+			uploadBulkBillingClients();	
+		}
+};
 
-function uploadBulkBillingClients(event){
+function uploadBulkBillingClients(){
      let formData = new FormData(document.getElementById("billingFileinfo"));
      
         if (confirm("Are you sure?")) {
