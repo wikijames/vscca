@@ -102,7 +102,7 @@ function addBillingClientHandler(){
         } );
 };
 function splitClientHandler(value){
-	console.log('spli', value);
+	//console.log('spli', value);
 	var valueSplit = value.split('-');
 //	$('#partyName').val();
 //	$('#ledgerNumber').val(splitClientHandler(obj.client)[1]);
@@ -125,7 +125,7 @@ function isCheckedActive(value){
 		$('#isActive').prop("checked", true);
 		$('#isActive').val( "1" );
 		isActiveValue = 1;
-		console.log('Ints', value);
+		//console.log('Ints', value);
 	}
 };
 	function getViewBillingClientById(){

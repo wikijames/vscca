@@ -31,7 +31,7 @@ function populateData () {
         },
         success: function ( data ) {
             checkSession( data.success );
-			console.log('billing client data', data)
+			//console.log('billing client data', data)
             $.each( data.body, function ( i, obj ) {
 					splitClientHandler(obj.client);
                 var div_data = '<tr>'

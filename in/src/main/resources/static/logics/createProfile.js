@@ -12,7 +12,7 @@ $(document).ready(function(){
 			viewProfileByIdHandler();
 		},500);		
 	}
-console.log('vprofileId ', sessionProfileId);
+//console.log('vprofileId ', sessionProfileId);
 
     if ( $( '#isActive' ).is( ":checked" ) ) {
         $( this ).val( "1" );
@@ -84,7 +84,7 @@ $('#saveProfile').click(function(e){
     });
 
     if(valid){
-        console.log(valid + " inputs have been filled");
+        //console.log(valid + " inputs have been filled");
 		submitData(e);
         return true;
     }
@@ -148,7 +148,7 @@ function validateEmail(){
 function submitData(e){
 	    e.preventDefault();
 		if(validateEmail() != false){
-			console.log('profileId===',sessionProfileId)
+			//console.log('profileId===',sessionProfileId)
 			if(sessionProfileId != null){
 				updateProfileHandler();	
 				
@@ -245,7 +245,7 @@ function isCheckedRes(value){
 		$('#responsibility').prop("checked", true);
 		$('#responsibility').val( "1" );
 		responsibilityValue = 1;
-		console.log('res', value);
+		//console.log('res', value);
 	}
 };	
 function isCheckedExe(value){
@@ -253,7 +253,7 @@ function isCheckedExe(value){
 		$('#execution').prop("checked", true);
 		$('#execution').val( "1" );
 		executionValue = 1;
-		console.log('exees', value);
+		//console.log('exees', value);
 	}
 };
 function isCheckedCon(value){
@@ -261,7 +261,7 @@ function isCheckedCon(value){
 		$('#consulting').prop("checked", true);
 		$('#consulting').val( "1" );
 		consultingValue = 1;
-		console.log('cons', value);
+		//console.log('cons', value);
 	}
 };
 function isCheckedInt(value){
@@ -269,7 +269,7 @@ function isCheckedInt(value){
 		$('#intimation').prop("checked", true);
 		$('#intimation').val( "1" );
 		intimationValue = 1;
-		console.log('Ints', value);
+		//console.log('Ints', value);
 	}
 };
 function isCheckedActive(value){
@@ -277,7 +277,7 @@ function isCheckedActive(value){
 		$('#isActive').prop("checked", true);
 		$('#isActive').val( "1" );
 		isActiveValue = 1;
-		console.log('is active profile', value);
+		//console.log('is active profile', value);
 	}
 };
 
@@ -297,7 +297,7 @@ function viewProfileByIdHandler(){
 		  	},
 			success: function (data) {
 					var obj = data.body;
-					console.log('get user profile data view', obj);
+					//console.log('get user profile data view', obj);
 					$("#saveProfile").attr('title', obj.id),
 					$('#profileId').val(obj.id);
 					$('#firstName').val(obj.firstName),

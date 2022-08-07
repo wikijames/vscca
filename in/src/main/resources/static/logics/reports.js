@@ -29,7 +29,7 @@ jQuery( function () {
 					        dataTableFilterHandler();
 					    }, 1000 );
 					$.each( response.body, function ( i, obj ) {
-						console.log('data restul', response.body);
+						//console.log('data restul', response.body);
 		                var div_data = '<tr>'
 		                    + '<td>' + obj.projectName + '</td>'
 							+ '<td>' + obj.partyName + '</td>'
