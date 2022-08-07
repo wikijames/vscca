@@ -123,16 +123,33 @@ function getViewTaskDeleteById(){
 
 	};
 };
+function fileUploadValidation(){
+	//var empty = document.getElementById("taskFile").value = null;
+	//var inputFile = document.getElementById("taskFile").value;
+	//var fileType = accept=".xlsx, .xls, .csv"
+	//if(!inputFile ){
+		//alert('its null');
+	//}
+	
+}
 
-function uploadBulkTask(event){
-     let formData = new FormData(document.getElementById("fileinfo"));
-     //let uploadFiles = document.getElementById('dropzoneBasicUpload').files;
-     //this.formData.append("MyKey", uploadFiles[0]);
+function ValidateUploadFile() {
+    var fileInput = document.getElementById("file");
+    var filePath = fileInput.value;
+       if(!filePath){
+			alert('Please select a file');
+		}else if (!checkFileExtension(filePath)) {
+            alert('invalid file type not allowed');
+            fileInput.value = '';
+            return false;
+		}else{
+			uploadBulkTask()	
+		}
+};
+
+function uploadBulkTask(){
+	let formData = new FormData(document.getElementById("fileinfo"));
      
-    //if( document.getElementById("dropzoneBasicUpload").files.length == 0 ){
-    //	alert('Please select a file')
-    //}
-    //else{
         if (confirm("Are you sure?")) {
     // your upload code
             $.ajax({
@@ -157,5 +174,4 @@ function uploadBulkTask(event){
     }
 		$('form')[0].reset();
 		return false;
-	//}
 }

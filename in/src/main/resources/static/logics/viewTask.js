@@ -21,16 +21,16 @@ function populateData ( url ) {
         },
         success: function ( data ) {
             checkSession( data.success );
-            
-			$.each( data.body, function ( i, obj ) {
+            $.each( data.body, function ( i, obj ) {
+				console.log('obj=>', obj);
 				var div_data = '<tr>'
                     + '<td>' + obj.projectName + '</td>'
                     + '<td>' + obj.partyName + '</td>'
                     + '<td>' + obj.weightage + '</td>'
                     + '<td>' + obj.responsibilityName + '</td>'
 					+ '<td>' + obj.exceutionName + '</td>'
-					+ '<td>' + obj.intimationName + '</td>'
 					+ '<td>' + obj.consultingName + '</td>'
+					+ '<td>' + obj.intimationName + '</td>'
 					+ '<td>' + obj.taskType+ '</td>'
 					+ '<td>' + formatDateHandler( obj.dueDate ) + '</td>'
                     //+ '<td>' + obj.dueDate  + '</td>'
