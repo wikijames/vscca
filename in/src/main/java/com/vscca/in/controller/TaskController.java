@@ -170,6 +170,12 @@ public class TaskController {
 			taskUserDetails.setIntimation(taskDto.getIntimation());
 			taskStatus.setTaskId(taskId.getId());
 			taskStatus.setStatus("In Process");
+			try {
+				taskStatus.setEndDate(formatter.parse(formatter.format(date)));
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			taskUserDetailsService.save(taskUserDetails);
 			taskStatusService.save(taskStatus);
 			response.setSuccess(200);
