@@ -124,21 +124,17 @@ public class ExcelController {
 					case 6:
 						taskInfo.setTaskDescription(currentCell.getStringCellValue());
 						break;
+					
 					case 7:
-						taskInfo.setBillingClient(currentCell.getStringCellValue());
-						taskId = taskInfoService.save(taskInfo);
-						taskUserDetail.setTaskId(taskId.getId());
-						break;
-					case 8:
 						taskUserDetail.setResponsibility(currentCell.getStringCellValue());
 						break;
-					case 9:
+					case 8:
 						taskUserDetail.setConsulting(currentCell.getStringCellValue());
 						break;
-					case 10:
+					case 9:
 						taskUserDetail.setExceution(currentCell.getStringCellValue());
 						break;
-					case 11:
+					case 10:
 						taskUserDetail.setIntimation(currentCell.getStringCellValue());
 						
 						break;
@@ -156,9 +152,15 @@ public class ExcelController {
 					cellIdx++;
 					taskId = taskInfoService.save(taskInfo);
 					taskUserDetail.setTaskId(taskId.getId());
-					taskUserDetailsService.save(taskUserDetail);
 					taskStatus.setTaskId(taskId.getId());
+					try {
+						taskStatus.setEndDate(formatter.parse(formatter.format(date)));
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					taskStatus.setStatus("In Process");
+					taskUserDetailsService.save(taskUserDetail);
 					taskStatusService.save(taskStatus);
 				}
 			}
