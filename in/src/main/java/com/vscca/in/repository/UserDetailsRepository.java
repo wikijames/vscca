@@ -18,20 +18,20 @@ public interface UserDetailsRepository extends JpaRepository<UserDetails, Long>{
 	
 	List<UserDetails>findAll();
 	
-	@Query(value="select * from vscca.user_details where consulting= 1",nativeQuery=true)
+	@Query(value="select * from vscca.user_details where consulting= 1 and is_active = 1",nativeQuery=true)
 	List<UserDetails> userDetailsByConsulting();
 	
 	
-	@Query(value="select * from vscca.user_details where responsibility= 1",nativeQuery=true)
+	@Query(value="select * from vscca.user_details where responsibility= 1 and is_active = 1",nativeQuery=true)
 	List<UserDetails> userDetailsByResponsibility();
 	
 	
-	@Query(value="select * from vscca.user_details where execution= 1",nativeQuery=true)
+	@Query(value="select * from vscca.user_details where execution= 1 and is_active = 1",nativeQuery=true)
 	List<UserDetails> userDetailsByExecution();
 	
 	
 
-	@Query(value="select * from vscca.user_details where intimation= 1",nativeQuery=true)
+	@Query(value="select * from vscca.user_details where intimation= 1 and is_active = 1",nativeQuery=true)
 	List<UserDetails> userDetailsByIntimation();
 	
 	@Query(value="select * from vscca.user_Details where id=?",nativeQuery=true)
