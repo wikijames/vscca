@@ -2,6 +2,7 @@ var isActiveValue;
 $( document ).ready( function () {
 	var sessionBillingId = sessionStorage.getItem('billingId');
 	if(sessionBillingId != null){
+		$('#billingFileinfo').hide();
 		setTimeout(function(){
 			getViewBillingClientById();
 		},500);	
@@ -64,6 +65,7 @@ function updateBillingClientHandler(){
         $.ajax( settings ).done( function ( response ) {
             if ( response.success == 200 ) {
                 $( "#billingClientForm" )[ 0 ].reset();
+                window.location = 'viewBillingClient';
                 alert( 'Billing client has been added succesfully' );
             } else if ( reponse.success === 401 ) {
                 checkSession();
@@ -93,6 +95,7 @@ function addBillingClientHandler(){
         $.ajax( settings ).done( function ( response ) {
             if ( response.success == 200 ) {
                 $( "#billingClientForm" )[ 0 ].reset();
+                window.location = 'viewBillingClient';
                 alert( 'Billing client has been added succesfully' );
             } else if ( reponse.success === 401 ) {
                 checkSession();

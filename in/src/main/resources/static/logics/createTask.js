@@ -15,6 +15,7 @@ $(document).ready(function(){
 	var intimationStatus = false;
 	
 	if(sessionTaskId != null){
+		$('#fileinfo').hide();
 		if(responsibilityStatus && executionStatus && consulting && intimationStatus ){
 		 getViewTaskById();
 		}	

@@ -113,7 +113,7 @@
                           />
                         </div>
                       </div>
-                      <div class="col-md-4">
+                      <div id="IsActiveUserHolder" class="col-md-4">
                         <div class="form-group">
                           <input
                             type="checkbox"
@@ -125,10 +125,12 @@
                             id=""
                             class="form-control-label"
                             for="isActive"
-                          >Check to Active and Uncheck to Deactive User Profile</label>
+                          ><span id="isActiveLabel"></span></label>
                         </div>
-                      </div>
                     </div>
+                    <div class="col-md-4 messageOnCreateUser">
+                          <label class="form-control-label"><i>User will automatically activated on save...</i></label>
+                      </div>
                   </div>
                   <!---User Role-->
                   <hr class="my-4" />

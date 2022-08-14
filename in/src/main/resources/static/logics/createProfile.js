@@ -6,33 +6,37 @@ var sessionProfileId;
 var isActiveValue;
 
 $(document).ready(function(){
+	
 	sessionProfileId = sessionStorage.getItem('profileId');
 	if(sessionProfileId != null){
 		setTimeout(function(){
 			viewProfileByIdHandler();
+			$('.messageOnCreateUser').hide();
 		},500);		
+	}else {
+		$('#IsActiveUserHolder').hide();
 	}
 //console.log('vprofileId ', sessionProfileId);
 
     if ( $( '#isActive' ).is( ":checked" ) ) {
         $( this ).val( "1" );
         isActiveValue = 1;
-//        $( '#isActiveLabel' ).text( 'User is De-activated' );
+        $( '#isActiveLabel' ).text( 'User is Active' );
     } else {
         $( this ).val( "0" );
         isActiveValue = 0;
-//        $( '#isActiveLabel' ).text( 'User is Activated' );
+        $( '#isActiveLabel' ).text( 'User is Deactive' );
     }
 
     $( "#isActive" ).change( function ( e ) {
         if ( $( this ).is( ":checked" ) ) {
             $( this ).val( "1" );
             isActiveValue = 1;
-//            $( '#isActiveLabel' ).text( 'User is De-activated' );
+            $( '#isActiveLabel' ).text( 'User is Active' );
         } else {
             $( this ).val( "0" );
             isActiveValue = 0;
-//            $( '#isActiveLabel' ).text( 'User is Activated' );
+            $( '#isActiveLabel' ).text( 'User is Deactive' );
         }
     } );
 	$("#responsibility").change(function(e){
@@ -157,6 +161,7 @@ function submitData(e){
 			}
 		} 
 	};
+
 	
 function updateProfileHandler(){
 	var saveProfileId = $("#saveProfile").attr('title');
@@ -191,6 +196,7 @@ function updateProfileHandler(){
 			$.ajax(settings).done(function (response) {
 			if(response.success == 200 ){
 				$("#profileForm")[0].reset();
+				window.location = 'viewProfileGrid';
 				alert('profile has been updated succesfully');
 			}else if(reponse.success === 401 ){
 				checkSession();
@@ -225,12 +231,12 @@ function createNewProfileHandler(){
 		    "aboutMe": $('#aboutMe').val(),
 		    "accessType": $('#accessType').val(),
 		    "location": $('#location').val(),
-			"isActive":$( '#isActive' ).val() ,
 		  }),
 		};	
 			$.ajax(settings).done(function (response) {
 			if(response.success == 200 ){
 				$("#profileForm")[0].reset();
+				window.location = 'viewProfileGrid';
 				alert('profile has been added succesfully');
 			}else if(reponse.success === 401 ){
 				checkSession();
@@ -269,7 +275,7 @@ function isCheckedInt(value){
 		$('#intimation').prop("checked", true);
 		$('#intimation').val( "1" );
 		intimationValue = 1;
-		//console.log('Ints', value);
+		
 	}
 };
 function isCheckedActive(value){
@@ -277,7 +283,7 @@ function isCheckedActive(value){
 		$('#isActive').prop("checked", true);
 		$('#isActive').val( "1" );
 		isActiveValue = 1;
-		//console.log('is active profile', value);
+		$( '#isActiveLabel' ).text( 'User is Active' );
 	}
 };
 
