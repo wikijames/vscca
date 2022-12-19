@@ -36,11 +36,16 @@ function disableFormInputHandler(){
 };
 
 function disableEnableHandler(){
-	 if (( userRole == 'Admin' ) || ( userRole == 'Supervisor' )){
-     		$('.taskInformation,.clientInformation,.commentsSection').find('input, textarea, button, select').attr('disabled',false);
-			$('.taskInformation,.clientInformation,.commentsSection').find('input, textarea, button, select').attr('readonly',false);
-   
-    } else if ( userRole == 'TeamMember' ) {
+	var taskId = sessionStorage.getItem('taskId');
+	 if ( userRole == 'Admin' ){
+     	$('.taskInformation,.clientInformation,.commentsSection').find('input, textarea, button, select').attr('disabled',false);
+		$('.taskInformation,.clientInformation,.commentsSection').find('input, textarea, button, select').attr('readonly',false);
+    }else if(taskId && userRole == 'Supervisor'){
+		$('.taskInformation,.clientInformation,.commentsSection').find('input, textarea, button, select').attr('disabled',false);
+		$('.taskInformation,.clientInformation,.commentsSection').find('input, textarea, button, select').attr('readonly',false);
+		$('#projectName, #taskType').attr('disabled', true);
+		$('#projectName, #taskType').attr('readonly', true);
+	}else if ( userRole == 'TeamMember' ) {
         $('.remarksColumn').addClass('hide');
     }else if ( userRole == null || userRole == undefined){
         sessionStorage.clear();
