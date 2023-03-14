@@ -97,4 +97,24 @@ public class PageRedirectController {
     public String NavigateToViewReports() {
             return "reports";
         }
+    @CrossOrigin
+    @RequestMapping(value = "/auditList/viewAuditList", method = RequestMethod.GET)
+    public String navigateToViewAuditList() {
+    		return "auditList/viewAuditList";
+    }
+    @CrossOrigin
+    @RequestMapping(value = "/auditList/addAuditList", method = RequestMethod.GET)
+    public String navigateToAddAuditList() {
+    		return "auditList/addAuditList";
+    }
+    @CrossOrigin
+    @RequestMapping(value = "/dscAudit/viewDscAudit", method = RequestMethod.GET)
+    public String navigateToViewDscAudit() {
+    		return "dscAudit/viewDscAudit";
+    }
+    @CrossOrigin
+    @RequestMapping(value = "/dscAudit/addDscAudit", method = RequestMethod.GET)
+    public String navigateToAddDscAudit() {
+    		return "dscAudit/addDscAudit";
+    }
 }
