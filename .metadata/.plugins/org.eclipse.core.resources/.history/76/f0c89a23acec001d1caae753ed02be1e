@@ -83,7 +83,7 @@ function topNavUserName () {
 
 function roleBaseAccess () {
     //console.log('roles',userRole);
-    if ( userRole == 'Admin' || userRole == 'SuperAdmin') {
+    if ( userRole == 'Admin' ) {
         $( '.changePasswordTopNav' ).remove();
         $( '.passwordNavforUsers' ).remove();
     } else if ( userRole == 'Supervisor' ) {
@@ -105,10 +105,10 @@ function roleBaseAccess () {
 };
 
 function taskNavLoadHandler ( value ) {
-	 if ( (userRole == 'Admin' && value == 'dashboard') || (userRole == 'SuperAdmin' && value == 'dashboard')) {
+	 if ( userRole == 'Admin' && value == 'dashboard') {
 	    $( '#taskNameChangeHeading' ).text( 'All Tasks' );
 		return populateData( getTaskDetailsURL );
-	}else if ( (userRole != 'Admin' && value == 'dashboard') || (userRole != 'Admin' && value == 'dashboard')){
+	}else if ( userRole != 'Admin' && value == 'dashboard'){
         $( '#taskNameChangeHeading' ).text( 'Your Tasks' );
 		return populateData( getTaskDetailsByUserURL );
 	}else if ( value == 'yourTask' ) {
