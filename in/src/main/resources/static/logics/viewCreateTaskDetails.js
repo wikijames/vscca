@@ -45,7 +45,7 @@ function disableEnableHandler(){
 		$('.taskInformation,.clientInformation,.commentsSection').find('input, textarea, button, select').attr('readonly',false);
 		$('#projectName, #taskType').attr('disabled', true);
 		$('#projectName, #taskType').attr('readonly', true);
-	}else if ( userRole == 'TeamMember' || userRole == 'SuperAdmin') {
+	}else if ( userRole == 'TeamMember' || userRole == 'Manager') {
         $('.remarksColumn').addClass('hide');
     }else if ( userRole == null || userRole == undefined){
         sessionStorage.clear();
