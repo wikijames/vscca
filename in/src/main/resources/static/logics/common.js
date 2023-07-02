@@ -105,7 +105,7 @@ function roleBaseAccess () {
 };
 
 function taskNavLoadHandler ( value ) {
-	 if ( (userRole == 'Admin' && value == 'dashboard') || (userRole == 'Manger' && value == 'dashboard')) {
+	 if ( (userRole == 'Admin' && value == 'dashboard') || (userRole == 'Manager' && value == 'dashboard')) {
 	    $( '#taskNameChangeHeading' ).text( 'All Tasks' );
 		return populateData( getTaskDetailsURL );
 	}else if ( (userRole != 'Admin' && value == 'dashboard') || (userRole != 'Manager' && value == 'dashboard')){
