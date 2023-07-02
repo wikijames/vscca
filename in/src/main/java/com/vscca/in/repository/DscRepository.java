@@ -1,5 +1,7 @@
 package com.vscca.in.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,5 +13,7 @@ public interface DscRepository extends JpaRepository<Dsc, Long> {
 	
 	@SuppressWarnings("unchecked")
 	Dsc save(Dsc dsc);
+	
+	List<Dsc> findAll();
 
 }
