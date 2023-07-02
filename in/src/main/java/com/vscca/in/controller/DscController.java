@@ -1,9 +1,12 @@
 package com.vscca.in.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +16,7 @@ import com.vscca.in.dto.ResponseDto;
 import com.vscca.in.dto.UserDto;
 import com.vscca.in.model.Dsc;
 import com.vscca.in.model.LoginTable;
+import com.vscca.in.model.TaskType;
 import com.vscca.in.model.UserDetails;
 import com.vscca.in.serivce.DscService;
 import com.vscca.in.serivce.LoginService;
@@ -85,6 +89,25 @@ public boolean getTokenAuthentication(String token) {
 	}
 	return false;
 
+}
+
+
+@CrossOrigin
+@GetMapping("/dsc")
+public ResponseDto getTaskType(HttpServletRequest req) {
+	ResponseDto response = new ResponseDto();
+	String token = req.getHeader(VsccaConstants.TOKEN_HEADER);
+	if (token == null || TokenValidation.getAuthentication(token) != true
+			|| getTokenAuthentication(token) != true) {
+		response.setSuccess(401);
+		response.setMessage("Unauthorized");
+	} else {
+		List<Dsc> dscs = dscService.findAll();
+		response.setSuccess(200);
+		response.setBody(dscs);
+		response.setMessage("success");
+	}
+	return response;
 }
 
 }
