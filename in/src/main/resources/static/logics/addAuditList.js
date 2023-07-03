@@ -13,7 +13,7 @@ $(document).ready(function(){
 	var executionStatus = false;
 	var consulting = false;
 	var intimationStatus = false;
-	
+   
 	if(sessionTaskId != null){
 		$('#fileinfo').hide();
 		if(responsibilityStatus && executionStatus && consulting && intimationStatus ){
@@ -40,7 +40,7 @@ $('.billingClientNameClass').select2({});
   });
 
 	// populate tasks Type Dropdown
-  $.ajax({
+  /*$.ajax({
     type: "GET",
     url:getTasksURL,
     dataType: "json",
@@ -55,88 +55,11 @@ $('.billingClientNameClass').select2({});
         $(div_data).appendTo('#taskType');
         });
         }
-  });
-
-	// populate responsiblityUsers Dropdown
-	  $.ajax({
-        type: "GET",
-        url:getResponsiblityUsersURL,
-        dataType: "json",
-        "headers": {
-	    	"Content-Type": "application/json",
-			"Authorization": accessToken
-	  	},
-		success: function (data) {
-			responsibilityStatus = true;
-            $.each(data.body,function(i,obj)
-            {
-             var div_data="<option value="+obj.emailId+">"+obj.firstName+" "+obj.lastName+"</option>";
-            $(div_data).appendTo('#responsibility');
-            });
-            }
-      });
-
-// populate executionUsers Dropdown
-  $.ajax({
-    type: "GET",
-    url:getExecutionUsersURL,
-    dataType: "json",
-    "headers": {
-    	"Content-Type": "application/json",
-		"Authorization": accessToken
-  	},
-	success: function (data) {
-		executionStatus = true;
-        $.each(data.body,function(i,obj)
-        {
-         var div_data="<option value="+obj.emailId+">"+obj.firstName+" "+obj.lastName+"</option>";
-        $(div_data).appendTo('#execution');
-        });
-        }
-  });
-
-// populate consultingUsers Dropdown
-  $.ajax({
-    type: "GET",
-    url:getConsultingUsersURL,
-    dataType: "json",
-    "headers": {
-    	"Content-Type": "application/json",
-		"Authorization": accessToken
-  	},
-	success: function (data) {
-		consulting = true;
-		$.each(data.body,function(i,obj)
-        {
-         var div_data="<option value="+obj.emailId+">"+obj.firstName+" "+obj.lastName+"</option>";
-        $(div_data).appendTo('#consulting');
-        });
-        }
-  });
-
-// populate intimationuser Dropdown
-  $.ajax({
-    type: "GET",
-    url:getIntimationUsersURL,
-    dataType: "json",
-    "headers": {
-    	"Content-Type": "application/json",
-		"Authorization": accessToken
-  	},
-	success: function (data) {
-        intimationStatus = true;
-        $.each(data.body,function(i,obj)
-        {
-         var div_data="<option value="+obj.emailId+">"+obj.firstName+" "+obj.lastName+"</option>";
-        $(div_data).appendTo('#intimation');
-        });
-        }
-  });
-
-
+  });*/
 
 var formattedDueDate;
-$("#endDate").change(function(){
+$("#madeDate").change(function(){
+	$('#future-date-input').val('');
 	var dueDate = $(this).val();
 	    var date = new Date(dueDate);
 	    var month = date.getMonth() + 1;
@@ -144,6 +67,7 @@ $("#endDate").change(function(){
 	    var year = date.getFullYear();
 		var result = day + "-" + month + "-" + year;
 		formattedDueDate = dueDate;
+		generateNumberDropdown(formattedDueDate);
 });
 
 
@@ -154,7 +78,7 @@ $("#endDate").change(function(){
 //		console.log('task id in edit', taskId);
 		if(taskId !== ''){
 			var settings = {
-		    "url": postEditTaskURL,
+		    "url": postDSCAuditURL,
 			  "method": "POST",
 			  "timeout": 0,
 			"headers": {
@@ -162,33 +86,29 @@ $("#endDate").change(function(){
 				"Authorization": accessToken
 		  	},
 		  "data": JSON.stringify({
-			"projectName": $('#projectName').val(),
-			    "partyName": $('#partyName').val(),
-			    "weightage": $('#weightage').val(),
-			    "taskDescription": $('#description').val(),
-			    "taskType": $('#taskType').val(),
-			    "billingClient": $('#billingClientName').val(),
-			    //"createdAt": todayDate(),
-			    "dueDate": formattedDueDate,
-			    "responsibility": $('#responsibility').val(),
-			    "intimation": $('#intimation').val(),
-			    "exceution": $('#execution').val(),
-			    "consulting": $('#consulting').val(),
-
-			"status": $('#status').val(),
-			"remarks": $('#remarks').val(),
-			"delayReason": $('#reasonForDelay').val(),
-			"taskId": $('#taskId').val()
+				"personName": $('#projectName').val(),
+			    "active": $('#partyName').val(),
+			    "createdAt": $('#weightage').val(),
+			    "purpose": $('#description').val(),
+			    "validity": $('#taskType').val(),
+			    "validTill": $('#billingClientName').val(),
+			    "category": formattedDueDate,
+			    "mobileNo": $('#responsibility').val(),
+			    "feesCollected": $('#intimation').val(),
+			    "dscWithUs": $('#execution').val(),
+			    "dscWithPerson": $('#consulting').val(),
+				"remarks": $('#remarks').val(),
+				"taskId": $('#taskId').val()
 		  }),
 		};
 			$.ajax(settings).done(function (response) {
 
 				//console.log(response);
 				if(response.success == 200 ){
-					$("#createForm")[0].reset();
-					window.location = 'dashboard'
-					alert('Task has been updated succesfully');
-				}else if(reponse.success === 401 ){
+					$("#dscAuditForm")[0].reset();
+					window.location = 'auditList/viewAuditList'
+					alert('Person has been added updated in DSC audit list');
+				}else if(response.success === 401 ){
 					checkSession();
 				}else{
 					alert('something went wrong.'+ data);
@@ -196,7 +116,7 @@ $("#endDate").change(function(){
 			});
 		}else{
 			var settings = {
-			    "url": postCreateTaskURL,
+			    "url": postDSCAuditURL,
 				  "method": "POST",
 				  "timeout": 0,
 				"headers": {
@@ -204,31 +124,31 @@ $("#endDate").change(function(){
 					"Authorization": accessToken
 			  	},
 			  "data": JSON.stringify({
-			    "projectName": $('#projectName').val(),
-			    "partyName": $('#partyName').val(),
-			    "weightage": $('#weightage').val(),
-			    "taskDescription": $('#description').val(),
-			    "taskType": $('#taskType').val(),
-			    "billingClient": $('#billingClientName').val(),
-			    //"createdAt": todayDate(),
-			    "dueDate": formattedDueDate,
-			    "responsibility": $('#responsibility').val(),
-			    "intimation": $('#intimation').val(),
-			    "exceution": $('#execution').val(),
-			    "consulting": $('#consulting').val()
+			    "personName": $('#DSCPerson').val(),
+			    "active": $('#DSCActive').val(),
+			    "purpose": $('#DSCPurpose').val(),
+			    "dscWithUs": $('#DSCWithUs').val(),
+			    "createdAt": formattedDueDate,
+			    "validity": $('#validity').val(),
+			    "validTill": $('#future-date-input').val(),
+			    "category": $('#category').val(),
+			    "mobileNo": $('#mobileNumber').val(),
+			    "feesCollected": $('#feeCollected').val(),
+			    "dscWithPerson": $('#DSCWithPerson').val(),
+				"remarks": $('#remarks').val(),
 			  }),
 			};
 				$.ajax(settings).done(function (response) {
 
-					//console.log(response);
+					console.log(response);
 					if(response.success == 200 ){
-						window.location = 'dashboard';
-						$("#createForm")[0].reset();
-						alert('Task has been created succesfully');
-					}else if(reponse.success === 401 ){
+						window.location = 'viewAuditList';
+						$("#dscAuditForm")[0].reset();
+						alert('Person has been added succesfully in DSC audit list');
+					}else if(response.success === 401 ){
 						checkSession();
 					}else{
-						alert('something went wrong.'+ data);
+						alert('something went wrong.');
 					}
 				});
 		}
@@ -278,3 +198,61 @@ function uploadBulkTask(){
 		$('form')[0].reset();
 		return false;
 }
+
+// generateNumberDropdown
+  function generateNumberDropdown(madeDate) {
+  var validitySelect = $('#validity');
+
+  // Clear existing options
+  validitySelect.empty();
+
+  // Create the default option
+  var defaultOption = $('<option>', {
+    value: '',
+    text: 'Select Validity in Months'
+  });
+
+  // Append the default option to the select element
+  validitySelect.append(defaultOption);
+
+  // Generate options for validity in months
+  for (var i = 0; i <= 36; i++) {
+    var option = $('<option>', {
+      value: i,
+      text: i
+    });
+
+    // Append each option to the select element
+    validitySelect.append(option);
+  }
+
+  // Handle select change event
+  validitySelect.on('change', function() {
+    var selectedMonth = parseInt($(this).val());
+    var parts = madeDate.split('-');
+    var day = parseInt(parts[0]);
+    var month = parseInt(parts[1]) - 1; // Month is zero-based in JavaScript Date object
+    var year = parseInt(parts[2]);
+    var date = new Date(year, month, day);
+    date.setMonth(date.getMonth() + selectedMonth);
+    var formattedDate = formatDate(date);
+    $('#future-date-input').val(formattedDate);
+  });
+}
+
+    // Function to format the date as "dd-mm-yyyy"
+    function formatDate(date) {
+      var day = date.getDate();
+      var month = date.getMonth() + 1;
+      var year = date.getFullYear();
+
+      // Pad single digits with leading zeros
+      if (day < 10) {
+        day = '0' + day;
+      }
+      if (month < 10) {
+        month = '0' + month;
+      }
+
+      return day + '-' + month + '-' + year;
+    }
