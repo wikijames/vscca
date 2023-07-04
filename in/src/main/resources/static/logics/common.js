@@ -1,13 +1,14 @@
-/*
 function checkSession ( value ) {
-    var cookies = Cookies.get( "token" );
+    console.log('checkSession value ==>', value);
+    return value;
+    /*var cookies = Cookies.get( "token" );
     if ( cookies == null || cookies == undefined || value == 401 || value == 500 ) {
         sessionStorage.clear();
 		eraseCookie('token');
         window.location = '/vscca';
 		Logout ();
         alert( 'Your session has been expired, Please login in again to continue...' );
-    }
+    }*/
 }
 
 function setCookie(name,value,days) {
@@ -32,7 +33,7 @@ function getCookie(name) {
 function eraseCookie(name) {   
     document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
-*/			
+
 function Logout () {
     $.ajax( {
         type: "GET",
@@ -74,7 +75,7 @@ function topNavUserName () {
             "Authorization": accessToken
         },
         success: function ( data ) {
-            //checkSession( data.success );
+            checkSession( data.success );
             var obj = data.body;
             
             $( '#topNavuserName' ).append( obj.firstName + ' ' + obj.lastName );
@@ -165,6 +166,6 @@ $( document ).ready( function () {
     } );
 
     setInterval( function () {
-        //sessionStorage.clear(); //checkSession();
+        checkSession();
     }, 300000 );
 } )// ready ends

@@ -20,7 +20,7 @@ function populateData ( url ) {
             "Authorization": accessToken
         },
         success: function ( data ) {
-            //checkSession( data.success );
+            checkSession( data.success );
             $.each( data.body, function ( i, obj ) {
 				//console.log('obj=>', obj);
 				var div_data = '<tr>'

@@ -9,7 +9,7 @@ $( document ).ready( function () {
             "Authorization": accessToken
         },
         success: function ( data ) {
-            //checkSession( data.success );
+            checkSession( data.success );
             $.each( data.body, function ( i, obj ) {
                 var div_data = "<option value=" + obj.emailId + ">" + obj.firstName + " " + obj.lastName + "</option>";
                 $( div_data ).appendTo( '#userNames' );
@@ -56,7 +56,8 @@ function userPasswordResetHandler ( settings ) {
             $( "#changePasswordForm" )[ 0 ].reset();
             alert( 'Password has been created succesfully' );
         } else if ( reponse.success === 401 ) {
-            sessionStorage.clear(); //checkSession();
+            checkSession();
+            sessionStorage.clear();
         } else {
             alert( 'something went wrong.' + data );
         }
@@ -84,7 +85,8 @@ function passwordChangeOptionForAdminHandler () {
             window.location = 'adminPanel';
             alert( 'password has been updated succesfully' );
         } else if ( reponse.success === 401 ) {
-            sessionStorage.clear(); //checkSession();
+            checkSession();
+            sessionStorage.clear(); 
         } else {
             alert( 'something went wrong.' + data );
         }

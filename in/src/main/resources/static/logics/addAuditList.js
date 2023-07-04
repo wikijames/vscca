@@ -109,7 +109,7 @@ $("#madeDate").change(function(){
 					window.location = 'auditList/viewAuditList'
 					alert('Person has been added updated in DSC audit list');
 				}else if(response.success === 401 ){
-					//sessionStorage.clear(); //checkSession();
+					checkSession();
 					sessionStorage.clear();
 				}else{
 					alert('something went wrong.'+ data);
@@ -147,7 +147,7 @@ $("#madeDate").change(function(){
 						$("#dscAuditForm")[0].reset();
 						alert('Person has been added succesfully in DSC audit list');
 					}else if(response.success === 401 ){
-						//sessionStorage.clear(); //checkSession();
+						checkSession();
 						sessionStorage.clear();
 					}else{
 						alert('something went wrong.');

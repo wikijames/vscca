@@ -24,42 +24,43 @@ $(document).ready(function() {
 				"password": $('#password').val()
 			}),
 		};
-		if(userName === '' && password === ''){
-			$(userName).css("border-color", "red");
-			$(userName).focus();
-			alert('Please fill the details...');
-			return false;
-		}
-		if(!userName){
-			$(userName).css("border-color", "red");
-			$(userName).focus();
-			alert('Please fill correct user/email');
-			return false;
-		}
-		if(!password){
-			$(password).css("border-color", "red");
-			$(password).focus();
-			alert('Please fill correct password');
-			return false;
-		}
-		if(userName && password){
-			$.ajax(settings).done(function(response) {
-				//console.log(response.success +'====='+ response.status);
-				loginResponseHandler(response);			
-			});		
-		}
+		 if (userName === '' && password === '') {
+        alert('Please fill in the details');
+        return false;
+	    } else if (!userName) {
+	        alert('Please fill in the correct user/email');
+	        return false;
+	    } else if (!password) {
+	        alert('Please fill in the correct password');
+	        return false;
+	    } else if (userName && password) {
+	        $.ajax(settings).done(function(response) {
+	            if (response.success === 200) {
+	                window.location = 'dashboard';
+	                sessionStorage.setItem('token', response.token);
+	                sessionStorage.setItem('roles', response.body);
+	            } else {
+	                if (response.success === 500) {
+	                    alert('Server error. Please try again later.');
+	                } else {
+	                    alert('Invalid username or password. Please try again.');
+	                }
+	            }
+	        }).fail(function() {
+	            alert('Error occurred. Either userName or Passowrd is wrong. Please try again later.');
+	        });
+	    }
 	});
 	
 
 });
 
-function loginResponseHandler(response){
-	try{
-		window.location = 'dashboard';
-		//Cookies.set('token', response.token, { expires: 43200 / 43200 });
-		sessionStorage.setItem('token', response.token);
-		sessionStorage.setItem('roles', response.body)
-	}catch(err){
-		alert(err.message);
-	}
-};
+function loginResponseHandler(response) {
+    if (response.success === 200) {
+        window.location = 'dashboard';
+        sessionStorage.setItem('token', response.token);
+        sessionStorage.setItem('roles', response.body);
+    } else {
+        alert('Invalid username or password. Please try again.');
+    }
+}
