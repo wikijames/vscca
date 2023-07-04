@@ -68,7 +68,8 @@ function updateBillingClientHandler(){
                 window.location = 'viewBillingClient';
                 alert( 'Billing client has been added succesfully' );
             } else if ( reponse.success === 401 ) {
-                checkSession();
+                //sessionStorage.clear(); //checkSession();
+                sessionStorage.clear();
             } else {
                 alert( 'something went wrong.' + data );
             }
@@ -98,7 +99,8 @@ function addBillingClientHandler(){
                 window.location = 'viewBillingClient';
                 alert( 'Billing client has been added succesfully' );
             } else if ( reponse.success === 401 ) {
-                checkSession();
+                //sessionStorage.clear(); //checkSession();
+                sessionStorage.clear();
             } else {
                 alert( 'something went wrong.' + data );
             }

@@ -20,7 +20,7 @@ function populateData ( url ) {
             "Authorization": accessToken
         },
         success: function ( data ) {
-            checkSession( data.success );
+            //checkSession( data.success );
             $.each( data.body, function ( i, obj ) {
 				//console.log('obj=>', obj);
 				var div_data = '<tr>'
@@ -273,9 +273,8 @@ function formatDateHandler ( value ) {
     return result;
 };
 
-function isTaskDescription ( value ) {
-	
-    if ( value.trim() ) {
+function isTaskDescription ( value ) {	
+    if (value && value.trim() ) {
         return 'Yes';
     } else {
         return 'No'

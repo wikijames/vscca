@@ -30,7 +30,7 @@ function populateData () {
             "Authorization": accessToken
         },
         success: function ( data ) {
-            checkSession( data.success );
+            //checkSession( data.success );
 			//console.log('billing client data', data)
             $.each( data.body, function ( i, obj ) {
 					splitClientHandler(obj.client);

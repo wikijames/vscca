@@ -199,7 +199,8 @@ function updateProfileHandler(){
 				window.location = 'viewProfileGrid';
 				alert('profile has been updated succesfully');
 			}else if(reponse.success === 401 ){
-				checkSession();
+				//sessionStorage.clear(); //checkSession();
+				sessionStorage.clear();
 			}else{
 				alert('something went wrong.'+ data);
 			}
@@ -239,7 +240,8 @@ function createNewProfileHandler(){
 				window.location = 'viewProfileGrid';
 				alert('profile has been added succesfully');
 			}else if(reponse.success === 401 ){
-				checkSession();
+				//sessionStorage.clear(); //checkSession();
+				sessionStorage.clear();
 			}else{
 				alert('something went wrong.'+ data);
 			}

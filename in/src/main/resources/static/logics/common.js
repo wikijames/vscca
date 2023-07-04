@@ -1,3 +1,4 @@
+/*
 function checkSession ( value ) {
     var cookies = Cookies.get( "token" );
     if ( cookies == null || cookies == undefined || value == 401 || value == 500 ) {
@@ -31,7 +32,7 @@ function getCookie(name) {
 function eraseCookie(name) {   
     document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
-			
+*/			
 function Logout () {
     $.ajax( {
         type: "GET",
@@ -73,7 +74,7 @@ function topNavUserName () {
             "Authorization": accessToken
         },
         success: function ( data ) {
-            checkSession( data.success );
+            //checkSession( data.success );
             var obj = data.body;
             
             $( '#topNavuserName' ).append( obj.firstName + ' ' + obj.lastName );
@@ -164,6 +165,6 @@ $( document ).ready( function () {
     } );
 
     setInterval( function () {
-        checkSession();
+        //sessionStorage.clear(); //checkSession();
     }, 300000 );
 } )// ready ends

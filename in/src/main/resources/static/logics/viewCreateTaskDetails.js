@@ -71,7 +71,7 @@ function convertDate(value,name){
 				"Authorization": accessToken
 		  	},
 			success: function (data) {
-				checkSession(data.success);
+				//checkSession(data.success);
 				$.each(data.body,function(i,obj)
                 {
 //					console.log('data.body', data.body);

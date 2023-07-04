@@ -44,7 +44,7 @@ $(document).ready(function() {
 		}
 		if(userName && password){
 			$.ajax(settings).done(function(response) {
-				console.log(response.success +'====='+ response.status);
+				//console.log(response.success +'====='+ response.status);
 				loginResponseHandler(response);			
 			});		
 		}
@@ -56,7 +56,7 @@ $(document).ready(function() {
 function loginResponseHandler(response){
 	try{
 		window.location = 'dashboard';
-		Cookies.set('token', response.token, { expires: 43200 / 43200 });
+		//Cookies.set('token', response.token, { expires: 43200 / 43200 });
 		sessionStorage.setItem('token', response.token);
 		sessionStorage.setItem('roles', response.body)
 	}catch(err){

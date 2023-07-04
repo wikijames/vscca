@@ -189,7 +189,7 @@ $("#endDate").change(function(){
 					window.location = 'dashboard'
 					alert('Task has been updated succesfully');
 				}else if(reponse.success === 401 ){
-					checkSession();
+					sessionStorage.clear(); //checkSession();
 				}else{
 					alert('something went wrong.'+ data);
 				}
@@ -226,7 +226,7 @@ $("#endDate").change(function(){
 						$("#createForm")[0].reset();
 						alert('Task has been created succesfully');
 					}else if(reponse.success === 401 ){
-						checkSession();
+						sessionStorage.clear(); //checkSession();
 					}else{
 						alert('something went wrong.'+ data);
 					}

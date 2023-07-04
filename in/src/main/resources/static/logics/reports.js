@@ -49,7 +49,7 @@ jQuery( function () {
 		            });
 					alert('Daybook loaded');
 				}else if(reponse.success === 401 ){
-					checkSession();
+					sessionStorage.clear(); //checkSession();
 				}else{
 					alert('something went wrong.'+ data);
 				}
