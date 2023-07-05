@@ -77,15 +77,21 @@ function topNavUserName () {
         success: function ( data ) {
             checkSession( data.success );
             var obj = data.body;
-            
-            $( '#topNavuserName' ).append( obj.firstName + ' ' + obj.lastName );
+            $( '#topNavuserName' ).empty();
+            if (obj) {
+	        $( '#topNavuserName' ).append(obj.accessType + ', ' + obj.firstName + ' ' + obj.lastName);
+		    } else {
+		        alert('Your session seems to have expired or you have logged in from another device. Please log in again.');
+		        sessionStorage.clear();
+		        window.location = '/vscca';
+		    }
         }
     } );
 };
 
 function roleBaseAccess () {
     //console.log('roles',userRole);
-    if ( userRole == 'Admin' || userRole == 'SuperAdmin') {
+    if ( userRole == 'Admin' || userRole == 'Manager') {
         $( '.changePasswordTopNav' ).remove();
         $( '.passwordNavforUsers' ).remove();
     } else if ( userRole == 'Supervisor' ) {

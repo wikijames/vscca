@@ -40,12 +40,14 @@ function disableEnableHandler(){
 	 if ( userRole == 'Admin' ){
      	$('.taskInformation,.clientInformation,.commentsSection').find('input, textarea, button, select').attr('disabled',false);
 		$('.taskInformation,.clientInformation,.commentsSection').find('input, textarea, button, select').attr('readonly',false);
-    }else if(taskId && userRole == 'Supervisor'){
+    }else if(taskId && userRole == 'Manager'){
 		$('.taskInformation,.clientInformation,.commentsSection').find('input, textarea, button, select').attr('disabled',false);
 		$('.taskInformation,.clientInformation,.commentsSection').find('input, textarea, button, select').attr('readonly',false);
+		$('#deleteTaskBtn').addClass('hide');
 		$('#projectName, #taskType').attr('disabled', true);
 		$('#projectName, #taskType').attr('readonly', true);
-	}else if ( userRole == 'TeamMember' || userRole == 'Manager') {
+	}else if ( userRole == 'TeamMember' || userRole == 'Supervisor') {
+		$('#deleteTaskBtn').addClass('hide');
         $('.remarksColumn').addClass('hide');
     }else if ( userRole == null || userRole == undefined){
         sessionStorage.clear();
