@@ -35,20 +35,46 @@ function disableFormInputHandler(){
 	disableEnableHandler();
 };
 
+function createTaskElementsEnabled(){
+	$('.taskInformation,.clientInformation,.commentsSection').find('input, textarea, button, select').attr('disabled',false);
+	$('.taskInformation,.clientInformation,.commentsSection').find('input, textarea, button, select').attr('readonly',false);
+}
+
+function createTaskElementsDisabled(){
+	$('.taskInformation,.clientInformation,.commentsSection').find('input, textarea, button, select').attr('disabled',true);
+	$('.taskInformation,.clientInformation,.commentsSection').find('input, textarea, button, select').attr('readonly',true);
+}
+
+function enableElements(element) {
+    $(element).attr('disabled', false);
+    $(element).attr('readonly', false);
+}
+
+function disableElements(element) {
+    $(element).attr('disabled', true);
+    $(element).attr('readonly', true);
+}
+
 function disableEnableHandler(){
 	var taskId = sessionStorage.getItem('taskId');
 	 if ( userRole == 'Admin' ){
-     	$('.taskInformation,.clientInformation,.commentsSection').find('input, textarea, button, select').attr('disabled',false);
-		$('.taskInformation,.clientInformation,.commentsSection').find('input, textarea, button, select').attr('readonly',false);
+    	createTaskElementsEnabled(); 	
     }else if(taskId && userRole == 'Manager'){
-		$('.taskInformation,.clientInformation,.commentsSection').find('input, textarea, button, select').attr('disabled',false);
-		$('.taskInformation,.clientInformation,.commentsSection').find('input, textarea, button, select').attr('readonly',false);
-		$('#deleteTaskBtn').addClass('hide');
-		$('#projectName, #taskType').attr('disabled', true);
-		$('#projectName, #taskType').attr('readonly', true);
-	}else if ( userRole == 'TeamMember' || userRole == 'Supervisor') {
-		$('#deleteTaskBtn').addClass('hide');
-        $('.remarksColumn').addClass('hide');
+		createTaskElementsEnabled();
+		$('#deleteTaskBtn').remove();
+		$('#projectName, #billingClientName').attr('disabled', true);
+		$('#projectName, #billingClientName').attr('readonly', true);
+	}else if(userRole == 'Supervisor'){
+		 $('#fileinfo').remove();
+		 //$("#status option[value='Done']").hide();
+	}else if(taskId && userRole == 'Supervisor'){
+		createTaskElementsDisabled();
+		$('#deleteTaskBtn').remove();
+		enableElements('#description, #reasonForDelay');
+	}else if (userRole == 'TeamMember') {
+		$('#deleteTaskBtn').remove();
+		disableElements('#reasonForDelay');
+        //$('.remarksColumn').addClass('hide');
     }else if ( userRole == null || userRole == undefined){
         sessionStorage.clear();
         window.location = '/vscca';
