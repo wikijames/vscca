@@ -46,27 +46,45 @@ function populateData ( url ) {
 };
 
 function sortStatusText(value){
+	if( value ==  'InProcess'){
+		return 'Processing';
+	}
+	if( value ==  'UrgentProcess'){
+		return 'Urgent Process';
+	}
+	if( value ==  'ReadyToCheck'){
+		return 'SV Review';
+	}     
+	if( value ==  `CAReview`){
+	    return 'CA Review';
+	}
 	if( value ==  `ShortWork`){
-        return 'Short Work';
-    }
-	if( value ==  `InProcess`){
-        return 'In Process';
-    }
+	    return 'Short Work';
+	}
+	if( value ==  `TPPending`){
+	    return 'TP Pending';
+	}
 	if( value ==  `WorkOnClientEnd`){
-        return 'Work On Client End';
-    }
-	if( value ==  `Done`){
-        return 'Done';
-    }
-	if( value ==  `ReadyToCheck`){
-        return 'Ready To Check';
-    }
+	    return 'Stuck Dept';
+	}
+	if( value ==  `StuckClient`){
+	    return 'Stuck Client';
+	}
 	if( value ==  `DiscussionWithSatishJi`){
-        return 'Discussion With Satish Ji';
-    }
+	    return 'FCA Satish';
+	}
+	if( value ==  `OnSubmission`){
+	    return 'On Submission';
+	}
 	if( value ==  `ReadyToUpload`){
-        return 'Ready To Upload'
-    }
+	    return 'On Upload'
+	}
+	if( value ==  `Done`){
+	    return 'Completed'
+	}
+	if( value ==  `FutureWork`){
+	    return 'Future Work'
+	}
 	else{
 		return value;
 	}
@@ -99,27 +117,46 @@ function dataTableFilterHandler () {
     $.fn.dataTable.moment( 'D-M-YYYY');
     $( '#table_id' ).DataTable( {
 	"createdRow": function( row, data, dataIndex){
-                if( data[10] ==  'Short Work'){
-                    $(row).addClass('ShortWork');
-                }
-				else if( data[10] ==  'In Process'){
-                    $(row).addClass('InProcess');
-                }
-				else if( data[10] ==  'Work On Client End'){
-                    $(row).addClass('WorkOnClientEnd');
-                }
-				else if( data[10] ==  'Done'){
-                    $(row).addClass('Done');
-                }
-				else if( data[10] ==  'Ready To Check'){
-                    $(row).addClass('ReadyToCheck');
-                }
-				else if( data[10] ==  'Discussion With Satish Ji'){
-                    $(row).addClass('DiscussionWithSatishJi');
-                }
-				else if( data[10] ==  'Ready To Upload'){
-                    $(row).addClass('ReadyToUpload');
-                }else{
+				if( data[10] ==  'Processing'){
+				    $(row).addClass('InProcess');
+				}        
+				else if( data[10] ==  'Urgent Process'){
+				    $(row).addClass('UrgentProcess');
+				}
+				else if( data[10] ==  'SV Review'){
+				    $(row).addClass('ReadyToCheck');
+				}
+				else if( data[10] ==  'CA Review'){
+				    $(row).addClass('CAReview');
+				}
+				else if( data[10] ==  'Short Work'){
+				    $(row).addClass('ShortWork');
+				}
+				else if( data[10] ==  'TP Pending'){
+				    $(row).addClass('TPPending');
+				}				
+				else if( data[10] ==  'Stuck Dept'){
+				    $(row).addClass('WorkOnClientEnd');
+				}
+				else if( data[10] ==  'Stuck Client'){
+				    $(row).addClass('StuckClient');
+				}
+				else if( data[10] ==  'FCA Satish'){
+				    $(row).addClass('DiscussionWithSatishJi');
+				}
+				else if( data[10] ==  'On Submission'){
+				    $(row).addClass('OnSubmission');
+				}				
+				else if( data[10] ==  'On Upload'){
+				    $(row).addClass('ReadyToUpload');
+				}
+				else if( data[10] ==  'Completed'){
+				    $(row).addClass('Done');
+				}
+				else if( data[10] ==  'Future Work'){
+				    $(row).addClass('FutureWork');
+				}
+				else{
 					$(row).addClass('whiteRow');
 				}
             },

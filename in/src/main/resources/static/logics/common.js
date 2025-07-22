@@ -1,5 +1,5 @@
 function checkSession ( value ) {
-    console.log('checkSession value ==>', value);
+    //console.log('checkSession value ==>', value);
     return value;
     /*var cookies = Cookies.get( "token" );
     if ( cookies == null || cookies == undefined || value == 401 || value == 500 ) {

@@ -213,15 +213,21 @@
                           <label class="form-control-label" for="status"
                             >Status</label
                           >
-                          <select id="status" class="form-control createTaskFormStatus">
-                            <option value="ShortWork">Short Work</option>
-                            <option value="InProcess">In Process</option>
-                            <option value="WorkOnClientEnd">Work On Client End</option>
-                            <option value="Done">Done</option>
-                            <option value="ReadyToCheck">Ready To Check</option>
-                            <option value="DiscussionWithSatishJi">Discussion With Satish Ji</option>
-                            <option value="ReadyToUpload">Ready To Upload</option>
-                          </select>
+						  <select id="status" class="form-control createTaskFormStatus">
+                              <option value="InProcess">Processing</option>
+							  <option value="UrgentProcess">Urgent Process</option>
+							  <option value="ReadyToCheck">SV Review</option>
+							  <option value="CAReview">CA Review</option>
+							  <option value="ShortWork">Short Work</option>
+							  <option value="TPPending">TP Pending</option>
+							  <option value="WorkOnClientEnd">Stuck Dept</option>
+  							  <option value="StuckClient">Stuck Client</option>
+							  <option value="DiscussionWithSatishJi">FCA Satish</option>
+							  <option value="OnSubmission">On Submission</option>
+							  <option value="ReadyToUpload">On Upload</option>
+							  <option value="Done">Completed</option>
+  							  <option value="FutureWork">Future Work</option>
+                           </select>
                         </div>
                       </div>
                       <div class="col-lg-4 showWhenTaskIsCompleted hide">
