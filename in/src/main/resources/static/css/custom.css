@@ -220,26 +220,29 @@ table.dataTable thead .sorting_desc_disabled {
 	padding-bottom: 20px;
 }
 
-.ShortWork{
-	background: #b8d2ff;
+.ShortWork, .TPPending{
+	background: #A9D08E;
 }
-.InProcess{
-	background: #ffd2ff;
+.InProcess, .UrgentProcess, .row:has(td:nth-child(2):contains("Processing")) {
+	background: #F8CBAD;
 }
-.WorkOnClientEnd{
-	background: #ffcece;
+.WorkOnClientEnd, .StuckClient{
+	background: #FF0000;
 }
 .Done{
 	background: #c6ffad;
 }
-.ReadyToCheck{
-	background: #ffffa7;
+.ReadyToCheck, .CAReview{
+	background: #FFFF00;
 }
 .DiscussionWithSatishJi{
-	background: #baffff;
+	background: #B4C6E7;
 }
-.ReadyToUpload{
-	background: #ffebd7;
+.ReadyToUpload, .OnSubmission{
+	background: #FFC000;
+}
+.FutureWork{
+	background: #0070C0;
 }
 .whiteRow{
 	background: #fff;

@@ -49,6 +49,9 @@ function sortStatusText(value){
 	if( value ==  'InProcess'){
 		return 'Processing';
 	}
+	if( value ==  'In Process'){
+	 	return 'Processing';
+	}
 	if( value ==  'UrgentProcess'){
 		return 'Urgent Process';
 	}
@@ -119,6 +122,9 @@ function dataTableFilterHandler () {
 	"createdRow": function( row, data, dataIndex){
 				if( data[10] ==  'Processing'){
 				    $(row).addClass('InProcess');
+				}
+				else if( data[10] ==  'Processing'){
+				    $(row).addClass('In Process');
 				}        
 				else if( data[10] ==  'Urgent Process'){
 				    $(row).addClass('UrgentProcess');
