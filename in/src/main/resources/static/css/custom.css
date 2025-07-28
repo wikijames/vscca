@@ -219,30 +219,29 @@ table.dataTable thead .sorting_desc_disabled {
 .dataTables_info{
 	padding-bottom: 20px;
 }
-
 .ShortWork, .TPPending{
-	background: #A9D08E;
+	background: #b8d2ff;
 }
-.InProcess, .UrgentProcess, .row:has(td:nth-child(2):contains("Processing")) {
-	background: #F8CBAD;
+.InProcess, .UrgentProcess{
+	background: #ffd2ff;
 }
 .WorkOnClientEnd, .StuckClient{
-	background: #FF0000;
+	background: #ffcece;
 }
 .Done{
 	background: #c6ffad;
 }
 .ReadyToCheck, .CAReview{
-	background: #FFFF00;
+	background: #ffffa7;
 }
 .DiscussionWithSatishJi{
-	background: #B4C6E7;
+	background: #baffff;
 }
 .ReadyToUpload, .OnSubmission{
-	background: #FFC000;
+	background: #ffebd7;
 }
 .FutureWork{
-	background: #0070C0;
+	background: #45e0eb;
 }
 .whiteRow{
 	background: #fff;
