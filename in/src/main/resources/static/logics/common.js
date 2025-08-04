@@ -175,3 +175,15 @@ $( document ).ready( function () {
         checkSession();
     }, 300000 );
 } )// ready ends
+
+function adjustTableHeight() {
+  const offset = 200; // Adjust this value to match header/footer size
+  const target = document.querySelector('.table-responsive');
+  if (target) {
+    target.style.height = (window.innerHeight - offset) + 'px';
+    target.style.overflowY = 'auto'; // Optional: enables vertical scroll
+  }
+}
+
+window.addEventListener('load', adjustTableHeight);
+window.addEventListener('resize', adjustTableHeight);

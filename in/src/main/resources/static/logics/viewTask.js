@@ -8,6 +8,11 @@ jQuery( function () {
 
 } )// jquery end
 
+function truncateText(text, maxLength = 9) {
+  if (!text) return '';
+  return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+}
+
 function populateData ( url ) {
     //$('#table_id').dataTable().destroy();
     $( '#table_id tbody' ).empty();
@@ -22,21 +27,21 @@ function populateData ( url ) {
         success: function ( data ) {
             checkSession( data.success );
             $.each( data.body, function ( i, obj ) {
-				//console.log('obj=>', obj);
+				console.log('obj=>', obj);
 				var div_data = '<tr>'
                     + '<td>' + obj.projectName + '</td>'
                     + '<td>' + obj.partyName + '</td>'
-                    + '<td>' + obj.weightage + '</td>'
-                    + '<td>' + obj.responsibilityName + '</td>'
-					+ '<td>' + obj.exceutionName + '</td>'
-					+ '<td>' + obj.consultingName + '</td>'
-					+ '<td>' + obj.intimationName + '</td>'
+					+ '<td> <a onClick="redirectToTaskDetails(' + obj.taskId + ')" class="btn pointer">View/Edit</a></td>'
+					//+ '<td>' + obj.weightage + '</td>'
+                    + '<td>' + truncateText(obj.responsibilityName) + '</td>'
+					+ '<td>' + truncateText(obj.exceutionName) + '</td>'
+					+ '<td>' + truncateText(obj.consultingName) + '</td>'
+					+ '<td>' + truncateText(obj.intimationName) + '</td>'
 					+ '<td>' + obj.taskType+ '</td>'
 					+ '<td>' + formatDateHandler( obj.dueDate ) + '</td>'
                     //+ '<td>' + obj.dueDate  + '</td>'
                     + '<td>' + isTaskDescription( obj.taskDescription ) + '</td>'
                     + '<td>' + sortStatusText(obj.status) + '</td>'
-                    + '<td> <a onClick="redirectToTaskDetails(' + obj.taskId + ')" class="btn pointer">View/Edit</a></td>'
                     + '</tr>';
                 $( div_data ).appendTo( '#populateGrid' );
                 
