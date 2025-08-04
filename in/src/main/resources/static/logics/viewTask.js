@@ -201,7 +201,7 @@ function dataTableFilterHandler () {
 //        ],
     	colReorder: true,
         initComplete: function () {
-            this.api().columns([1,2,3,4,5,6,7,8,10]).every( function () {
+            this.api().columns([1,3,4,5,6,7,8,10]).every( function () {
                 var column = this;
                 var ddmenu = cbDropdown( $( column.header() ) )
                     .on( 'change', ':checkbox', function () {
