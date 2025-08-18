@@ -61,19 +61,22 @@ function disableEnableHandler(){
     	createTaskElementsEnabled(); 	
     }else if(taskId && userRole == 'Manager'){
 		createTaskElementsEnabled();
-		$('#deleteTaskBtn').remove();
+		/*$('#deleteTaskBtn').remove();*/
 		$('#projectName, #billingClientName').attr('disabled', true);
 		$('#projectName, #billingClientName').attr('readonly', true);
 	}else if(userRole == 'Supervisor'){
 		 $('#fileinfo').remove();
-		 //$("#status option[value='Done']").hide();
+		 $('#deleteTaskBtn').remove();
+		 enableElements('#description, #reasonForDelay');
+	 	 $("#status option[value='Done']").hide();
 	}else if(taskId && userRole == 'Supervisor'){
 		createTaskElementsDisabled();
 		$('#deleteTaskBtn').remove();
 		enableElements('#description, #reasonForDelay');
 	}else if (userRole == 'TeamMember') {
 		$('#deleteTaskBtn').remove();
-		disableElements('#reasonForDelay');
+		enableElements('#description');
+		/*disableElements('#reasonForDelay');*/
         //$('.remarksColumn').addClass('hide');
     }else if ( userRole == null || userRole == undefined){
         sessionStorage.clear();

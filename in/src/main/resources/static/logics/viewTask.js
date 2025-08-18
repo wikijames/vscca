@@ -27,7 +27,7 @@ function populateData ( url ) {
         success: function ( data ) {
             checkSession( data.success );
             $.each( data.body, function ( i, obj ) {
-				console.log('obj=>', obj);
+				/*console.log('obj=>', obj);*/
 				var div_data = '<tr>'
                     + '<td>' + obj.projectName + '</td>'
                     + '<td>' + obj.partyName + '</td>'
@@ -176,29 +176,24 @@ function dataTableFilterHandler () {
 			stateSave: true,
         dom: 'Bfrtip',
 		buttons: [
-			'excel'
-			],
-
-//columns: [
-//            { data: 'Project Name' },
-//            { data: 'Party Name' },
-//            { data: 'Weightage' },
-//            { data: 'Responsibility' },
-//            { data: 'Execution' },
-//            { data: 'Intimation' }
-//        ],
-//        dom: 'Bfrtip',
-//        buttons: [
-//            $.extend( true, {}, buttonCommon, {
-//                extend: 'copyHtml5'
-//            } ),
-//            $.extend( true, {}, buttonCommon, {
-//                extend: 'Excel'
-//            } ),
-//            $.extend( true, {}, buttonCommon, {
-//                extend: 'pdfHtml5'
-//            } )
-//        ],
+		  {
+		    extend: 'excelHtml5',
+		    exportOptions: {
+		      format: {
+		        header: function (data, columnIdx, node) {
+		          // Remove the dropdown wrapper and extract only the header text
+		          return $('<div></div>')
+		            .append(node.innerHTML)
+		            .find('.cb-dropdown-wrap') // your dropdown container class
+		            .remove()
+		            .end()
+		            .text()
+		            .trim();
+		        }
+		      }
+		    }
+		  }
+		],
     	colReorder: true,
         initComplete: function () {
             this.api().columns([1,3,4,5,6,7,8,10]).every( function () {
