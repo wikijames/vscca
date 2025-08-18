@@ -298,7 +298,12 @@ table.dataTable thead .sorting_desc_disabled {
     transform-style: preserve-3d;
 }
 
-
+#recordCount{
+    padding: 5px 8px;
+    background: #2c1e99;
+    color: #fff;
+    box-shadow: 0px 2px 2px #cdcdcd;
+}
 
 .boxes .box:nth-child(1) {
     -webkit-transform: translate(100%, 0);

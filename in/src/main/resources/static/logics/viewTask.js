@@ -26,7 +26,8 @@ function populateData ( url ) {
         },
         success: function ( data ) {
             checkSession( data.success );
-            $.each( data.body, function ( i, obj ) {
+            let totalRows= 0;
+			$.each( data.body, function ( i, obj ) {
 				/*console.log('obj=>', obj);*/
 				var div_data = '<tr>'
                     + '<td>' + obj.projectName + '</td>'
@@ -44,8 +45,9 @@ function populateData ( url ) {
                     + '<td>' + sortStatusText(obj.status) + '</td>'
                     + '</tr>';
                 $( div_data ).appendTo( '#populateGrid' );
-                
+				totalRows++;
             } );
+			$('#recordCount').text(totalRows);
         }
     } );
 };
