@@ -86,6 +86,9 @@ function sortStatusText(value){
 	if( value ==  `OnSubmission`){
 	    return 'On Submission';
 	}
+	if( value ==  `FollowUp`){
+	    return 'Follow Up'
+	}
 	if( value ==  `ReadyToUpload`){
 	    return 'On Upload'
 	}
@@ -159,14 +162,17 @@ function dataTableFilterHandler () {
 				}
 				else if( data[10] ==  'On Submission'){
 				    $(row).addClass('OnSubmission');
-				}				
+				}	
 				else if( data[10] ==  'On Upload'){
 				    $(row).addClass('ReadyToUpload');
 				}
-				else if( data[10] ==  'Completed'){
-				    $(row).addClass('Done');
+				else if (data[10] == 'Follow Up') {
+					$(row).addClass('FollowUp');
 				}
-				else if( data[10] ==  'Future Work'){
+				else if (data[10] == 'Completed') {
+					$(row).addClass('Done');
+				}
+				else if (data[10] == 'Future Work') {
 				    $(row).addClass('FutureWork');
 				}
 				else{

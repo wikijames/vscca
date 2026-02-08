@@ -240,6 +240,9 @@ table.dataTable thead .sorting_desc_disabled {
 .ReadyToUpload, .OnSubmission{
 	background: #ffebd7;
 }
+.FollowUp{
+  background: #fffaac;
+}
 .FutureWork{
 	background: #45e0eb;
 }
