@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <th:block th:fragment="statusOptions">
+      <option value="">Select status</option>
+      <option value="InProcess">Processing</option>
+      <option value="UrgentProcess">Urgent Process</option>
+      <option value="ReadyToCheck">SV Review</option>
+      <option value="CAReview">CA Review</option>
+      <option value="ShortWork">Short Work</option>
+      <option value="TPPending">TP Pending</option>
+      <option value="WorkOnClientEnd">Stuck Dept</option>
+      <option value="StuckClient">Stuck Client</option>
+      <option value="DiscussionWithSatishJi">FCA Satish</option>
+      <option value="OnSubmission">On Submission</option>
+      <option value="FollowUp">Follow Up</option>
+      <option value="ReadyToUpload">On Upload</option>
+      <option value="Done">Completed</option>
+      <option value="FutureWork">Future Work</option>
+    </th:block>
+  </body>
+</html>

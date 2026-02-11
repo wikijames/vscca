@@ -1,10 +1,189 @@
+var selectedTaskIds = [];
+var isTaskTableInitialized = false;
+
+function addSelectedTaskId ( id ) {
+	if ( selectedTaskIds.indexOf( id ) === -1 ) {
+		selectedTaskIds.push( id );
+	}
+}
+
+function removeSelectedTaskId ( id ) {
+	selectedTaskIds = selectedTaskIds.filter( function ( existingId ) {
+		return existingId !== id;
+	} );
+}
+
+function updateStatusUpdateButtonState () {
+	var hasSelection = selectedTaskIds.length > 0;
+	var $controls = jQuery( '#statusInlineControls' );
+	var $statusSelect = jQuery( '#headerStatusSelect' );
+	var hasStatus = hasSelection && $statusSelect.length && !!$statusSelect.val();
+	if ( hasSelection ) {
+		$controls.removeClass( 'd-none' );
+	} else {
+		$controls.addClass( 'd-none' );
+		if ( $statusSelect.length ) {
+			$statusSelect.val( '' );
+		}
+	}
+	jQuery( '#statusUpdateBtn' ).prop( 'disabled', !hasStatus );
+}
+
+function clearSelection () {
+	selectedTaskIds = [];
+	jQuery( '#table_id tbody .row-select' ).prop( 'checked', false ).closest( 'tr' ).removeClass( 'selected' );
+	jQuery( '#selectAllRows' ).prop( 'checked', false );
+	updateStatusUpdateButtonState();
+}
+
+function syncSelectAllCheckbox () {
+	var $rows = jQuery( '#table_id tbody .row-select:visible' );
+	if ( !$rows.length ) {
+		jQuery( '#selectAllRows' ).prop( 'checked', false );
+		return;
+	}
+	var allChecked = $rows.filter( ':checked' ).length === $rows.length;
+	jQuery( '#selectAllRows' ).prop( 'checked', allChecked );
+}
+
+function showStatusToast ( message, type ) {
+	if ( typeof jQuery.notify === 'function' ) {
+		jQuery.notify( {
+			message: message
+		}, {
+			type: type || 'success',
+			placement: {
+				from: 'top',
+				align: 'center'
+			},
+			delay: 3000
+		} );
+	} else if ( typeof jQuery.fn.notify === 'function' ) {
+		jQuery( 'body' ).notify( {
+			message: message
+		}, {
+			type: type || 'success',
+			placement: {
+				from: 'top',
+				align: 'center'
+			},
+			delay: 3000
+		} );
+	} else {
+		alert( message );
+	}
+}
+
+function bulkUpdateTaskStatus ( taskIds, newStatus ) {
+	if ( jQuery( '#loading' ).length ) {
+		jQuery( '#loading' ).show();
+	}
+	jQuery.ajax( {
+		type: 'POST',
+		url: updateTaskStatusURL,
+		contentType: 'application/json',
+		headers: {
+			'Authorization': accessToken
+		},
+		data: JSON.stringify( { taskIds: taskIds, status: newStatus } ),
+		success: function ( response ) {
+			if ( jQuery( '#loading' ).length ) {
+				jQuery( '#loading' ).hide();
+			}
+			checkSession( response.success );
+			if ( response.success === 200 ) {
+				showStatusToast( 'Status updated successfully.', 'success' );
+				jQuery( '#statusUpdateModal' ).modal( 'hide' );
+				clearSelection();
+				// Reload current task view (dashboard/yourTask/today/week/overdue)
+				if ( typeof showTaskbyTypeHandler === 'function' ) {
+					showTaskbyTypeHandler();
+				}
+			} else {
+				showStatusToast( response.message || 'Failed to update status.', 'danger' );
+			}
+		},
+		error: function () {
+			if ( jQuery( '#loading' ).length ) {
+				jQuery( '#loading' ).hide();
+			}
+			showStatusToast( 'Failed to update status.', 'danger' );
+		}
+	} );
+}
+
 jQuery( function () {
 //    populateDataHandler();
 
-    setTimeout( function () {
-        dataTableFilterHandler();
-		//alert('hi')
-    }, 1000 );
+	// Initialize Status Update button state
+	updateStatusUpdateButtonState();
+
+	// Row checkbox change handler (delegated)
+	jQuery( '#table_id' ).on( 'change', '.row-select', function () {
+		var $this = jQuery( this );
+		var taskId = $this.val();
+		if ( $this.is( ':checked' ) ) {
+			addSelectedTaskId( taskId );
+			$this.closest( 'tr' ).addClass( 'selected' );
+		} else {
+			removeSelectedTaskId( taskId );
+			$this.closest( 'tr' ).removeClass( 'selected' );
+		}
+		updateStatusUpdateButtonState();
+		syncSelectAllCheckbox();
+	} );
+
+	// Header select-all checkbox handler
+	jQuery( '#table_id' ).on( 'change', '#selectAllRows', function () {
+		var checked = jQuery( this ).is( ':checked' );
+		jQuery( '#table_id tbody .row-select:visible' ).each( function () {
+			var $cb = jQuery( this );
+			var taskId = $cb.val();
+			$cb.prop( 'checked', checked );
+			if ( checked ) {
+				addSelectedTaskId( taskId );
+				$cb.closest( 'tr' ).addClass( 'selected' );
+			} else {
+				removeSelectedTaskId( taskId );
+				$cb.closest( 'tr' ).removeClass( 'selected' );
+			}
+		} );
+		updateStatusUpdateButtonState();
+	} );
+
+	// Enable/disable Change button when header status dropdown changes
+	jQuery( '#headerStatusSelect' ).on( 'change', function () {
+		updateStatusUpdateButtonState();
+	} );
+
+	// Open modal on Status Update button click
+	jQuery( '#statusUpdateBtn' ).on( 'click', function () {
+		if ( !selectedTaskIds.length ) {
+			return;
+		}
+		var selectedStatus = jQuery( '#headerStatusSelect' ).val();
+		if ( !selectedStatus ) {
+			showStatusToast( 'Please select a status first.', 'warning' );
+			return;
+		}
+		// Fill hidden status field and summary text in the confirmation modal
+		jQuery( '#statusSelect' ).val( selectedStatus );
+		jQuery( '#confirmStatusUpdateBtn' ).prop( 'disabled', false );
+		var count = selectedTaskIds.length;
+		var statusText = jQuery( '#headerStatusSelect option:selected' ).text();
+		jQuery( '#statusUpdateCount' ).text( count );
+		jQuery( '#statusUpdateStatusText' ).text( statusText );
+		jQuery( '#statusUpdateModal' ).modal( 'show' );
+	} );
+
+	// Confirm status update
+	jQuery( '#confirmStatusUpdateBtn' ).on( 'click', function () {
+		var newStatus = jQuery( '#statusSelect' ).val();
+		if ( !newStatus || !selectedTaskIds.length ) {
+			return;
+		}
+		bulkUpdateTaskStatus( selectedTaskIds.slice(), newStatus );
+	} );
 
 } )// jquery end
 
@@ -15,6 +194,7 @@ function truncateText(text, maxLength = 9) {
 
 function populateData ( url ) {
     //$('#table_id').dataTable().destroy();
+	clearSelection();
     $( '#table_id tbody' ).empty();
     $.ajax( {
         type: "GET",
@@ -30,6 +210,7 @@ function populateData ( url ) {
 			$.each( data.body, function ( i, obj ) {
 				/*console.log('obj=>', obj);*/
 				var div_data = '<tr>'
+                    + '<td><input type="checkbox" class="row-select" value="' + obj.taskId + '"></td>'
                     + '<td>' + obj.projectName + '</td>'
                     + '<td>' + obj.partyName + '</td>'
 					+ '<td> <a onClick="redirectToTaskDetails(' + obj.taskId + ')" class="btn pointer">View/Edit</a></td>'
@@ -48,6 +229,10 @@ function populateData ( url ) {
 				totalRows++;
             } );
 			$('#recordCount').text(totalRows);
+			if ( !isTaskTableInitialized ) {
+				dataTableFilterHandler();
+				isTaskTableInitialized = true;
+			}
         }
     } );
 };
@@ -129,57 +314,64 @@ function dataTableFilterHandler () {
     //Data table filter
     $.fn.dataTable.moment( 'D-M-YYYY');
     $( '#table_id' ).DataTable( {
+	columnDefs: [
+		{
+			targets: 0,
+			orderable: false,
+			searchable: false
+		}
+	],
 	"createdRow": function( row, data, dataIndex){
-				if( data[10] ==  'Processing'){
+				if( data[11] ==  'Processing'){
 				    $(row).addClass('InProcess');
 				}
-				else if( data[10] ==  'Processing'){
+				else if( data[11] ==  'Processing'){
 				    $(row).addClass('In Process');
 				}        
-				else if( data[10] ==  'Urgent Process'){
+				else if( data[11] ==  'Urgent Process'){
 				    $(row).addClass('UrgentProcess');
 				}
-				else if( data[10] ==  'SV Review'){
+				else if( data[11] ==  'SV Review'){
 				    $(row).addClass('ReadyToCheck');
 				}
-				else if( data[10] ==  'CA Review'){
+				else if( data[11] ==  'CA Review'){
 				    $(row).addClass('CAReview');
 				}
-				else if( data[10] ==  'Short Work'){
+				else if( data[11] ==  'Short Work'){
 				    $(row).addClass('ShortWork');
 				}
-				else if( data[10] ==  'TP Pending'){
+				else if( data[11] ==  'TP Pending'){
 				    $(row).addClass('TPPending');
 				}				
-				else if( data[10] ==  'Stuck Dept'){
+				else if( data[11] ==  'Stuck Dept'){
 				    $(row).addClass('WorkOnClientEnd');
 				}
-				else if( data[10] ==  'Stuck Client'){
+				else if( data[11] ==  'Stuck Client'){
 				    $(row).addClass('StuckClient');
 				}
-				else if( data[10] ==  'FCA Satish'){
+				else if( data[11] ==  'FCA Satish'){
 				    $(row).addClass('DiscussionWithSatishJi');
 				}
-				else if( data[10] ==  'On Submission'){
+				else if( data[11] ==  'On Submission'){
 				    $(row).addClass('OnSubmission');
 				}	
-				else if( data[10] ==  'On Upload'){
+				else if( data[11] ==  'On Upload'){
 				    $(row).addClass('ReadyToUpload');
 				}
-				else if (data[10] == 'Follow Up') {
+				else if (data[11] == 'Follow Up') {
 					$(row).addClass('FollowUp');
 				}
-				else if (data[10] == 'Completed') {
+				else if (data[11] == 'Completed') {
 					$(row).addClass('Done');
 				}
-				else if (data[10] == 'Future Work') {
+				else if (data[11] == 'Future Work') {
 				    $(row).addClass('FutureWork');
 				}
 				else{
 					$(row).addClass('whiteRow');
 				}
             },
-			"order": [[ 7, "asc" ]],
+			"order": [[ 8, "asc" ]],
 			"bPaginate": false,
 			stateSave: true,
         dom: 'Bfrtip',
@@ -187,6 +379,7 @@ function dataTableFilterHandler () {
 		  {
 		    extend: 'excelHtml5',
 		    exportOptions: {
+		      columns: ':not(:first-child)',
 		      format: {
 		        header: function (data, columnIdx, node) {
 		          // Remove the dropdown wrapper and extract only the header text
@@ -204,7 +397,7 @@ function dataTableFilterHandler () {
 		],
     	colReorder: true,
         initComplete: function () {
-            this.api().columns([1,3,4,5,6,7,8,10]).every( function () {
+			this.api().columns([2,4,5,6,7,8,9,11]).every( function () {
                 var column = this;
                 var ddmenu = cbDropdown( $( column.header() ) )
                     .on( 'change', ':checkbox', function () {

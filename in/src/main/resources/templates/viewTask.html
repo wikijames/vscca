@@ -23,12 +23,12 @@
               <div class="card-header border-0">
                 <div class="row">
                   <div class="col-lg-9">
-                    <h3 class="mb-0">View Task</h3>
+                    <h3 class="mb-0">View Task 11</h3>
                   </div>
                   <div class="col-lg-3">
                     <select
                       id="viewType"
-                      class="form-control"
+                      class="form-control mb-2"
                       onChange="viewType()"
                     >
                       <option value="responsibility">Responsibility</option>
@@ -36,6 +36,27 @@
                       <option value="intimation">Intimation</option>
                       <option value="consulting">Consulting</option>
                     </select>
+                    <div
+                      id="statusInlineControls"
+                      class="input-group input-group-sm d-none"
+                    >
+                      <select
+                        id="headerStatusSelect"
+                        class="form-control"
+                      >
+                        <th:block th:replace="fragments/statusOptions :: statusOptions"></th:block>
+                      </select>
+                      <div class="input-group-append">
+                        <button
+                          id="statusUpdateBtn"
+                          class="btn btn-primary"
+                          type="button"
+                          disabled
+                        >
+                          Change
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -47,6 +68,9 @@
                 >
                   <thead class="thead-light">
                     <tr>
+                      <th scope="col">
+                        <input type="checkbox" id="selectAllRows" />
+                      </th>
                       <th scope="col" class="sort" data-sort="projectName">
                         Project Name
                       </th>
@@ -116,6 +140,56 @@
         </div>
 
         <!-- footer -->
+        <!-- Status Update Modal -->
+        <div
+          class="modal fade"
+          id="statusUpdateModal"
+          tabindex="-1"
+          role="dialog"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Update Status</h5>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="form-group">
+                  <label for="statusSelect">Status</label>
+                  <select class="form-control" id="statusSelect">
+                    <th:block th:replace="fragments/statusOptions :: statusOptions"></th:block>
+                  </select>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  id="confirmStatusUpdateBtn"
+                  disabled
+                >
+                  Update
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div th:replace="fragments/footer :: dashboard-footer"></div>
       </div>
     </div>

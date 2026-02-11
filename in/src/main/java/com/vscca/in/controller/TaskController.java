@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.vscca.in.dto.BulkTaskStatusUpdateDto;
 import com.vscca.in.dto.DayBookDto;
 import com.vscca.in.dto.ResponseDto;
 import com.vscca.in.dto.TaskDto;
@@ -180,6 +181,35 @@ public class TaskController {
 			taskStatusService.save(taskStatus);
 			response.setSuccess(200);
 			response.setMessage("success");
+		}
+		return response;
+	}
+
+	@CrossOrigin
+	@PostMapping("/bulkTaskStatusUpdate")
+	public ResponseDto bulkTaskStatusUpdate(HttpServletRequest req, @RequestBody BulkTaskStatusUpdateDto bulkDto) {
+		ResponseDto response = new ResponseDto();
+		String token = req.getHeader(VsccaConstants.TOKEN_HEADER);
+		if (token == null || TokenValidation.getAuthentication(token) != true
+				|| getTokenAuthentication(token) != true) {
+			response.setSuccess(401);
+			response.setMessage("Unauthorized");
+			return response;
+		}
+		try {
+			if (bulkDto == null || bulkDto.getTaskIds() == null || bulkDto.getTaskIds().isEmpty()
+					|| bulkDto.getStatus() == null || "".equals(bulkDto.getStatus().trim())) {
+				response.setSuccess(500);
+				response.setMessage("Invalid input: taskIds and status are required");
+				return response;
+			}
+			taskStatusService.bulkUpdateStatus(bulkDto.getTaskIds(), bulkDto.getStatus(), bulkDto.getRemarks(),
+					bulkDto.getDelayReason());
+			response.setSuccess(200);
+			response.setMessage("success");
+		} catch (Exception e) {
+			response.setSuccess(500);
+			response.setMessage("Something went wrong");
 		}
 		return response;
 	}

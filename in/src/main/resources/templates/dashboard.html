@@ -33,12 +33,34 @@
               <!-- Card header -->
               <div class="card-header border-0">
                 <div class="row">
-                  <div class="col-lg-9">
+                  <div class="col-lg-6">
                     <h3 class="mb-0">
-                      View <span id="taskNameChangeHeading"></span> - <span id="recordCount"></span>
+                      View 1 <span id="taskNameChangeHeading"></span> - <span id="recordCount"></span>
                     </h3>
                   </div>
-                  <div class="col-lg-3">
+                  <div class="col-lg-6 text-right">
+                    <div
+                      id="statusInlineControls"
+                      class="input-group input-group-sm d-none status-inline-controls"
+                      style="display: inline-flex; width: auto; margin-right: 10px;"
+                    >
+                      <select
+                        id="headerStatusSelect"
+                        class="form-control"
+                      >
+                        <th:block th:replace="fragments/statusOptions :: statusOptions"></th:block>
+                      </select>
+                      <div class="input-group-append">
+                        <button
+                          id="statusUpdateBtn"
+                          class="btn btn-primary"
+                          type="button"
+                          disabled
+                        >
+                          Change
+                        </button>
+                      </div>
+                    </div>
 		              <button type="button" class="btn btn-default" style="float:right" onclick="resetTableHandler();">Reset Filter</button>
 	              </div>
                 </div>
@@ -51,13 +73,16 @@
                 >
                   <thead class="thead-light">
                     <tr>
+                      <th scope="col">
+                        <input type="checkbox" id="selectAllRows" />
+                      </th>
                       <th scope="col" class="sort" data-sort="projectName">
                         Project Name
                       </th>
                       <th scope="col" class="sort" data-sort="partyName">
                         Party Name
                       </th>
-					  <th scope="col">View/Edit</th>
+            <th scope="col">View/Edit</th>
 					  <!--  <th scope="col" class="sort" data-sort="weightage">
                         Weightage
                       </th>-->
@@ -121,6 +146,59 @@
         </div>
 
         <!-- footer -->
+
+        <!-- Status Update Modal -->
+        <div
+          class="modal fade"
+          id="statusUpdateModal"
+          tabindex="-1"
+          role="dialog"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Update Status</h5>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <p id="statusUpdateSummaryText" class="mb-0">
+                  You are updating status of
+                  <strong><span id="statusUpdateCount"></span></strong>
+                  task(s) to
+                  "<strong><span id="statusUpdateStatusText"></span></strong>".
+                  Do you want to continue?
+                </p>
+                <input type="hidden" id="statusSelect" />
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  id="confirmStatusUpdateBtn"
+                  disabled
+                >
+                  Yes, Update
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div th:replace="fragments/footer :: dashboard-footer"></div>
       </div>
     </div>

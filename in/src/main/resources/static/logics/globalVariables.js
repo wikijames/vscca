@@ -73,3 +73,6 @@ var postUploadBulkBillingClientsURL = envVar + 'upload';
 //DSC Audit 
 var postDSCAuditURL = envVar + 'Dsc';
 
+// bulk task status update
+var updateTaskStatusURL = envVar + 'bulkTaskStatusUpdate';
+
