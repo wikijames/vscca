@@ -23,7 +23,7 @@
               <div class="card-header border-0">
                 <div class="row">
                   <div class="col-lg-9">
-                    <h3 class="mb-0">View Task 11</h3>
+                    <h3 class="mb-0">View Task </h3>
                   </div>
                   <div class="col-lg-3">
                     <select
@@ -42,7 +42,7 @@
                     >
                       <select
                         id="headerStatusSelect"
-                        class="form-control"
+                        class="form-control createTaskFormStatus"
                       >
                         <th:block th:replace="fragments/statusOptions :: statusOptions"></th:block>
                       </select>
@@ -164,7 +164,7 @@
               <div class="modal-body">
                 <div class="form-group">
                   <label for="statusSelect">Status</label>
-                  <select class="form-control" id="statusSelect">
+                  <select class="form-control createTaskFormStatus" id="statusSelect">
                     <th:block th:replace="fragments/statusOptions :: statusOptions"></th:block>
                   </select>
                 </div>
