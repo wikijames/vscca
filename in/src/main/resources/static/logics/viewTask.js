@@ -193,8 +193,21 @@ function truncateText(text, maxLength = 9) {
 }
 
 function populateData ( url ) {
-    //$('#table_id').dataTable().destroy();
+    // Ensure DataTable is clean before reloading data so that
+    // row callbacks (createdRow) run again and status colours apply correctly.
 	clearSelection();
+
+	// If DataTable is already initialized, destroy it and
+	// clear existing rows before repopulating.
+	if ( $.fn.dataTable && $.fn.dataTable.isDataTable( '#table_id' ) ) {
+		$( '#table_id' ).DataTable().clear().destroy();
+		// Remove any existing header filter dropdown wrappers
+		// that were added in initComplete, so they don't stack up
+		// when the table is reinitialized.
+		$( '#table_id thead th .cb-dropdown-wrap' ).remove();
+		isTaskTableInitialized = false;
+	}
+
     $( '#table_id tbody' ).empty();
     $.ajax( {
         type: "GET",
@@ -229,10 +242,11 @@ function populateData ( url ) {
 				totalRows++;
             } );
 			$('#recordCount').text(totalRows);
-			if ( !isTaskTableInitialized ) {
-				dataTableFilterHandler();
-				isTaskTableInitialized = true;
-			}
+			// Reinitialize DataTable on every reload so that
+			// createdRow is triggered for new rows and status
+			// background colours are applied consistently.
+			dataTableFilterHandler();
+			isTaskTableInitialized = true;
         }
     } );
 };
