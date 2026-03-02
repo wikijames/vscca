@@ -192,6 +192,49 @@ function truncateText(text, maxLength = 9) {
   return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
 }
 
+// Returns a numeric sort order for each status so that
+// DataTables can apply a custom default ordering.
+function getStatusSortOrder ( value ) {
+	// Normalise to underlying status code where possible
+	// (handles both "InProcess" and "In Process").
+	if ( value === 'In Process' ) {
+		value = 'InProcess';
+	}
+	switch ( value ) {
+		case 'UrgentProcess':
+			return 1;
+		case 'InProcess':
+			return 2;
+		case 'CAReview':
+			return 3;
+		case 'ReadyToCheck':
+			return 4;
+		case 'ReadyToUpload':
+			return 5;
+		case 'OnSubmission':
+			return 6;
+		case 'DiscussionWithSatishJi':
+			return 7;
+		case 'StuckClient':
+			return 8;
+		case 'WorkOnClientEnd':
+			return 9;
+		case 'TPPending':
+			return 10;
+		case 'ShortWork':
+			return 11;
+		case 'FollowUp':
+			return 12;
+		case 'Done':
+			return 13;
+		case 'FutureWork':
+			return 14;
+		default:
+			// Unknown statuses go to the bottom
+			return 999;
+	}
+}
+
 function populateData ( url ) {
     // Ensure DataTable is clean before reloading data so that
     // row callbacks (createdRow) run again and status colours apply correctly.
@@ -222,6 +265,7 @@ function populateData ( url ) {
             let totalRows= 0;
 			$.each( data.body, function ( i, obj ) {
 				/*console.log('obj=>', obj);*/
+				var statusSortOrder = getStatusSortOrder( obj.status );
 				var div_data = '<tr>'
                     + '<td><input type="checkbox" class="row-select" value="' + obj.taskId + '"></td>'
                     + '<td>' + obj.projectName + '</td>'
@@ -236,7 +280,7 @@ function populateData ( url ) {
 					+ '<td>' + formatDateHandler( obj.dueDate ) + '</td>'
                     //+ '<td>' + obj.dueDate  + '</td>'
                     + '<td>' + isTaskDescription( obj.taskDescription ) + '</td>'
-                    + '<td>' + sortStatusText(obj.status) + '</td>'
+					+ '<td data-order="' + statusSortOrder + '">' + sortStatusText(obj.status) + '</td>'
                     + '</tr>';
                 $( div_data ).appendTo( '#populateGrid' );
 				totalRows++;
@@ -336,56 +380,59 @@ function dataTableFilterHandler () {
 		}
 	],
 	"createdRow": function( row, data, dataIndex){
-				if( data[11] ==  'Processing'){
+				// Use the actual cell text for status so that
+				// row colours still work even when a numeric
+				// data-order attribute is used for sorting.
+				var statusText = $('td:eq(11)', row).text().trim();
+				if( statusText === 'Processing'){
 				    $(row).addClass('InProcess');
 				}
-				else if( data[11] ==  'Processing'){
-				    $(row).addClass('In Process');
-				}        
-				else if( data[11] ==  'Urgent Process'){
+				else if( statusText === 'Urgent Process'){
 				    $(row).addClass('UrgentProcess');
 				}
-				else if( data[11] ==  'SV Review'){
+				else if( statusText === 'SV Review'){
 				    $(row).addClass('ReadyToCheck');
 				}
-				else if( data[11] ==  'CA Review'){
+				else if( statusText === 'CA Review'){
 				    $(row).addClass('CAReview');
 				}
-				else if( data[11] ==  'Short Work'){
+				else if( statusText === 'Short Work'){
 				    $(row).addClass('ShortWork');
 				}
-				else if( data[11] ==  'TP Pending'){
+				else if( statusText === 'TP Pending'){
 				    $(row).addClass('TPPending');
 				}				
-				else if( data[11] ==  'Stuck Dept'){
+				else if( statusText === 'Stuck Dept'){
 				    $(row).addClass('WorkOnClientEnd');
 				}
-				else if( data[11] ==  'Stuck Client'){
+				else if( statusText === 'Stuck Client'){
 				    $(row).addClass('StuckClient');
 				}
-				else if( data[11] ==  'FCA Satish'){
+				else if( statusText === 'FCA Satish'){
 				    $(row).addClass('DiscussionWithSatishJi');
 				}
-				else if( data[11] ==  'On Submission'){
+				else if( statusText === 'On Submission'){
 				    $(row).addClass('OnSubmission');
 				}	
-				else if( data[11] ==  'On Upload'){
+				else if( statusText === 'On Upload'){
 				    $(row).addClass('ReadyToUpload');
 				}
-				else if (data[11] == 'Follow Up') {
+				else if (statusText === 'Follow Up') {
 					$(row).addClass('FollowUp');
 				}
-				else if (data[11] == 'Completed') {
+				else if (statusText === 'Completed') {
 					$(row).addClass('Done');
 				}
-				else if (data[11] == 'Future Work') {
+				else if (statusText === 'Future Work') {
 				    $(row).addClass('FutureWork');
 				}
 				else{
 					$(row).addClass('whiteRow');
 				}
-            },
-			"order": [[ 8, "asc" ]],
+			},
+			// Default sort: custom status order (column 11)
+			// using the data-order attribute set in populateData.
+			"order": [[ 11, "asc" ]],
 			"bPaginate": false,
 			stateSave: true,
         dom: 'Bfrtip',

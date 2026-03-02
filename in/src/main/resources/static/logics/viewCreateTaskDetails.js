@@ -67,12 +67,16 @@ function disableEnableHandler(){
 	}else if(userRole == 'Supervisor'){
 		 $('#fileinfo').remove();
 		 $('#deleteTaskBtn').remove();
-		 enableElements('#description, #reasonForDelay');
+		 // Allow Supervisor to edit description, reason for delay
+		 // and due date (endDate)
+		 enableElements('#description, #reasonForDelay, #endDate');
 	 	 $("#status option[value='Done']").hide();
 	}else if(taskId && userRole == 'Supervisor'){
 		createTaskElementsDisabled();
 		$('#deleteTaskBtn').remove();
-		enableElements('#description, #reasonForDelay');
+		// When opening an existing task, Supervisor can still
+		// adjust description, reason for delay and due date.
+		enableElements('#description, #reasonForDelay, #endDate');
 	}else if (userRole == 'TeamMember') {
 		$('#deleteTaskBtn').remove();
 		enableElements('#description');
