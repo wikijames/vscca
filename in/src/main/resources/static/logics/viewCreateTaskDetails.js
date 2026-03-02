@@ -36,23 +36,31 @@ function disableFormInputHandler(){
 };
 
 function createTaskElementsEnabled(){
-	$('.taskInformation,.clientInformation,.commentsSection').find('input, textarea, button, select').attr('disabled',false);
-	$('.taskInformation,.clientInformation,.commentsSection').find('input, textarea, button, select').attr('readonly',false);
+	// Use .prop for boolean attributes so fields are
+	// correctly enabled/disabled for each role.
+	$('.taskInformation,.clientInformation,.commentsSection')
+		.find('input, textarea, button, select')
+		.prop('disabled', false)
+		.prop('readonly', false);
 }
 
 function createTaskElementsDisabled(){
-	$('.taskInformation,.clientInformation,.commentsSection').find('input, textarea, button, select').attr('disabled',true);
-	$('.taskInformation,.clientInformation,.commentsSection').find('input, textarea, button, select').attr('readonly',true);
+	$('.taskInformation,.clientInformation,.commentsSection')
+		.find('input, textarea, button, select')
+		.prop('disabled', true)
+		.prop('readonly', true);
 }
 
 function enableElements(element) {
-    $(element).attr('disabled', false);
-    $(element).attr('readonly', false);
+	$(element)
+		.prop('disabled', false)
+		.prop('readonly', false);
 }
 
 function disableElements(element) {
-    $(element).attr('disabled', true);
-    $(element).attr('readonly', true);
+	$(element)
+		.prop('disabled', true)
+		.prop('readonly', true);
 }
 
 function disableEnableHandler(){
