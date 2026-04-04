@@ -187,52 +187,12 @@ jQuery( function () {
 
 } )// jquery end
 
-function truncateText(text, maxLength = 9) {
-  if (!text) return '';
-  return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
-}
-
-// Returns a numeric sort order for each status so that
-// DataTables can apply a custom default ordering.
-function getStatusSortOrder ( value ) {
-	// Normalise to underlying status code where possible
-	// (handles both "InProcess" and "In Process").
-	if ( value === 'In Process' ) {
-		value = 'InProcess';
+function truncateText( text, maxLength ) {
+	var limit = typeof maxLength === 'number' ? maxLength : 9;
+	if ( !text ) {
+		return '';
 	}
-	switch ( value ) {
-		case 'UrgentProcess':
-			return 1;
-		case 'InProcess':
-			return 2;
-		case 'CAReview':
-			return 3;
-		case 'ReadyToCheck':
-			return 4;
-		case 'ReadyToUpload':
-			return 5;
-		case 'OnSubmission':
-			return 6;
-		case 'DiscussionWithSatishJi':
-			return 7;
-		case 'StuckClient':
-			return 8;
-		case 'WorkOnClientEnd':
-			return 9;
-		case 'TPPending':
-			return 10;
-		case 'ShortWork':
-			return 11;
-		case 'FollowUp':
-			return 12;
-		case 'Done':
-			return 13;
-		case 'FutureWork':
-			return 14;
-		default:
-			// Unknown statuses go to the bottom
-			return 999;
-	}
+	return text.length > limit ? text.substring( 0, limit ) + '...' : text;
 }
 
 function populateData ( url ) {
@@ -277,7 +237,7 @@ function populateData ( url ) {
 					+ '<td>' + truncateText(obj.consultingName) + '</td>'
 					+ '<td>' + truncateText(obj.intimationName) + '</td>'
 					+ '<td>' + obj.taskType+ '</td>'
-					+ '<td>' + formatDateHandler( obj.dueDate ) + '</td>'
+					+ '<td>' + formatDateToUi( obj.dueDate ) + '</td>'
                     //+ '<td>' + obj.dueDate  + '</td>'
                     + '<td>' + isTaskDescription( obj.taskDescription ) + '</td>'
 					+ '<td data-order="' + statusSortOrder + '">' + sortStatusText(obj.status) + '</td>'
@@ -296,54 +256,9 @@ function populateData ( url ) {
 };
 
 function sortStatusText(value){
-	if( value ==  'InProcess'){
-		return 'Processing';
-	}
-	if( value ==  'In Process'){
-	 	return 'Processing';
-	}
-	if( value ==  'UrgentProcess'){
-		return 'Urgent Process';
-	}
-	if( value ==  'ReadyToCheck'){
-		return 'SV Review';
-	}     
-	if( value ==  `CAReview`){
-	    return 'CA Review';
-	}
-	if( value ==  `ShortWork`){
-	    return 'Short Work';
-	}
-	if( value ==  `TPPending`){
-	    return 'TP Pending';
-	}
-	if( value ==  `WorkOnClientEnd`){
-	    return 'Stuck Dept';
-	}
-	if( value ==  `StuckClient`){
-	    return 'Stuck Client';
-	}
-	if( value ==  `DiscussionWithSatishJi`){
-	    return 'FCA Satish';
-	}
-	if( value ==  `OnSubmission`){
-	    return 'On Submission';
-	}
-	if( value ==  `FollowUp`){
-	    return 'Follow Up'
-	}
-	if( value ==  `ReadyToUpload`){
-	    return 'On Upload'
-	}
-	if( value ==  `Done`){
-	    return 'Completed'
-	}
-	if( value ==  `FutureWork`){
-	    return 'Future Work'
-	}
-	else{
-		return value;
-	}
+	// Delegate status code -> display label to shared helper,
+	// keeping behaviour consistent with statusOptions.html.
+	return getStatusLabel( value );
 }
 
 function dataTableFilterHandler () {
@@ -380,54 +295,15 @@ function dataTableFilterHandler () {
 		}
 	],
 	"createdRow": function( row, data, dataIndex){
-				// Use the actual cell text for status so that
-				// row colours still work even when a numeric
-				// data-order attribute is used for sorting.
+				// Use the actual cell text for status and map it
+				// via shared status utils to the correct row class,
+				// so colours stay in sync everywhere.
 				var statusText = $('td:eq(11)', row).text().trim();
-				if( statusText === 'Processing'){
-				    $(row).addClass('InProcess');
-				}
-				else if( statusText === 'Urgent Process'){
-				    $(row).addClass('UrgentProcess');
-				}
-				else if( statusText === 'SV Review'){
-				    $(row).addClass('ReadyToCheck');
-				}
-				else if( statusText === 'CA Review'){
-				    $(row).addClass('CAReview');
-				}
-				else if( statusText === 'Short Work'){
-				    $(row).addClass('ShortWork');
-				}
-				else if( statusText === 'TP Pending'){
-				    $(row).addClass('TPPending');
-				}				
-				else if( statusText === 'Stuck Dept'){
-				    $(row).addClass('WorkOnClientEnd');
-				}
-				else if( statusText === 'Stuck Client'){
-				    $(row).addClass('StuckClient');
-				}
-				else if( statusText === 'FCA Satish'){
-				    $(row).addClass('DiscussionWithSatishJi');
-				}
-				else if( statusText === 'On Submission'){
-				    $(row).addClass('OnSubmission');
-				}	
-				else if( statusText === 'On Upload'){
-				    $(row).addClass('ReadyToUpload');
-				}
-				else if (statusText === 'Follow Up') {
-					$(row).addClass('FollowUp');
-				}
-				else if (statusText === 'Completed') {
-					$(row).addClass('Done');
-				}
-				else if (statusText === 'Future Work') {
-				    $(row).addClass('FutureWork');
-				}
-				else{
-					$(row).addClass('whiteRow');
+				var rowClass = getRowClassFromStatusLabel( statusText );
+				if ( rowClass ) {
+					$( row ).addClass( rowClass );
+				} else {
+					$( row ).addClass( 'whiteRow' );
 				}
 			},
 			// Default sort: custom status order (column 11)
@@ -562,20 +438,6 @@ function cbDropdown ( column ) {
     } ).appendTo( $( '<div>', {
         'class': 'cb-dropdown-wrap'
     } ).appendTo( column ) );
-};
-
-function addLeadingZeroOnDate(value){
-	const result = ('0' + value).slice(-2);
-	return result;
-}
-
-function formatDateHandler ( value ) {
-    var date = new Date( value );
-    var month = addLeadingZeroOnDate(date.getMonth() + 1);
-    var day = addLeadingZeroOnDate(date.getDate());
-    var year = date.getFullYear();
-    var result = day + "-" + month + "-" + year;
-    return result;
 };
 
 function isTaskDescription ( value ) {	

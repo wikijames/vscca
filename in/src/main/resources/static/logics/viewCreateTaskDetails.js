@@ -96,8 +96,9 @@ function disableEnableHandler(){
     }
 }
 function convertDate(value,name){
-	const date = new Date(value).toLocaleDateString().split('/');
-	const formattedDate = ('0' + date[1]).slice(-2)+'-'+('0' + date[0]).slice(-2)+'-'+date[2];
+	// Use shared date utility to keep formatting
+	// consistent with list views.
+	const formattedDate = formatDateToUi( value );
 	$('#'+name).prop('type','text');
 	$('#'+name).val(formattedDate);
 }
