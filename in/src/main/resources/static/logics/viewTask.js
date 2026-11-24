@@ -119,6 +119,10 @@ jQuery( function () {
 	// Initialize Status Update button state
 	updateStatusUpdateButtonState();
 
+	jQuery( '#table_id' ).on( 'click', '.task-details', function () {
+		redirectToTaskDetails( this.dataset.taskId );
+	} );
+
 	// Row checkbox change handler (delegated)
 	jQuery( '#table_id' ).on( 'change', '.row-select', function () {
 		var $this = jQuery( this );
@@ -196,27 +200,42 @@ function truncateText( text, maxLength ) {
 	return text.length > limit ? text.substring( 0, limit ) + '...' : text;
 }
 
-function renderTaskRow ( obj ) {
-	var statusSortOrder = getStatusSortOrder( obj.status );
-	var dueDate = obj.dueDate ? new Date( obj.dueDate ) : null;
-	var dueDateText = formatDateToUi( dueDate );
-	var dueDateSortOrder = dueDateText
+function renderTaskRow ( task ) {
+	const row = document.createElement( 'tr' );
+	const checkbox = document.createElement( 'input' );
+	checkbox.type = 'checkbox';
+	checkbox.className = 'row-select';
+	checkbox.value = String( task.taskId );
+	row.insertCell().append( checkbox );
+	row.insertCell().textContent = String( task.projectName );
+	row.insertCell().textContent = String( task.partyName );
+
+	const details = document.createElement( 'button' );
+	details.type = 'button';
+	details.className = 'btn pointer task-details';
+	details.dataset.taskId = String( task.taskId );
+	details.textContent = 'View/Edit';
+	row.insertCell().append( details );
+
+	row.insertCell().textContent = truncateText( task.responsibilityName );
+	row.insertCell().textContent = truncateText( task.exceutionName );
+	row.insertCell().textContent = truncateText( task.consultingName );
+	row.insertCell().textContent = truncateText( task.intimationName );
+	row.insertCell().textContent = String( task.taskType );
+
+	const dueDate = task.dueDate ? new Date( task.dueDate ) : null;
+	const dueDateCell = row.insertCell();
+	dueDateCell.textContent = formatDateToUi( dueDate );
+	const dueDateSortOrder = dueDateCell.textContent
 		? dueDate.getFullYear() * 10000 + ( dueDate.getMonth() + 1 ) * 100 + dueDate.getDate()
 		: Number.MAX_SAFE_INTEGER;
-	return '<tr>'
-		+ '<td><input type="checkbox" class="row-select" value="' + obj.taskId + '"></td>'
-		+ '<td>' + obj.projectName + '</td>'
-		+ '<td>' + obj.partyName + '</td>'
-		+ '<td> <a onClick="redirectToTaskDetails(' + obj.taskId + ')" class="btn pointer">View/Edit</a></td>'
-		+ '<td>' + truncateText(obj.responsibilityName) + '</td>'
-		+ '<td>' + truncateText(obj.exceutionName) + '</td>'
-		+ '<td>' + truncateText(obj.consultingName) + '</td>'
-		+ '<td>' + truncateText(obj.intimationName) + '</td>'
-		+ '<td>' + obj.taskType+ '</td>'
-		+ '<td data-order="' + dueDateSortOrder + '">' + dueDateText + '</td>'
-		+ '<td>' + isTaskDescription( obj.taskDescription ) + '</td>'
-		+ '<td data-order="' + statusSortOrder + '">' + sortStatusText(obj.status) + '</td>'
-		+ '</tr>';
+	dueDateCell.dataset.order = String( dueDateSortOrder );
+
+	row.insertCell().textContent = isTaskDescription( task.taskDescription );
+	const statusCell = row.insertCell();
+	statusCell.dataset.order = String( getStatusSortOrder( task.status ) );
+	statusCell.textContent = sortStatusText( task.status );
+	return row;
 }
 
 function requestTaskList ( url ) {
@@ -338,8 +357,7 @@ function dataTableFilterHandler () {
 		      format: {
 		        header: function (data, columnIdx, node) {
 		          // Remove the dropdown wrapper and extract only the header text
-		          return $('<div></div>')
-		            .append(node.innerHTML)
+		          return $( node ).clone()
 		            .find('.cb-dropdown-wrap') // your dropdown container class
 		            .remove()
 		            .end()
@@ -382,7 +400,7 @@ function dataTableFilterHandler () {
                         }
                     } );
 
-                column.data().unique().sort().each( function ( d, j ) {
+                column.cache( 'search' ).unique().sort().each( function ( d, j ) {
                     var // wrapped
                         $label = $( '<label>' ),
                         $text = $( '<span>', {
@@ -467,6 +485,6 @@ function isTaskDescription ( value ) {
 };
 
 function redirectToTaskDetails ( id ) {
+	sessionStorage.setItem( 'taskId', id );
 	window.location.pathname = 'vscca/createTaskForm';
-    sessionStorage.setItem( 'taskId', id );
 }
