@@ -24,8 +24,7 @@ test('task dropdowns use the grid status labels and order before role restrictio
             createElement() { return {}; }
         },
         window: {},
-        $: () => ({ ready(handler) { ready = handler; }, on() {}, datepicker() {} }),
-        setInterval() {}
+        $: () => ({ ready(handler) { ready = handler; }, on() {}, datepicker() {} })
     });
     loadStatuses(context);
     runInContext(readFileSync(new URL('common.js', scripts), 'utf8'), context);
