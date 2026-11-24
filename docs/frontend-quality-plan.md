@@ -56,6 +56,7 @@ Checked items have implementation and regression coverage where applicable.
 - [x] Share Task create and edit save handling and cover failed requests with reusable AJAX mocks.
 - [x] Render task form dropdown labels through DOM text properties and preserve option values.
 - [ ] Review remaining request and session code and scope other frontend assets where appropriate.
+- [x] Remove the hidden Billing Client upload stub that routed spreadsheets to the task importer.
 - [ ] Review and remove confirmed unused frontend assets.
 
 ### Security and verification

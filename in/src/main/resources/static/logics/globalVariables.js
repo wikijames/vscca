@@ -68,7 +68,6 @@ var postTaskDetailsDayBookURL = envVar + 'taskDetailsDayBook';
 var postUploadBulkTaskURL = envVar + 'upload';
 
 // Billing client upload 
-var postUploadBulkBillingClientsURL = envVar + 'upload';
 
 //DSC Audit 
 var postDSCAuditURL = envVar + 'Dsc';

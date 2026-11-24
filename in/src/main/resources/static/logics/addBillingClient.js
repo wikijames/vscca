@@ -2,7 +2,6 @@ var isActiveValue;
 $( document ).ready( function () {
 	var sessionBillingId = sessionStorage.getItem('billingId');
 	if(sessionBillingId != null){
-		$('#billingFileinfo').hide();
 		setTimeout(function(){
 			getViewBillingClientById();
 		},500);	
@@ -135,47 +134,3 @@ function isCheckedActive(value){
       });
 	};
 };
-
-
-function ValidateBillingUploadFile() {
-    var fileInput = document.getElementById("file");
-    var filePath = fileInput.value;
-       if(!filePath){
-			alert('Please select a file');
-		}else if (!checkFileExtension(filePath)) {
-            alert('invalid file type not allowed');
-            fileInput.value = '';
-            return false;
-		}else{
-			uploadBulkBillingClients();	
-		}
-};
-
-function uploadBulkBillingClients(){
-     let formData = new FormData(document.getElementById("billingFileinfo"));
-     
-        if (confirm("Are you sure?")) {
-    // your upload code
-            $.ajax({
-				url: postUploadBulkBillingClientsURL,
-				type: "POST",
-				data: formData,
-				"headers": {
-	                "Authorization": accessToken
-              	},
-				cache: false,
-	            contentType: false,
-	            processData: false,
-				success: function (data) {
-				    $('#output').html(data);
-					alert('Billing clients has been uploaded succesfully');
-					window.location = 'dashboard';
-	            },
-	            error: function(data) {
-			      console.log('error', data);
-			    }
-        })
-    }
-		$('form')[0].reset();
-		return false;
-}
