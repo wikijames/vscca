@@ -360,59 +360,18 @@ function dataTableFilterHandler () {
 		    exportOptions: {
 		      columns: ':not(:first-child)',
 		      format: {
-		        header: function (data, columnIdx, node) {
-		          // Remove the dropdown wrapper and extract only the header text
-		          return $( node ).clone()
-		            .find('.cb-dropdown-wrap') // your dropdown container class
-		            .remove()
-		            .end()
-		            .text()
-		            .trim();
-		        }
+		        header: formatGridExportHeader
 		      }
 		    }
 		  }
 		],
     	colReorder: true,
         initComplete: function () {
-            this.api().columns([2,4,5,6,7,8,9,11]).every( function () {
-                addTaskColumnFilter( this );
-            } );
+            addGridColumnFilters( this.api(), [2, 4, 5, 6, 7, 8, 9, 11] );
         },
 
     } );
 };
-
-function buildTaskColumnSearch ( values ) {
-    if ( values.length === 0 ) {
-        return '';
-    }
-
-    const escapedValues = values.map( value => $.fn.dataTable.util.escapeRegex( value ) );
-    return '^(' + escapedValues.join( '|' ) + ')$';
-}
-
-function addTaskColumnFilter ( column ) {
-    const menu = cbDropdown( $( column.header() ) );
-    menu.on( 'change', ':checkbox', function () {
-        const values = menu.find( ':checked' ).map( function () {
-            return this.value;
-        } ).get();
-
-        $( this ).closest( 'li' ).toggleClass( 'active', this.checked );
-        menu.parent().toggleClass( 'active', values.length > 0 );
-        column.search( buildTaskColumnSearch( values ), true, false ).draw();
-    } );
-
-    column.cache( 'search' ).unique().sort().each( function ( value ) {
-        const label = $( '<label>' );
-        label.append(
-            $( '<span>', { text: value } ),
-            $( '<input>', { type: 'checkbox', value: value } )
-        );
-        menu.append( $( '<li>' ).append( label ) );
-    } );
-}
 
 ////$(document).ready(function() {
 //    var buttonCommon = {
@@ -459,14 +418,6 @@ function resetTableHandler(){
 	localStorage.removeItem("DataTables_table_id_"+url);
 	window.location.pathname = url;
 }
-
-function cbDropdown ( column ) {
-    return $( '<ul>', {
-        'class': 'cb-dropdown'
-    } ).appendTo( $( '<div>', {
-        'class': 'cb-dropdown-wrap'
-    } ).appendTo( column ) );
-};
 
 function isTaskDescription ( value ) {	
     if (value && value.trim() ) {

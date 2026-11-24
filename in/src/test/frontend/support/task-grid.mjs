@@ -1,7 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { createContext, runInContext } from 'node:vm';
+import { createElement } from './dom.mjs';
 
-const scripts = ['dateUtils', 'statusUtils', 'viewTask'].map(name => {
+const scripts = ['dateUtils', 'statusUtils', 'gridColumns', 'viewTask'].map(name => {
     const file = new URL(`../../../main/resources/static/logics/${name}.js`, import.meta.url);
     return { name, source: readFileSync(file, 'utf8') };
 });
@@ -20,21 +21,6 @@ export function makeTask(overrides = {}) {
         taskDescription: 'Example task',
         status: 'InProcess',
         ...overrides
-    };
-}
-
-function createElement(tagName) {
-    const children = [];
-    return {
-        tagName,
-        children,
-        dataset: {},
-        append(child) { children.push(child); },
-        insertCell() {
-            const cell = createElement('td');
-            children.push(cell);
-            return cell;
-        }
     };
 }
 
@@ -151,7 +137,7 @@ export function createTaskGridHarness() {
         properties,
         toastMessages,
         modalActions,
-        buildColumnSearch: grid.buildTaskColumnSearch,
+        buildColumnSearch: grid.buildGridColumnSearch,
         get status() { return messages.get('#taskGridStatus'); },
         get count() { return messages.get('#recordCount'); },
         rows,
