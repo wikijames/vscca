@@ -54,7 +54,7 @@ export function createTaskGridHarness() {
         };
     }
 
-    jquery.fn = { dataTable: { isDataTable: () => tableInitialized, moment() {} } };
+    jquery.fn = { dataTable: { isDataTable: () => tableInitialized } };
     jquery.each = (items, visit) => items.forEach((item, index) => visit(index, item));
     jquery.ajax = options => {
         let settled = false;
