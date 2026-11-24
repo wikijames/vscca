@@ -30,7 +30,7 @@ Move Java and Spring Boot in a dedicated migration. A move through Boot 3 requir
 
 ## Phase 4 Keep the checks running
 
-The GitHub Actions workflow runs the Node suite and builds the WAR with Java 8 on pull requests to `development` and on pushes to that branch. Maven excludes tests tagged `database` so the run uses synthetic data and needs no external database. The existing application context smoke test carries that tag. Add dependency scanning once the browser asset inventory is reproducible. Review applicable advisories when they are published and on a regular schedule. Keep legacy branches available for reference and target ongoing changes to `development`.
+The GitHub Actions workflow runs the Node suite and Java 8 regression tests on pull requests to `development` and on pushes to that branch. Maven excludes tests tagged `database` so the run uses synthetic data and needs no external database. The existing application context smoke test carries that tag. Add dependency scanning once the browser asset inventory is reproducible. Review applicable advisories when they are published and on a regular schedule. Keep legacy branches available for reference and target ongoing changes to `development`.
 
 ## Implementation checklist
 
@@ -50,9 +50,13 @@ Checked items have implementation and regression coverage where applicable.
 - [ ] Simplify shared request and session code and load page-specific frontend assets where needed.
 - [ ] Review and remove confirmed unused frontend assets.
 
-### Verification and platform
+### Security and verification
 
-- [ ] Run browser and native MySQL smoke tests on synthetic data. Verify role behavior and confirm whether day 59 should include all timestamps before changing the cutoff.
-- [ ] Inventory active browser assets and scan the resolved Maven dependency graph. Confirm the deployed Tomcat and JDBC versions before selecting runtime patches.
-- [ ] Plan and verify the Java and Spring Boot migration and an independent JJWT upgrade.
-- [ ] Move generated WARs out of the source tree and verify the deployment workflow.
+- [ ] Add focused synthetic tests for refactors and security fixes. Confirm whether day 59 should include all timestamps before changing the cutoff.
+- [ ] Inventory active browser assets, scan the resolved Maven dependency graph, and review authentication and authorization code.
+- [ ] Review Java, Spring Boot, and JJWT upgrade options. Use isolated tests for compatibility changes that can be verified locally.
+### Deferred
+
+- [ ] Run live browser and native MySQL smoke tests.
+- [ ] Verify deployed Tomcat and JDBC versions and apply any runtime patches.
+- [ ] Generate WARs, move generated artifacts out of the source tree, and verify deployment.
