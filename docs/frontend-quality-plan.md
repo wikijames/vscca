@@ -31,3 +31,11 @@ Move Java and Spring Boot in a dedicated migration. A move through Boot 3 requir
 ## Phase 4 Keep the checks running
 
 The GitHub Actions workflow runs the Node suite and builds the WAR with Java 8 on pull requests to `development` and on pushes to that branch. Maven excludes tests tagged `database` so the run uses synthetic data and needs no external database. The existing application context smoke test carries that tag. Add dependency scanning once the browser asset inventory is reproducible. Review applicable advisories when they are published and on a regular schedule. Keep legacy branches available for reference and target ongoing changes to `development`.
+
+## Remaining work
+
+1. Restore the standalone View Tasks assignment selector. The template calls a missing handler. Confirm what Responsibility should include before connecting it to an endpoint.
+2. Complete the Audit List and DSC Audit grids. Audit List has a placeholder script, and DSC Audit references a script missing from the repository. Confirm the intended workflows and API contracts.
+3. Review the active browser assets and resolved Maven dependency tree with an advisory scanner. Confirm deployed Tomcat and JDBC versions before selecting runtime patches.
+4. Plan the Java and Spring Boot migration and the independent JJWT upgrade. Verify role behavior, native MySQL visibility queries, and browser smoke scenarios on synthetic data. Confirm whether day 59 should include all timestamps before changing the cutoff.
+5. Review unused frontend assets and move generated WARs out of the source tree. Verify deployment changes separately.
