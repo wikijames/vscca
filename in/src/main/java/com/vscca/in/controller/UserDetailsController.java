@@ -19,6 +19,7 @@ import com.vscca.in.dto.ResponseDto;
 import com.vscca.in.dto.UserDto;
 import com.vscca.in.model.LoginTable;
 import com.vscca.in.model.UserDetails;
+import com.vscca.in.serivce.AccountAuthorization;
 import com.vscca.in.serivce.LoginService;
 import com.vscca.in.serivce.UserDetailsService;
 import com.vscca.in.utill.TokenValidation;
@@ -34,16 +35,23 @@ public class UserDetailsController {
 	
 	@Autowired
 	LoginService loginService;
+
+	@Autowired
+	AccountAuthorization accountAuthorization;
 	
 	@CrossOrigin
 	@PostMapping("/userDetails")
 	public ResponseDto postLogin(HttpServletRequest req,@RequestBody UserDto userDto) {
 		ResponseDto response= new ResponseDto();
-		String token= req.getHeader(VsccaConstants.TOKEN_HEADER);
-		if(token == null || TokenValidation.getAuthentication(token) != true || getTokenAuthentication(token) != true) {
-				response.setSuccess(401);
-				response.setMessage("Unauthorized");
-			}else {
+        String token = req.getHeader(VsccaConstants.TOKEN_HEADER);
+        LoginTable caller = accountAuthorization.authenticatedLogin(token);
+        if (caller == null) {
+            return accountWriteDenied(401, "Unauthorized");
+        }
+        if (userDto != null && AccountAuthorization.isAdministratorRole(userDto.getAccessType())
+                && !accountAuthorization.isActiveAdministrator(caller)) {
+            return accountWriteDenied(403, "Forbidden");
+        }
 		if(userDto != null) {
 			UserDetails userDetails= new UserDetails();
 			LoginTable loginTable = new LoginTable();
@@ -75,7 +83,7 @@ public class UserDetailsController {
 				response.setSuccess(500);
 				response.setMessage("Fill again");
 			}
-			}
+
 		
 		return response;
 	}
@@ -229,12 +237,17 @@ public class UserDetailsController {
 	@PostMapping("/editUserDetails")
 	public ResponseDto editUserDetails(HttpServletRequest req, @RequestBody UserDto userDto) {
 		ResponseDto response= new ResponseDto();
-		String token= req.getHeader(VsccaConstants.TOKEN_HEADER);
-		if(token == null || TokenValidation.getAuthentication(token) != true || getTokenAuthentication(token) != true) {
-				response.setSuccess(401);
-				response.setMessage("Unauthorized");
-			}else {
+        String token = req.getHeader(VsccaConstants.TOKEN_HEADER);
+        LoginTable caller = accountAuthorization.authenticatedLogin(token);
+        if (caller == null) {
+            return accountWriteDenied(401, "Unauthorized");
+        }
 			UserDetails userDetails=userDetailsService.getById(userDto.getId());
+            if ((AccountAuthorization.isAdministratorRole(userDetails.getAccessType())
+                    || AccountAuthorization.isAdministratorRole(userDto.getAccessType()))
+                    && !accountAuthorization.isActiveAdministrator(caller)) {
+                return accountWriteDenied(403, "Forbidden");
+            }
 			if(userDto.getFirstName()!= null && !userDto.getFirstName().equals("")) {
 			userDetails.setFirstName(userDto.getFirstName());
 			}
@@ -281,8 +294,15 @@ public class UserDetailsController {
 			userDetailsService.save(userDetails);
 				response.setSuccess(200);
 				response.setMessage("success");
-			}
+
 		
 		return response;
 	}
+
+    private ResponseDto accountWriteDenied(int status, String message) {
+        ResponseDto response = new ResponseDto();
+        response.setSuccess(status);
+        response.setMessage(message);
+        return response;
+    }
 }
