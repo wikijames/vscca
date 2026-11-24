@@ -1,7 +1,6 @@
 package com.vscca.in.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -14,7 +13,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import org.apache.poi.EmptyFileException;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -63,7 +61,7 @@ class ExcelControllerTest {
         });
 
         MockMvcBuilders.standaloneSetup(controller).build()
-                .perform(multipart("/upload").file(workbookUpload())
+                .perform(multipart("/upload").file(workbookUpload("Sheet1"))
                         .header(VsccaConstants.TOKEN_HEADER, "synthetic-token"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(200))
@@ -85,7 +83,7 @@ class ExcelControllerTest {
         request.addHeader(VsccaConstants.TOKEN_HEADER, "synthetic-token");
         when(accountAuthorization.isActiveAccount("synthetic-token")).thenReturn(true);
 
-        assertThrows(EmptyFileException.class, () -> controller.uploadFile(request, upload(new byte[0])));
+        assertEquals(400, controller.uploadFile(request, upload(new byte[0])).getSuccess());
 
         verifyNoInteractions(taskInfoService, taskStatusService, taskUserDetailsService);
     }
@@ -101,9 +99,20 @@ class ExcelControllerTest {
         verifyNoInteractions(taskInfoService, taskStatusService, taskUserDetailsService);
     }
 
-    private MockMultipartFile workbookUpload() throws IOException {
+    @Test
+    void rejectsUnreadableWorkbooksAndWorkbooksWithoutSheet1() throws IOException {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.addHeader(VsccaConstants.TOKEN_HEADER, "synthetic-token");
+        when(accountAuthorization.isActiveAccount("synthetic-token")).thenReturn(true);
+
+        assertEquals(400, controller.uploadFile(request, upload(new byte[] {1, 2, 3})).getSuccess());
+        assertEquals(400, controller.uploadFile(request, workbookUpload("Other Sheet")).getSuccess());
+        verifyNoInteractions(taskInfoService, taskStatusService, taskUserDetailsService);
+    }
+
+    private MockMultipartFile workbookUpload(String sheetName) throws IOException {
         try (XSSFWorkbook workbook = new XSSFWorkbook(); ByteArrayOutputStream bytes = new ByteArrayOutputStream()) {
-            Sheet sheet = workbook.createSheet("Sheet1");
+            Sheet sheet = workbook.createSheet(sheetName);
             sheet.createRow(0).createCell(0).setCellValue("Project name");
             Row task = sheet.createRow(1);
             task.createCell(0).setCellValue("Synthetic project");

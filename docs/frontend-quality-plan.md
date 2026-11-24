@@ -64,6 +64,7 @@ Checked items have implementation and regression coverage where applicable.
 - [x] Enforce administrator authorization for account password resets and profile writes involving administrator roles.
 - [x] Require an active authenticated account for bulk task imports.
 - [x] Save one task, status and assignment per import row and preserve sparse spreadsheet columns.
+- [x] Reject empty and unreadable task workbooks and require Sheet1 before writing records.
 - [ ] Add focused synthetic tests for refactors and security fixes. Confirm whether day 59 should include all timestamps before changing the cutoff.
 - [ ] Inventory active browser assets, scan the resolved Maven dependency graph, and review authentication and authorization code.
 - [ ] Review Java, Spring Boot, and JJWT upgrade options. Use isolated tests for compatibility changes that can be verified locally.
