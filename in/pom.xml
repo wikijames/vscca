@@ -16,6 +16,9 @@
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>1.8</java.version>
+		<!-- Keep Spring Boot dependency management aligned with Apache POI 5.5.1. -->
+		<commons-codec.version>1.20.0</commons-codec.version>
+		<log4j2.version>2.24.3</log4j2.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -38,7 +41,7 @@
 		<dependency>
 	<groupId>org.apache.poi</groupId>
 	<artifactId>poi-ooxml</artifactId>
-	<version>4.1.2</version>
+	<version>5.5.1</version>
 </dependency>
 		<dependency>
 			<groupId>mysql</groupId>

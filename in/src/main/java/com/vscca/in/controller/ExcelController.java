@@ -69,12 +69,11 @@ public class ExcelController {
 	}
 
 	public String excelToTutorials(InputStream is) {
-		try {
+		try (Workbook workbook = new XSSFWorkbook(is)) {
 			String[] HEADERs = {"project name", "party name", "weighted", "created at", "due Date", "billing client",
 					"task type", "task description", "billing client", "responsibility", "consulting", "execution",
 					"intimation"};
 			String SHEET = "Sheet1";
-			Workbook workbook = new XSSFWorkbook(is);
 			Sheet sheet = workbook.getSheet(SHEET);
 			Iterator<Row> rows = sheet.iterator();
 			int rowNumber = 0;
@@ -164,7 +163,6 @@ public class ExcelController {
 					taskStatusService.save(taskStatus);
 				}
 			}
-			workbook.close();
 			return "success";
 		} catch (IOException e) {
 			throw new RuntimeException("fail to parse Excel file: " + e.getMessage());
