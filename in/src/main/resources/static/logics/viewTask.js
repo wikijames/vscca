@@ -1,5 +1,6 @@
 var selectedTaskIds = [];
 var isTaskTableInitialized = false;
+var taskListRequest;
 
 function addSelectedTaskId ( id ) {
 	if ( selectedTaskIds.indexOf( id ) === -1 ) {
@@ -213,47 +214,59 @@ function renderTaskRow ( obj ) {
 		+ '</tr>';
 }
 
-function populateData ( url ) {
-    // Ensure DataTable is clean before reloading data so that
-    // row callbacks (createdRow) run again and status colours apply correctly.
-	clearSelection();
+function requestTaskList ( url ) {
+	return $.ajax( {
+		type: 'GET',
+		url: url,
+		dataType: 'json',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: accessToken
+		}
+	} );
+}
 
-	// If DataTable is already initialized, destroy it and
-	// clear existing rows before repopulating.
-	if ( $.fn.dataTable && $.fn.dataTable.isDataTable( '#table_id' ) ) {
-		$( '#table_id' ).DataTable().clear().destroy();
-		// Remove any existing header filter dropdown wrappers
-		// that were added in initComplete, so they don't stack up
-		// when the table is reinitialized.
-		$( '#table_id thead th .cb-dropdown-wrap' ).remove();
-		isTaskTableInitialized = false;
+function populateData ( url ) {
+	if ( taskListRequest ) {
+		taskListRequest.abort();
 	}
 
-    $( '#table_id tbody' ).empty();
-    $.ajax( {
-        type: "GET",
-        url: url,
-        dataType: "json",
-        "headers": {
-            "Content-Type": "application/json",
-            "Authorization": accessToken
-        },
-        success: function ( data ) {
-            checkSession( data.success );
-            let totalRows= 0;
-			$.each( data.body, function ( i, obj ) {
-				$( renderTaskRow( obj ) ).appendTo( '#populateGrid' );
-				totalRows++;
-            } );
-			$('#recordCount').text(totalRows);
-			// Reinitialize DataTable on every reload so that
-			// createdRow is triggered for new rows and status
-			// background colours are applied consistently.
+	var status = $( '#taskGridStatus' );
+	status.text( 'Loading tasks?' );
+	$( '#recordCount' ).text( '' );
+	clearSelection();
+
+	if ( $.fn.dataTable && $.fn.dataTable.isDataTable( '#table_id' ) ) {
+		$( '#table_id' ).DataTable().clear().destroy();
+		$( '#table_id thead th .cb-dropdown-wrap' ).remove();
+	}
+	isTaskTableInitialized = false;
+	$( '#populateGrid' ).empty();
+
+	taskListRequest = requestTaskList( url )
+		.done( function ( data ) {
+			if ( data ) {
+				checkSession( data.success );
+			}
+			if ( !data || data.success !== 200 || !Array.isArray( data.body ) ) {
+				status.text( 'Could not load tasks. Refresh the page to try again.' );
+				return;
+			}
+
+			$.each( data.body, function ( i, task ) {
+				$( renderTaskRow( task ) ).appendTo( '#populateGrid' );
+			} );
+			$( '#recordCount' ).text( data.body.length );
 			dataTableFilterHandler();
 			isTaskTableInitialized = true;
-        }
-    } );
-};
+			status.text( '' );
+		} )
+		.fail( function ( xhr, textStatus ) {
+			if ( textStatus !== 'abort' ) {
+				status.text( 'Could not load tasks. Refresh the page to try again.' );
+			}
+		} );
+}
 
 function sortStatusText(value){
 	// Delegate status code -> display label to shared helper,
@@ -287,6 +300,7 @@ function dataTableFilterHandler () {
     //Data table filter
     $.fn.dataTable.moment( 'D-M-YYYY');
     $( '#table_id' ).DataTable( {
+        language: { emptyTable: 'No tasks found.' },
 	columnDefs: [
 		{
 			targets: 0,
