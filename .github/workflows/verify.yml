@@ -40,4 +40,4 @@ jobs:
           java-version: '8'
       - name: Verify without an external database
         working-directory: in
-        run: bash ./mvnw --batch-mode --no-transfer-progress -DexcludedGroups=database verify
+        run: mvn --batch-mode --no-transfer-progress -DexcludedGroups=database verify
