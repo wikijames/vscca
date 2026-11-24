@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { runInNewContext } from 'node:vm';
+import { createElement } from './support/dom.mjs';
 import { mockDeferredAjax } from './support/deferred-ajax.mjs';
 
 const script = readFileSync(new URL('../../main/resources/static/logics/createProfile.js', import.meta.url), 'utf8');
@@ -10,6 +11,7 @@ function submitProfile(profileId, email = 'user@example.test') {
     const fields = { '#firstName': 'Example', '#lastName': 'User', '#email': email, '#accessType': 'Supervisor', '#isActive': '0' };
     const events = [];
     const { ajax, requests } = mockDeferredAjax();
+    const options = { accessType: [], location: [] };
     let click;
     const jquery = selector => ({
         ready: callback => callback(),
@@ -25,7 +27,12 @@ function submitProfile(profileId, email = 'user@example.test') {
     });
     jquery.ajax = ajax;
     runInNewContext(script, {
-        $: jquery, document: {}, setTimeout() {},
+        $: jquery,
+        document: {
+            createElement,
+            getElementById: id => ({ appendChild: option => options[id].push(option) })
+        },
+        setTimeout() {},
         sessionStorage: { getItem: () => profileId, clear: () => events.push(['clear']) },
         window: { set location(path) { events.push(['navigate', path]); } },
         alert: message => events.push(['alert', message]),
@@ -37,7 +44,7 @@ function submitProfile(profileId, email = 'user@example.test') {
     });
     click({ preventDefault: () => events.push(['preventDefault']) });
     assert.deepEqual(events.shift(), ['preventDefault']);
-    return { request: requests.find(({ options }) => options.method === 'POST'), events };
+    return { request: requests.find(({ options }) => options.method === 'POST'), events, requests, options };
 }
 
 for (const [id, action, verb] of [[null, 'create', 'added'], ['17', 'edit', 'updated']]) {
@@ -77,3 +84,23 @@ for (const [label, handler, response, message, clearSession] of [
         assert.deepEqual(events, clearSession ? [['clear'], ['alert', message]] : [['alert', message]]);
     });
 }
+
+
+test('profile dropdowns preserve literal labels and values from the API', () => {
+    const { requests, options } = submitProfile(null);
+    for (const [endpoint, select, field, value] of [
+        ['access', 'accessType', 'acessType', 'Example <Role>'],
+        ['locations', 'location', 'workLocation', 'West Office & Annex']
+    ]) {
+        const { options: request } = requests.find(({ options }) => options.url === '/synthetic/' + endpoint);
+        assert.equal(request.headers.Authorization, 'synthetic-token');
+        request.success({ success: 401 });
+        request.success({ body: [{ [field]: value }, null, {}] });
+        assert.equal(options[select].length, 1);
+        const [option] = options[select];
+        assert.equal(option.tagName, 'option');
+        assert.equal(option.value, value);
+        assert.equal(option.textContent, value);
+        assert.deepEqual(option.children, []);
+    }
+});

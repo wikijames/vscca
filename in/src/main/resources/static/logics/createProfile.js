@@ -98,46 +98,36 @@ $('#saveProfile').click(function(e){
     }
 });
 
-accessType();
-locationType();
-})// jquery end
+    loadProfileOptions('accessType', getAccessURL, 'acessType');
+    loadProfileOptions('location', getLocationURL, 'workLocation');
+});
 
+function loadProfileOptions(selectId, url, valueField) {
+    $.ajax({
+        type: 'GET',
+        url,
+        dataType: 'json',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: accessToken
+        },
+        success: function (response) {
+            if (!response || !Array.isArray(response.body)) {
+                return;
+            }
 
-function accessType(){
-	 $.ajax({
-	        type: "GET",
-	        url:getAccessURL,
-	        dataType: "json",
-			 "headers": {
-		    	"Content-Type": "application/json",
-				"Authorization": accessToken
-		  	},
-	        success: function (data) {
-				$.each(data.body,function(i,obj)
-	            {
-	             var div_data="<option value="+obj.acessType+">"+ obj.acessType +"</option>";
-	            $(div_data).appendTo('#accessType');
-	            });
-	            }
-	      });
-}
-function locationType(){
-	 $.ajax({
-	        type: "GET",
-	        url:getLocationURL,
-	        dataType: "json",
-			 "headers": {
-		    	"Content-Type": "application/json",
-				"Authorization": accessToken
-		  	},
-	        success: function (data) {
-				$.each(data.body,function(i,obj)
-	            {
-					 var div_data="<option value="+obj.workLocation+">"+ obj.workLocation+"</option>";
-	            $(div_data).appendTo('#location');
-	            });
-	            }
-	      });
+            const select = document.getElementById(selectId);
+            response.body.forEach(function (entry) {
+                const value = entry && entry[valueField];
+                if (typeof value === 'string') {
+                    const option = document.createElement('option');
+                    option.value = value;
+                    option.textContent = value;
+                    select.appendChild(option);
+                }
+            });
+        }
+    });
 }
 
 function validateEmail(){  
