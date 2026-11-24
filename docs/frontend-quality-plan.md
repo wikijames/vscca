@@ -58,6 +58,7 @@ Checked items have implementation and regression coverage where applicable.
 - [x] Render task form dropdown labels through DOM text properties and preserve option values.
 - [ ] Review remaining request and session code and scope other frontend assets where appropriate.
 - [x] Remove the hidden Billing Client upload stub that routed spreadsheets to the task importer.
+- [x] Remove the unused Excel format stub and duplicate date formatters left by task import code.
 - [ ] Review and remove confirmed unused frontend assets.
 
 ### Security and verification
