@@ -1,93 +1,87 @@
-$( document ).ready( function () {
-    // populate User Name
-    $.ajax( {
-        type: "GET",
-        url: getUsersURL,
-        dataType: "json",
-        "headers": {
-            "Content-Type": "application/json",
-            "Authorization": accessToken
-        },
-        success: function ( data ) {
-            $.each( data.body, function ( i, obj ) {
-                var div_data = "<option value=" + obj.emailId + ">" + obj.firstName + " " + obj.lastName + "</option>";
-                $( div_data ).appendTo( '#userNames' );
-            } );
+$(document).ready(function () {
+    const isAdmin = String(userRole).toLowerCase() === 'admin';
+    if (isAdmin) {
+        loadPasswordResetUsers();
+    }
+
+    $('#changePasswordForm').on('submit', function (event) {
+        event.preventDefault();
+        const password = $('#password').val();
+        if (!password || password !== $('#confirmPassword').val()) {
+            alert('Enter matching passwords.');
+            return;
         }
-    } );
 
-
-    // this is the id of the form
-    $( "#save" ).click( function ( e ) {
-        e.preventDefault(); // avoid to execute the actual submit of the form.
-        var password = $( '#password' ).val();
-        var confirmPassword = $( '#confirmPassword' ).val();
-
-        if(password == confirmPassword){
-            if ( userRole.toLowerCase() == 'admin' ) {
-                var settings = passwordChangeOptionForAdminHandler(settings);
-            } else {
-                var settings = userPasswordResetHandler( settings );
+        const payload = { password };
+        if (isAdmin) {
+            payload.userName = $('#userNames').val();
+            if (!payload.userName) {
+                alert('Select a user before resetting their password.');
+                return;
             }
-        }else{
-            alert("Password Don't match, please enter again");
         }
-    } );
 
-} )//ready ends
+        savePassword(isAdmin, payload);
+    });
+});
 
-function userPasswordResetHandler ( settings ) {
-    var settings = {
-        "url": postPasswordChangeSelfURL,
-        "method": "POST",
-        "timeout": 0,
-        "headers": {
-            "Content-Type": "application/json",
-            "Authorization": accessToken
-        },
-        "data": JSON.stringify( {
-            "password": $( '#password' ).val()
-        } ),
-    };
-    $.ajax( settings ).done( function ( response ) {
-        if ( response.success == 200 ) {
-            window.location = 'dashboard';
-            $( "#changePasswordForm" )[ 0 ].reset();
-            alert( 'Password has been created succesfully' );
-        } else if ( reponse.success === 401 ) {
-            sessionStorage.clear();
-        } else {
-            alert( 'something went wrong.' + data );
+function loadPasswordResetUsers() {
+    $.ajax({
+        method: 'GET',
+        url: getUsersURL,
+        dataType: 'json',
+        headers: { Authorization: accessToken }
+    }).done(function (response) {
+        if (!response || !Array.isArray(response.body)) {
+            showPasswordFailure(Number(response && response.success), 'Unable to load users.');
+            return;
         }
-    } );
-    return settings;
+
+        const userNames = document.getElementById('userNames');
+        response.body.forEach(function (user) {
+            const option = document.createElement('option');
+            option.value = user.emailId;
+            option.textContent = user.firstName + ' ' + user.lastName;
+            userNames.append(option);
+        });
+    }).fail(function (request) {
+        showPasswordFailure(request.status, 'Unable to load users.');
+    });
 }
 
-function passwordChangeOptionForAdminHandler () {
-    var settings = {
-        "url": PostPasswordChangeURL,
-        "method": "POST",
-        "timeout": 0,
-        "headers": {
-            "Content-Type": "application/json",
-            "Authorization": accessToken
-        },
-        "data": JSON.stringify( {
-            "userName": $( '#userNames' ).val(),
-            "password": $( '#password' ).val()
-        } ),
-    };
-    $.ajax( settings ).done( function ( response ) {
-        if ( response.success == 200 ) {
-            $( "#changePasswordForm" )[ 0 ].reset();
-            window.location = 'adminPanel';
-            alert( 'password has been updated succesfully' );
-        } else if ( reponse.success === 401 ) {
-            sessionStorage.clear(); 
-        } else {
-            alert( 'something went wrong.' + data );
+function savePassword(isAdmin, payload) {
+    const saveButton = $('#save');
+    saveButton.prop('disabled', true);
+
+    $.ajax({
+        url: isAdmin ? PostPasswordChangeURL : postPasswordChangeSelfURL,
+        method: 'POST',
+        contentType: 'application/json',
+        headers: { Authorization: accessToken },
+        data: JSON.stringify(payload)
+    }).done(function (response) {
+        const status = Number(response && response.success);
+        if (status !== 200) {
+            showPasswordFailure(status, 'Unable to update the password.');
+            return;
         }
-    } );
-    return settings;
+
+        $('#changePasswordForm')[0].reset();
+        alert('Password updated successfully.');
+        window.location = isAdmin ? 'adminPanel' : 'dashboard';
+    }).fail(function (request) {
+        showPasswordFailure(request.status, 'Unable to update the password.');
+    }).always(function () {
+        saveButton.prop('disabled', false);
+    });
 }
 
+function showPasswordFailure(status, message) {
+    if (status === 401) {
+        sessionStorage.clear();
+        alert('Your session is no longer authorized. Sign in again to continue.');
+        return;
+    }
+
+    alert(message);
+}
