@@ -9,33 +9,36 @@ const script = readFileSync(new URL('../../main/resources/static/logics/addBilli
 function submitBillingClient(id = null, loadedId = id) {
     const fields = { '#partyName': 'Example Ltd', '#ledgerNumber': '001', '#pageNumber': '07', '#isActive': '0' };
     const events = [];
+    let checked = false;
+    let selectedId = id;
     let click;
     const { ajax, requests } = mockDeferredAjax();
     const jquery = selector => ({
         ready: callback => callback(),
         hide() {},
-        is: () => false,
+        is: () => checked,
         change() {},
         click: callback => { click = callback; },
-        val: () => fields[selector],
-        attr: () => loadedId,
+        val: value => value === undefined ? fields[selector] : (fields[selector] = value),
+        prop: (_, value) => { checked = value; },
+        attr: (_, value) => value === undefined ? loadedId : (loadedId = value),
         0: { reset: () => events.push(['reset']) }
     });
     jquery.ajax = ajax;
     runInNewContext(script, {
         $: jquery,
         document: {},
-        setTimeout() {},
-        sessionStorage: { getItem: () => id, clear: () => events.push(['clear']) },
+        sessionStorage: { getItem: () => selectedId, removeItem: () => { selectedId = null; events.push(['consume']); }, clear: () => events.push(['clear']) },
         window: { set location(path) { events.push(['navigate', path]); } },
         alert: message => events.push(['alert', message]),
+        getBillingByIdURL: '/synthetic/details',
         postAddBillingClientURL: '/synthetic/add',
         postEditBillingClientURL: '/synthetic/edit',
         accessToken: 'synthetic-token'
     });
     click({ preventDefault: () => events.push(['preventDefault']) });
     assert.deepEqual(events.shift(), ['preventDefault']);
-    return { request: requests[0], events };
+    return { request: requests.find(({ options }) => options.method === 'POST'), events, requests, fields };
 }
 
 for (const [id, endpoint, verb] of [[null, 'add', 'added'], ['17', 'edit', 'updated']]) {
@@ -76,4 +79,30 @@ test('saving before billing client edit details load sends no request', () => {
     const { request, events } = submitBillingClient('17', '');
     assert.equal(request, undefined);
     assert.deepEqual(events, [['alert', 'The billing client details are unavailable. Reopen the billing client before saving.']]);
+});
+
+
+test('opening a billing client requests its details immediately', () => {
+    const { requests } = submitBillingClient('17', '');
+    assert.equal(requests.length, 1);
+    assert.equal(requests[0].options.url, '/synthetic/details');
+    assert.equal(requests[0].options.method, 'GET');
+    assert.equal(requests[0].options.data.id, '17');
+});
+
+test('billing client load errors explain how to retry', () => {
+    const { requests, events } = submitBillingClient('17', '');
+    requests[0].reject();
+    assert.deepEqual(events.at(-1), ['alert', 'Unable to load the billing client. Reopen it and try again.']);
+});
+
+
+test('successful billing details populate the form and consume the selected ID', () => {
+    const { requests, events, fields } = submitBillingClient('17', '');
+    requests[0].resolve({ success: 200, body: { id: 17, client: 'Test Party-002-09', isActive: 1 } });
+    assert.equal(fields['#partyName'], 'Test Party');
+    assert.equal(fields['#ledgerNumber'], '002');
+    assert.equal(fields['#pageNumber'], '09');
+    assert.equal(fields['#isActive'], '1');
+    assert.deepEqual(events.at(-1), ['consume']);
 });
