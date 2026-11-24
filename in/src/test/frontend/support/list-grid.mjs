@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { runInNewContext } from 'node:vm';
+import { createContext, runInContext } from 'node:vm';
 import { createElement } from './dom.mjs';
 
 export function createListGridHarness({ scriptName, statusSelector, detailsSelector, requestUrls }) {
@@ -36,7 +36,7 @@ export function createListGridHarness({ scriptName, statusSelector, detailsSelec
     }
     jquery.ajax = options => { request = options; };
 
-    const context = {
+    const context = createContext({
         $: jquery,
         document: { createElement },
         window: { set location(path) { navigation.push(['location', path]); } },
@@ -45,8 +45,10 @@ export function createListGridHarness({ scriptName, statusSelector, detailsSelec
         accessToken: 'synthetic-token',
         checkSession: code => checks.push(code),
         formatGridExportHeader() {}
-    };
-    runInNewContext(script, context, { filename: scriptName + '.js' });
+    });
+    const helper = readFileSync(new URL('../../../main/resources/static/logics/listGrid.js', import.meta.url), 'utf8');
+    runInContext(helper, context, { filename: 'listGrid.js' });
+    runInContext(script, context, { filename: scriptName + '.js' });
     ready();
 
     return {

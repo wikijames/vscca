@@ -36,3 +36,13 @@ test('table pages inherit the shared stack without loading another DataTables in
         assert.equal(localScripts(html).some(script => /vendor\/(?:datatables\.net|jszip)/.test(script)), false, page);
     }
 });
+
+test('profile and billing pages load the shared list loader before the page script', () => {
+    const helper = 'logics/listGrid.js';
+    assert.ok(existsSync(new URL('static/' + helper, resources)));
+    assert.ok(!localScripts(readTemplate('fragments/footer')).includes(helper));
+    for (const page of ['viewProfile', 'viewBillingClient']) {
+        const scripts = localScripts(readTemplate(page));
+        assert.deepEqual(scripts.slice(-2), [helper, 'logics/' + page + '.js'], page);
+    }
+});

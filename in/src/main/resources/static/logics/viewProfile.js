@@ -3,36 +3,14 @@ $( function () {
         sessionStorage.setItem( 'profileId', this.dataset.profileId );
         window.location = 'profile';
     } );
-    loadProfileGrid();
-} );
-
-function loadProfileGrid () {
-    const status = $( '#profileGridStatus' );
-    const showLoadError = () => status.text( 'Could not load profiles. Refresh the page to try again.' );
-    status.text( 'Loading profiles...' );
-
-    $.ajax( {
-        type: 'GET',
+    loadListGrid( {
         url: getUsersProfileURL,
-        dataType: 'json',
-        headers: { Authorization: accessToken },
-        success: function ( response ) {
-            if ( response ) {
-                checkSession( response.success );
-            }
-            if ( !response || response.success !== 200 || !Array.isArray( response.body ) ) {
-                showLoadError();
-                return;
-            }
-
-            const body = $( '#populateGrid' );
-            response.body.forEach( profile => body.append( renderProfileRow( profile ) ) );
-            initializeProfileGrid();
-            status.text( '' );
-        },
-        error: showLoadError
+        statusSelector: '#profileGridStatus',
+        label: 'profiles',
+        renderRow: renderProfileRow,
+        initialize: initializeProfileGrid
     } );
-}
+} );
 
 function renderProfileRow ( profile ) {
     const row = document.createElement( 'tr' );
