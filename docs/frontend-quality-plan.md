@@ -51,6 +51,7 @@ Checked items have implementation and regression coverage where applicable.
 - [x] Load the DataTables export scripts and column helpers only on the pages that use them.
 - [x] Share Billing Client create and edit save handling and cover success and failure with mocked requests.
 - [x] Harden password form rendering, validation and request feedback with mocked coverage.
+- [x] Share Profile create and edit save handling and cover permission failures with reusable AJAX mocks.
 - [ ] Review remaining request and session code and scope other frontend assets where appropriate.
 - [ ] Review and remove confirmed unused frontend assets.
 
