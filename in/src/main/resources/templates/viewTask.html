@@ -196,6 +196,8 @@
       </div>
     </div>
     <div th:replace="fragments/footer :: dashboard-scripts"></div>
+    <div th:replace="fragments/footer :: table-scripts"></div>
+    <script th:src="@{/logics/gridColumns.js}"></script>
     <script th:src="@{/logics/viewTask.js}"></script>
   </body>
 </html>

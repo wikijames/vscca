@@ -51,19 +51,21 @@
 	<script th:src="@{/vendor/holderjs/holder.min.js}" ></script>
 	<script th:src="@{/vendor/prismjs/prism.js}" ></script>
 	<script th:src="@{/js/argon.js?v=1.2.0}"></script>
+	
+  <!-- Shared app-specific utilities -->
+  <script th:src="@{/logics/statusUtils.js}"></script>
+  <script th:src="@{/logics/dateUtils.js}"></script>
+	<script th:src="@{/logics/globalVariables.js}"></script>
+	<script th:src="@{/logics/common.js}"></script>
+</div>
+
+<div th:fragment="table-scripts">
 	<script th:src="@{/vendor/jszip/dist/jszip.min.js}"></script>
 	<script th:src="@{/vendor/datatables.net/js/dataTables.min.js}"></script>
 	<script th:src="@{/vendor/datatables.net-bs4/js/dataTables.bootstrap4.min.js}"></script>
 	<script th:src="@{/vendor/datatables.net-buttons/js/dataTables.buttons.min.js}"></script>
 	<script th:src="@{/vendor/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js}"></script>
 	<script th:src="@{/vendor/datatables.net-buttons/js/buttons.html5.min.js}"></script>
-	
-  <!-- Shared app-specific utilities -->
-  <script th:src="@{/logics/gridColumns.js}"></script>
-  <script th:src="@{/logics/statusUtils.js}"></script>
-  <script th:src="@{/logics/dateUtils.js}"></script>
-	<script th:src="@{/logics/globalVariables.js}"></script>
-	<script th:src="@{/logics/common.js}"></script>
 </div>
 
 <!-- Login Footer -->

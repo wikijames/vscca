@@ -48,7 +48,8 @@ Checked items have implementation and regression coverage where applicable.
 - [ ] Restore the standalone View Tasks assignment selector. Confirm what Responsibility should include before connecting it to an endpoint.
 - [ ] Complete Audit List and DSC Audit. Confirm their intended workflows and API contracts, then replace the placeholder or missing scripts.
 - [x] Share the list request and loading flow for Profiles and Billing Clients.
-- [ ] Review the remaining request and session code and load page-specific frontend assets where needed.
+- [x] Load the DataTables export scripts and column helpers only on the pages that use them.
+- [ ] Review remaining request and session code and scope other frontend assets where appropriate.
 - [ ] Review and remove confirmed unused frontend assets.
 
 ### Security and verification
