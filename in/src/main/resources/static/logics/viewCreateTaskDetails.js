@@ -131,11 +131,11 @@ function getViewTaskById() {
             $('#weightage').val(task.weightage);
             $('#description').val(task.taskDescription);
             $('#taskType').val(task.taskType);
-            selectTaskBillingClient(task.billingClient);
-            $('#responsibility').val(task.responsibility);
-            $('#intimation').val(task.intimation);
-            $('#execution').val(task.exceution);
-            $('#consulting').val(task.consulting);
+            selectSavedTaskOption('billingClientName', task.billingClient);
+            selectSavedTaskOption('responsibility', task.responsibility);
+            selectSavedTaskOption('intimation', task.intimation);
+            selectSavedTaskOption('execution', task.exceution);
+            selectSavedTaskOption('consulting', task.consulting);
             $('#status').val(task.status);
             $('#reasonForDelay').val(task.delayReason);
             $('#remarks').val(task.remarks);
@@ -152,8 +152,8 @@ function getViewTaskById() {
     });
 }
 
-function selectTaskBillingClient(value) {
-    const select = document.getElementById('billingClientName');
+function selectSavedTaskOption(id, value) {
+    const select = document.getElementById(id);
     if (!select) {
         return;
     }
@@ -165,7 +165,10 @@ function selectTaskBillingClient(value) {
         select.appendChild(option);
     }
 
-    $(select).val(value).trigger('change.select2');
+    const picker = $(select).val(value);
+    if (id === 'billingClientName') {
+        picker.trigger('change.select2');
+    }
 }
 
 function getViewTaskDeleteById(){
