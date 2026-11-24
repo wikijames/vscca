@@ -10,6 +10,7 @@ function submitProfile(profileId, email = 'user@example.test', loadedId = profil
     const fields = { '#firstName': 'Example', '#lastName': 'User', '#email': email, '#accessType': 'Supervisor', '#isActive': '0' };
     const events = [];
     const { ajax, requests } = mockDeferredAjax();
+    const dropdowns = { accessType: [], location: [] };
     let click;
     const jquery = selector => ({
         ready: callback => callback(),
@@ -25,10 +26,14 @@ function submitProfile(profileId, email = 'user@example.test', loadedId = profil
     });
     jquery.ajax = ajax;
     runInNewContext(script, {
-        $: jquery, document: {}, setTimeout() {},
+        $: jquery, document: {
+            getElementById: id => ({ appendChild: option => dropdowns[id].push(option) }),
+            createElement: tagName => ({ tagName })
+        },
         sessionStorage: { getItem: () => profileId, clear: () => events.push(['clear']) },
         window: { set location(path) { events.push(['navigate', path]); } },
         alert: message => events.push(['alert', message]),
+        getUserDetailByIdURL: '/synthetic/details',
         getAccessURL: '/synthetic/access',
         getLocationURL: '/synthetic/locations',
         postProfileURL: '/synthetic/create',
@@ -37,7 +42,7 @@ function submitProfile(profileId, email = 'user@example.test', loadedId = profil
     });
     click({ preventDefault: () => events.push(['preventDefault']) });
     assert.deepEqual(events.shift(), ['preventDefault']);
-    return { request: requests.find(({ options }) => options.method === 'POST'), events };
+    return { request: requests.find(({ options }) => options.method === 'POST'), events, requests, dropdowns };
 }
 
 for (const [id, action, verb] of [[null, 'create', 'added'], ['17', 'edit', 'updated']]) {
@@ -83,4 +88,19 @@ test('saving before profile edit details load sends no request', () => {
     const { request, events } = submitProfile('17', undefined, '');
     assert.equal(request, undefined);
     assert.deepEqual(events, [['alert', 'The profile details are unavailable. Reopen the profile before saving.']]);
+});
+
+
+test('profile edit waits for both option lists before requesting details', () => {
+    const { requests, events, dropdowns } = submitProfile('17', undefined, '');
+    assert.equal(requests.length, 2);
+    requests[1].options.success({ body: [{ workLocation: 'West <Annex> & Co' }] });
+    assert.deepEqual(dropdowns.location, [{ tagName: 'option', value: 'West <Annex> & Co', textContent: 'West <Annex> & Co' }]);
+    assert.equal(requests.length, 2);
+    requests[0].options.success({ body: [] });
+    const { options } = requests[2];
+    assert.equal(options.url, '/synthetic/details');
+    assert.equal(options.data.id, '17');
+    options.error();
+    assert.deepEqual(events.at(-1), ['alert', 'Unable to load the profile. Reopen it and try again.']);
 });
