@@ -207,7 +207,8 @@ function ValidateUploadFile() {
 }
 
 function uploadBulkTask() {
-    if (!confirm('Are you sure?')) {
+    const uploadButton = document.getElementById('uploadTasks');
+    if (uploadButton.disabled || !confirm('Are you sure?')) {
         return false;
     }
 
@@ -223,10 +224,12 @@ function uploadBulkTask() {
         }
     }
 
+    const data = new FormData(form);
+    uploadButton.disabled = true;
     $.ajax({
         url: postUploadBulkTaskURL,
         type: 'POST',
-        data: new FormData(form),
+        data,
         headers: { Authorization: accessToken },
         cache: false,
         contentType: false,
@@ -244,6 +247,9 @@ function uploadBulkTask() {
         },
         error: function (request) {
             showUploadFailure(request.status);
+        },
+        complete: function () {
+            uploadButton.disabled = false;
         }
     });
 

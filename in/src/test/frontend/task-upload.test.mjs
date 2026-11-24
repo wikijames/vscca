@@ -11,11 +11,12 @@ function uploadTasks(confirmed = true, filename = 'synthetic.xlsx') {
     const form = { reset: () => events.push(['reset']) };
     const { ajax, requests } = mockDeferredAjax();
     const file = { value: filename };
+    const uploadButton = { disabled: false };
     const jquery = () => ({ ready() {} });
     jquery.ajax = ajax;
     const context = {
         $: jquery,
-        document: { getElementById: id => ({ file, fileinfo: form })[id] },
+        document: { getElementById: id => ({ file, fileinfo: form, uploadTasks: uploadButton })[id] },
         FormData: class {
             constructor(formElement) { this.form = formElement; }
         },
@@ -28,7 +29,7 @@ function uploadTasks(confirmed = true, filename = 'synthetic.xlsx') {
     };
     runInNewContext(script, context);
     context.ValidateUploadFile();
-    return { requests, events, form };
+    return { requests, events, form, uploadButton, submit: context.ValidateUploadFile };
 }
 
 test('task upload resets its own form and redirects after confirmed import', () => {
@@ -100,3 +101,17 @@ for (const [source, handler, response] of [
         ]);
     });
 }
+
+
+test('task upload blocks a second submission while pending and unlocks after failure', () => {
+    const { requests, uploadButton, submit } = uploadTasks();
+    assert.equal(uploadButton.disabled, true);
+    submit();
+    assert.equal(requests.length, 1);
+
+    requests[0].options.error({ status: 500 });
+    requests[0].options.complete();
+    assert.equal(uploadButton.disabled, false);
+    submit();
+    assert.equal(requests.length, 2);
+});
