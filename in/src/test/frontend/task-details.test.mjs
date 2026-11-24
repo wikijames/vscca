@@ -7,11 +7,15 @@ import { mockDeferredAjax } from './support/deferred-ajax.mjs';
 const script = readFileSync(new URL('../../main/resources/static/logics/viewCreateTaskDetails.js', import.meta.url), 'utf8');
 
 function loadTask(billingOptions = ['Example Client']) {
-    const options = billingOptions.map(value => ({ value }));
-    const select = { options, appendChild: option => options.push(option) };
+    const selects = new Map();
+    for (const id of ['billingClientName', 'responsibility', 'intimation', 'execution', 'consulting']) {
+        const values = id === 'billingClientName' ? billingOptions : ['current@example.test'];
+        const options = values.map(value => ({ value }));
+        selects.set(id, { id, options, appendChild: option => options.push(option) });
+    }
     const events = [];
     const { ajax, requests } = mockDeferredAjax();
-    const jquery = (target, selector = target === select ? '#billingClientName' : target) => ({
+    const jquery = (target, selector = typeof target === 'string' ? target : '#' + target.id) => ({
         ready() {},
         val(value) {
             events.push([selector, value]);
@@ -24,7 +28,7 @@ function loadTask(billingOptions = ['Example Client']) {
     jquery.ajax = ajax;
     const context = {
         $: jquery,
-        document: { getElementById: () => select, createElement: tagName => ({ tagName }) },
+        document: { getElementById: id => selects.get(id), createElement: tagName => ({ tagName }) },
         sessionStorage: { getItem: () => '17', removeItem: key => events.push(['clear', key]) },
         formatDateToUi: value => value,
         alert: message => events.push(['alert', message]),
@@ -32,7 +36,7 @@ function loadTask(billingOptions = ['Example Client']) {
     };
     runInNewContext(script, context);
     context.getViewTaskById();
-    return { request: requests[0].options, events, billingOptions: options };
+    return { request: requests[0].options, events, billingOptions: selects.get('billingClientName').options, selects };
 }
 
 test('task details populate only the requested record before enabling edit saves', () => {
@@ -68,4 +72,20 @@ test('task details retain a saved billing client missing from the current dropdo
     assert.deepEqual(events.filter(([field]) => field === '#billingClientName'), [
         ['#billingClientName', value], ['#billingClientName', 'change.select2']
     ]);
+});
+
+
+test('task details preserve saved assignments missing from the current dropdowns', () => {
+    const { request, events, selects } = loadTask();
+    const legacy = 'legacy@example.test';
+    request.success({
+        success: 200,
+        body: [{ taskId: 17, responsibility: legacy, intimation: legacy, exceution: legacy, consulting: legacy }]
+    });
+    for (const id of ['responsibility', 'intimation', 'execution', 'consulting']) {
+        assert.deepEqual(selects.get(id).options, [
+            { value: 'current@example.test' }, { tagName: 'option', value: legacy, textContent: legacy }
+        ]);
+        assert.deepEqual(events.filter(([field]) => field === '#' + id), [['#' + id, legacy]]);
+    }
 });
