@@ -232,7 +232,7 @@ function populateData ( url ) {
 	}
 
 	var status = $( '#taskGridStatus' );
-	status.text( 'Loading tasks?' );
+	status.text( 'Loading tasks...' );
 	$( '#recordCount' ).text( '' );
 	clearSelection();
 
