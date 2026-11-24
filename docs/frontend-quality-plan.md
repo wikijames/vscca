@@ -62,6 +62,7 @@ Checked items have implementation and regression coverage where applicable.
 ### Security and verification
 
 - [x] Enforce administrator authorization for account password resets and profile writes involving administrator roles.
+- [x] Require an active authenticated account for bulk task imports.
 - [ ] Add focused synthetic tests for refactors and security fixes. Confirm whether day 59 should include all timestamps before changing the cutoff.
 - [ ] Inventory active browser assets, scan the resolved Maven dependency graph, and review authentication and authorization code.
 - [ ] Review Java, Spring Boot, and JJWT upgrade options. Use isolated tests for compatibility changes that can be verified locally.

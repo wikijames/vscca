@@ -41,6 +41,16 @@ public class AccountAuthorization {
         return login != null && token.equals(login.getToken()) ? login : null;
     }
 
+    public boolean isActiveAccount(String token) {
+        LoginTable login = authenticatedLogin(token);
+        if (login == null) {
+            return false;
+        }
+
+        UserDetails profile = userDetailsService.findByEmailId(login.getUserName());
+        return profile != null && profile.getIsActive() == 1;
+    }
+
     public boolean isActiveAdministrator(LoginTable caller) {
         UserDetails profile = userDetailsService.findByEmailId(caller.getUserName());
         return profile != null && profile.getIsActive() == 1 && isAdministratorRole(profile.getAccessType());
