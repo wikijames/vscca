@@ -157,6 +157,13 @@ function submitData(event) {
 }
 
 function saveProfile(isEditing) {
+    const id = isEditing ? $('#saveProfile').attr('title') : null;
+    if (isEditing && !id) {
+        alert('The profile details are unavailable. Reopen the profile before saving.');
+        return;
+    }
+
+
     const payload = {
         firstName: $('#firstName').val(),
         lastName: $('#lastName').val(),
@@ -175,7 +182,7 @@ function saveProfile(isEditing) {
         location: $('#location').val()
     };
     if (isEditing) {
-        payload.id = $('#saveProfile').attr('title');
+        payload.id = id;
         payload.isActive = $('#isActive').val();
     }
 
