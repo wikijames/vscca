@@ -46,3 +46,10 @@ test('personal task views use their own endpoints for every dashboard role', () 
         }
     }
 });
+
+test('task navigation handles a trailing slash and ignores unrelated pages', () => {
+    assert.deepEqual(loadTaskView('Manager', 'dashboard/'), { requested: ['/all'], heading: 'All Tasks' });
+    for (const page of ['reports', 'viewProfileGrid', 'constructor', '']) {
+        assert.deepEqual(loadTaskView('Admin', page), { requested: [], heading: undefined }, page);
+    }
+});
