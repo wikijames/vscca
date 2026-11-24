@@ -18,9 +18,30 @@ test('shows loading and renders task data when the request succeeds', () => {
     assert.deepEqual(grid.sessionChecks, [200]);
     assert.equal(grid.rows.length, 1);
     assert.equal(grid.rows[0].target, '#populateGrid');
-    assert.match(grid.rows[0].markup, /Example project/);
-    assert.match(grid.rows[0].markup, /24-11-2026/);
-    assert.match(grid.rows[0].markup, /data-order="2">Processing/);
+    const cells = grid.rows[0].element.children;
+    assert.equal(cells[1].textContent, 'Example project');
+    assert.equal(cells[9].textContent, '24-11-2026');
+    assert.equal(cells[11].textContent, 'Processing');
+    assert.equal(cells[11].dataset.order, '2');
+});
+
+test('renders punctuation and angle brackets as literal task text', () => {
+    const grid = createTaskGridHarness();
+    const projectName = 'Draft <Review> & "sign-off"';
+    const partyName = "Example & O'Neil";
+    grid.load().resolve({ success: 200, body: [makeTask({ projectName, partyName })] });
+
+    const cells = grid.rows[0].element.children;
+    assert.equal(cells[1].textContent, projectName);
+    assert.equal(cells[2].textContent, partyName);
+    assert.deepEqual(cells[1].children, []);
+    assert.deepEqual(cells[2].children, []);
+    assert.equal(cells[0].children[0].value, '42');
+    const details = cells[3].children[0];
+    assert.equal(details.tagName, 'button');
+    assert.equal(details.type, 'button');
+    assert.equal(details.dataset.taskId, '42');
+    assert.equal(details.textContent, 'View/Edit');
 });
 
 test('sorts due dates by displayed calendar day and leaves unusable dates blank', () => {
@@ -36,12 +57,11 @@ test('sorts due dates by displayed calendar day and leaves unusable dates blank'
         ]
     });
 
-    assert.match(grid.rows[0].markup, /data-order="20261031">31-10-2026</);
-    assert.match(grid.rows[1].markup, /data-order="20261101">01-11-2026</);
-    assert.match(grid.rows[2].markup, /data-order="20261101">01-11-2026</);
-    for (const row of grid.rows.slice(3)) {
-        assert.ok(row.markup.includes('<td data-order="' + Number.MAX_SAFE_INTEGER + '"></td>'));
-    }
+    const dates = grid.rows.map(row => row.element.children[9]);
+    assert.deepEqual(dates.map(cell => cell.textContent), ['31-10-2026', '01-11-2026', '01-11-2026', '', '']);
+    assert.deepEqual(dates.map(cell => cell.dataset.order), [
+        '20261031', '20261101', '20261101', String(Number.MAX_SAFE_INTEGER), String(Number.MAX_SAFE_INTEGER)
+    ]);
 });
 
 test('replaces previous rows and configures the empty grid message', () => {
@@ -84,6 +104,6 @@ test('cancels the previous request and only renders the latest results', () => {
     previous.resolve({ success: 200, body: [makeTask({ projectName: 'Previous project' })] });
 
     assert.equal(grid.rows.length, 1);
-    assert.match(grid.rows[0].markup, /Latest project/);
+    assert.equal(grid.rows[0].element.children[1].textContent, 'Latest project');
     assert.equal(grid.status, '');
 });

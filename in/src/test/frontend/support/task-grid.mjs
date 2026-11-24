@@ -23,6 +23,21 @@ export function makeTask(overrides = {}) {
     };
 }
 
+function createElement(tagName) {
+    const children = [];
+    return {
+        tagName,
+        children,
+        dataset: {},
+        append(child) { children.push(child); },
+        insertCell() {
+            const cell = createElement('td');
+            children.push(cell);
+            return cell;
+        }
+    };
+}
+
 export function createTaskGridHarness() {
     const messages = new Map();
     const rows = [];
@@ -39,7 +54,7 @@ export function createTaskGridHarness() {
         return {
             text(value) { messages.set(selector, value); },
             empty() { rows.length = 0; },
-            appendTo(target) { rows.push({ target, markup: selector }); },
+            appendTo(target) { rows.push({ target, element: selector }); },
             remove() {},
             DataTable(options) {
                 if (options) {
@@ -89,6 +104,7 @@ export function createTaskGridHarness() {
     const grid = createContext({
         $: jquery,
         jQuery: jquery,
+        document: { createElement },
         accessToken: 'synthetic-token',
         checkSession: status => sessionChecks.push(status),
         window: { location: { pathname: '/vscca/viewTaskGrid' } }
