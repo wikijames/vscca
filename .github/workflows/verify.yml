@@ -1,4 +1,4 @@
-name: Verify frontend and WAR
+name: Verify frontend and Java
 
 on:
   pull_request:
@@ -26,8 +26,8 @@ jobs:
       - name: Run Node regression tests
         run: node --test in/src/test/frontend/*.test.mjs
 
-  war:
-    name: Java tests and WAR build
+  java:
+    name: Java regression tests
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
@@ -40,4 +40,4 @@ jobs:
           java-version: '8'
       - name: Verify without an external database
         working-directory: in
-        run: mvn --batch-mode --no-transfer-progress -DexcludedGroups=database verify
+        run: mvn --batch-mode --no-transfer-progress -DexcludedGroups=database test

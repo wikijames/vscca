@@ -30,12 +30,33 @@ Move Java and Spring Boot in a dedicated migration. A move through Boot 3 requir
 
 ## Phase 4 Keep the checks running
 
-The GitHub Actions workflow runs the Node suite and builds the WAR with Java 8 on pull requests to `development` and on pushes to that branch. Maven excludes tests tagged `database` so the run uses synthetic data and needs no external database. The existing application context smoke test carries that tag. Add dependency scanning once the browser asset inventory is reproducible. Review applicable advisories when they are published and on a regular schedule. Keep legacy branches available for reference and target ongoing changes to `development`.
+The GitHub Actions workflow runs the Node suite and Java 8 regression tests on pull requests to `development` and on pushes to that branch. Maven excludes tests tagged `database` so the run uses synthetic data and needs no external database. The existing application context smoke test carries that tag. Add dependency scanning once the browser asset inventory is reproducible. Review applicable advisories when they are published and on a regular schedule. Keep legacy branches available for reference and target ongoing changes to `development`.
 
-## Remaining work
+## Implementation checklist
 
-1. Restore the standalone View Tasks assignment selector. The template calls a missing handler. Confirm what Responsibility should include before connecting it to an endpoint.
-2. Complete the Audit List and DSC Audit grids. Audit List has a placeholder script, and DSC Audit references a script missing from the repository. Confirm the intended workflows and API contracts.
-3. Review the active browser assets and resolved Maven dependency tree with an advisory scanner. Confirm deployed Tomcat and JDBC versions before selecting runtime patches.
-4. Plan the Java and Spring Boot migration and the independent JJWT upgrade. Verify role behavior, native MySQL visibility queries, and browser smoke scenarios on synthetic data. Confirm whether day 59 should include all timestamps before changing the cutoff.
-5. Review unused frontend assets and move generated WARs out of the source tree. Verify deployment changes separately.
+Checked items have implementation and regression coverage where applicable.
+
+- [x] Establish development as the default branch and retain legacy branches.
+- [x] Refactor task-grid loading, date sorting, text rendering, filtering and bulk status updates.
+- [x] Add reusable frontend fixtures, Java Excel and visibility tests, and hosted PR checks.
+- [x] Update Apache POI, jQuery, DataTables, Buttons and JSZip, and remove standalone Moment assets.
+- [x] Apply text rendering and response-driven table setup to Profiles, Billing Clients and Daybook Reports.
+
+### Frontend
+
+- [x] Use one catalog for task status dropdowns and the grid.
+- [ ] Restore the standalone View Tasks assignment selector. Confirm what Responsibility should include before connecting it to an endpoint.
+- [ ] Complete Audit List and DSC Audit. Confirm their intended workflows and API contracts, then replace the placeholder or missing scripts.
+- [ ] Simplify shared request and session code and load page-specific frontend assets where needed.
+- [ ] Review and remove confirmed unused frontend assets.
+
+### Security and verification
+
+- [ ] Add focused synthetic tests for refactors and security fixes. Confirm whether day 59 should include all timestamps before changing the cutoff.
+- [ ] Inventory active browser assets, scan the resolved Maven dependency graph, and review authentication and authorization code.
+- [ ] Review Java, Spring Boot, and JJWT upgrade options. Use isolated tests for compatibility changes that can be verified locally.
+### Deferred
+
+- [ ] Run live browser and native MySQL smoke tests.
+- [ ] Verify deployed Tomcat and JDBC versions and apply any runtime patches.
+- [ ] Generate WARs, move generated artifacts out of the source tree, and verify deployment.

@@ -164,6 +164,7 @@ $(window).on('load', function () {
 }) 
   
 $( document ).ready( function () {
+    populateTaskStatusOptions();
     roleBaseAccess();
     topNavUserName();
 	showTaskbyTypeHandler();

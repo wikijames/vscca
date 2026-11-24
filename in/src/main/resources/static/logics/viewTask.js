@@ -298,8 +298,7 @@ function populateData ( url ) {
 }
 
 function sortStatusText(value){
-	// Delegate status code -> display label to shared helper,
-	// keeping behaviour consistent with statusOptions.html.
+	// Use the shared task status label.
 	return getStatusLabel( value );
 }
 
