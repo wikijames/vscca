@@ -323,9 +323,9 @@ function dataTableFilterHandler () {
 			// Default sort: custom status order (column 11)
 			// using the data-order attribute set in populateData.
 			"order": [[ 11, "asc" ]],
-			"bPaginate": false,
+			paging: false,
 			stateSave: true,
-        dom: 'Bfrtip',
+        layout: { topStart: 'buttons', topEnd: 'search', bottomEnd: null },
 		buttons: [
 		  {
 		    extend: 'excelHtml5',
