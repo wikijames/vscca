@@ -30,4 +30,4 @@ Move Java and Spring Boot in a dedicated migration. A move through Boot 3 requir
 
 ## Phase 4 Keep the checks running
 
-Make the Node suite and Maven verification normal PR checks. Add dependency scanning once Maven resolution and the browser asset inventory are reproducible. Review applicable advisories when they are published and on a regular schedule. Keep legacy branches available for reference and target ongoing changes to `development`.
+The GitHub Actions workflow runs the Node suite and builds the WAR with Java 8 on pull requests to `development` and on pushes to that branch. Maven excludes tests tagged `database` so the run uses synthetic data and needs no external database. The existing application context smoke test carries that tag. Add dependency scanning once the browser asset inventory is reproducible. Review applicable advisories when they are published and on a regular schedule. Keep legacy branches available for reference and target ongoing changes to `development`.
