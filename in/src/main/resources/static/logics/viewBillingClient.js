@@ -3,36 +3,14 @@ $( function () {
         sessionStorage.setItem( 'billingId', this.dataset.billingId );
         window.location = 'addBillingClient';
     } );
-    loadBillingClientGrid();
-} );
-
-function loadBillingClientGrid () {
-    const status = $( '#billingGridStatus' );
-    const showLoadError = () => status.text( 'Could not load billing clients. Refresh the page to try again.' );
-    status.text( 'Loading billing clients...' );
-
-    $.ajax( {
-        type: 'GET',
+    loadListGrid( {
         url: getBillingClientsURL,
-        dataType: 'json',
-        headers: { Authorization: accessToken },
-        success: function ( response ) {
-            if ( response ) {
-                checkSession( response.success );
-            }
-            if ( !response || response.success !== 200 || !Array.isArray( response.body ) ) {
-                showLoadError();
-                return;
-            }
-
-            const body = $( '#populateGrid' );
-            response.body.forEach( client => body.append( renderBillingClientRow( client ) ) );
-            initializeBillingClientGrid();
-            status.text( '' );
-        },
-        error: showLoadError
+        statusSelector: '#billingGridStatus',
+        label: 'billing clients',
+        renderRow: renderBillingClientRow,
+        initialize: initializeBillingClientGrid
     } );
-}
+} );
 
 function renderBillingClientRow ( client ) {
     const row = document.createElement( 'tr' );

@@ -47,7 +47,8 @@ Checked items have implementation and regression coverage where applicable.
 - [x] Use one catalog for task status dropdowns and the grid.
 - [ ] Restore the standalone View Tasks assignment selector. Confirm what Responsibility should include before connecting it to an endpoint.
 - [ ] Complete Audit List and DSC Audit. Confirm their intended workflows and API contracts, then replace the placeholder or missing scripts.
-- [ ] Simplify shared request and session code and load page-specific frontend assets where needed.
+- [x] Share the list request and loading flow for Profiles and Billing Clients.
+- [ ] Review the remaining request and session code and load page-specific frontend assets where needed.
 - [ ] Review and remove confirmed unused frontend assets.
 
 ### Security and verification
