@@ -1,6 +1,7 @@
 var selectedTaskIds = [];
 var isTaskTableInitialized = false;
 var taskListRequest;
+var bulkStatusUpdatePending = false;
 
 function addSelectedTaskId ( id ) {
 	if ( selectedTaskIds.indexOf( id ) === -1 ) {
@@ -27,24 +28,33 @@ function updateStatusUpdateButtonState () {
 			$statusSelect.val( '' );
 		}
 	}
-	jQuery( '#statusUpdateBtn' ).prop( 'disabled', !hasStatus );
+	jQuery( '#statusUpdateBtn' ).prop( 'disabled', !hasStatus || bulkStatusUpdatePending );
 }
 
 function clearSelection () {
 	selectedTaskIds = [];
 	jQuery( '#table_id tbody .row-select' ).prop( 'checked', false ).closest( 'tr' ).removeClass( 'selected' );
-	jQuery( '#selectAllRows' ).prop( 'checked', false );
+	syncSelectAllCheckbox();
 	updateStatusUpdateButtonState();
 }
 
-function syncSelectAllCheckbox () {
-	var $rows = jQuery( '#table_id tbody .row-select:visible' );
-	if ( !$rows.length ) {
-		jQuery( '#selectAllRows' ).prop( 'checked', false );
-		return;
+function setTaskCheckboxSelection ( checkbox, checked ) {
+	const taskId = checkbox.val();
+	if ( checked ) {
+		addSelectedTaskId( taskId );
+	} else {
+		removeSelectedTaskId( taskId );
 	}
-	var allChecked = $rows.filter( ':checked' ).length === $rows.length;
-	jQuery( '#selectAllRows' ).prop( 'checked', allChecked );
+	checkbox.prop( 'checked', checked ).closest( 'tr' ).toggleClass( 'selected', checked );
+}
+
+function syncSelectAllCheckbox () {
+	const rows = jQuery( '#table_id tbody .row-select:visible' );
+	const checkedCount = rows.filter( ':checked' ).length;
+	jQuery( '#selectAllRows' ).prop( {
+		checked: rows.length > 0 && checkedCount === rows.length,
+		indeterminate: checkedCount > 0 && checkedCount < rows.length
+	} );
 }
 
 function showStatusToast ( message, type ) {
@@ -76,39 +86,50 @@ function showStatusToast ( message, type ) {
 }
 
 function bulkUpdateTaskStatus ( taskIds, newStatus ) {
-	if ( jQuery( '#loading' ).length ) {
-		jQuery( '#loading' ).show();
+	if ( bulkStatusUpdatePending || !taskIds.length || !newStatus ) {
+		return;
 	}
+
+	bulkStatusUpdatePending = true;
+	const loading = jQuery( '#loading' );
+	const modalInputs = jQuery( '#confirmStatusUpdateBtn, #statusSelect' );
+	loading.show();
+	modalInputs.prop( 'disabled', true );
+	updateStatusUpdateButtonState();
+
 	jQuery.ajax( {
 		type: 'POST',
 		url: updateTaskStatusURL,
+		dataType: 'json',
 		contentType: 'application/json',
 		headers: {
 			'Authorization': accessToken
 		},
 		data: JSON.stringify( { taskIds: taskIds, status: newStatus } ),
 		success: function ( response ) {
-			if ( jQuery( '#loading' ).length ) {
-				jQuery( '#loading' ).hide();
+			if ( response ) {
+				checkSession( response.success );
 			}
-			checkSession( response.success );
-			if ( response.success === 200 ) {
-				showStatusToast( 'Status updated successfully.', 'success' );
-				jQuery( '#statusUpdateModal' ).modal( 'hide' );
-				clearSelection();
-				// Reload current task view (dashboard/yourTask/today/week/overdue)
-				if ( typeof showTaskbyTypeHandler === 'function' ) {
-					showTaskbyTypeHandler();
-				}
-			} else {
-				showStatusToast( response.message || 'Failed to update status.', 'danger' );
+			if ( !response || response.success !== 200 ) {
+				showStatusToast( 'Failed to update status.', 'danger' );
+				return;
+			}
+
+			showStatusToast( 'Status updated successfully.', 'success' );
+			jQuery( '#statusUpdateModal' ).modal( 'hide' );
+			clearSelection();
+			if ( typeof showTaskbyTypeHandler === 'function' ) {
+				showTaskbyTypeHandler();
 			}
 		},
 		error: function () {
-			if ( jQuery( '#loading' ).length ) {
-				jQuery( '#loading' ).hide();
-			}
 			showStatusToast( 'Failed to update status.', 'danger' );
+		},
+		complete: function () {
+			bulkStatusUpdatePending = false;
+			loading.hide();
+			modalInputs.prop( 'disabled', false );
+			updateStatusUpdateButtonState();
 		}
 	} );
 }
@@ -123,38 +144,22 @@ jQuery( function () {
 		redirectToTaskDetails( this.dataset.taskId );
 	} );
 
-	// Row checkbox change handler (delegated)
 	jQuery( '#table_id' ).on( 'change', '.row-select', function () {
-		var $this = jQuery( this );
-		var taskId = $this.val();
-		if ( $this.is( ':checked' ) ) {
-			addSelectedTaskId( taskId );
-			$this.closest( 'tr' ).addClass( 'selected' );
-		} else {
-			removeSelectedTaskId( taskId );
-			$this.closest( 'tr' ).removeClass( 'selected' );
-		}
+		setTaskCheckboxSelection( jQuery( this ), this.checked );
 		updateStatusUpdateButtonState();
 		syncSelectAllCheckbox();
 	} );
 
-	// Header select-all checkbox handler
 	jQuery( '#table_id' ).on( 'change', '#selectAllRows', function () {
-		var checked = jQuery( this ).is( ':checked' );
+		const checked = this.checked;
 		jQuery( '#table_id tbody .row-select:visible' ).each( function () {
-			var $cb = jQuery( this );
-			var taskId = $cb.val();
-			$cb.prop( 'checked', checked );
-			if ( checked ) {
-				addSelectedTaskId( taskId );
-				$cb.closest( 'tr' ).addClass( 'selected' );
-			} else {
-				removeSelectedTaskId( taskId );
-				$cb.closest( 'tr' ).removeClass( 'selected' );
-			}
+			setTaskCheckboxSelection( jQuery( this ), checked );
 		} );
 		updateStatusUpdateButtonState();
+		syncSelectAllCheckbox();
 	} );
+
+	jQuery( '#table_id' ).on( 'draw.dt', syncSelectAllCheckbox );
 
 	// Enable/disable Change button when header status dropdown changes
 	jQuery( '#headerStatusSelect' ).on( 'change', function () {
