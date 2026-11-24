@@ -9,9 +9,6 @@ function loadListGrid ( { url, statusSelector, label, renderRow, initialize } ) 
         dataType: 'json',
         headers: { Authorization: accessToken },
         success: function ( response ) {
-            if ( response ) {
-                checkSession( response.success );
-            }
             if ( !response || response.success !== 200 || !Array.isArray( response.body ) ) {
                 showLoadError();
                 return;

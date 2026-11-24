@@ -15,7 +15,6 @@ test('shows loading and renders task data when the request succeeds', () => {
 
     assert.equal(grid.status, '');
     assert.equal(grid.count, 1);
-    assert.deepEqual(grid.sessionChecks, [200]);
     assert.equal(grid.rows.length, 1);
     assert.equal(grid.rows[0].target, '#populateGrid');
     const cells = grid.rows[0].element.children;
@@ -141,7 +140,6 @@ test('bulk status update sends selected IDs once and clears selection after succ
     request.resolve({ success: 200 });
 
     assert.deepEqual(grid.selectedTaskIds, []);
-    assert.deepEqual(grid.sessionChecks, [200]);
     assert.deepEqual(grid.modalActions, ['hide']);
     assert.deepEqual(grid.toastMessages.map(toast => toast.type), ['success']);
     assert.equal(grid.reloads, 1);

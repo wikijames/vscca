@@ -38,9 +38,6 @@ function loadDaybook () {
         headers: { Authorization: accessToken },
         data: JSON.stringify( { startDate, endDate } ),
         success: function ( response ) {
-            if ( response ) {
-                checkSession( response.success );
-            }
             if ( !response || response.success !== 200 || !Array.isArray( response.body ) ) {
                 showError();
                 return;

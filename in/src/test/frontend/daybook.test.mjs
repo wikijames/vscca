@@ -40,7 +40,6 @@ function createDaybook() {
         document: { createElement },
         postTaskDetailsDayBookURL: '/synthetic/daybook',
         accessToken: 'synthetic',
-        checkSession() {}
     });
     for (const name of ['dateUtils', 'reports']) {
         const file = new URL('../../main/resources/static/logics/' + name + '.js', import.meta.url);

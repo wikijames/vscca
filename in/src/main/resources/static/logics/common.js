@@ -1,7 +1,3 @@
-function checkSession ( value ) {
-    return value;
-}
-
 let logoutPending = false;
 
 function Logout () {

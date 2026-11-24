@@ -107,9 +107,6 @@ function bulkUpdateTaskStatus ( taskIds, newStatus ) {
 		},
 		data: JSON.stringify( { taskIds: taskIds, status: newStatus } ),
 		success: function ( response ) {
-			if ( response ) {
-				checkSession( response.success );
-			}
 			if ( !response || response.success !== 200 ) {
 				showStatusToast( 'Failed to update status.', 'danger' );
 				return;
@@ -274,9 +271,6 @@ function populateData ( url ) {
 
 	taskListRequest = requestTaskList( url )
 		.done( function ( data ) {
-			if ( data ) {
-				checkSession( data.success );
-			}
 			if ( !data || data.success !== 200 || !Array.isArray( data.body ) ) {
 				status.text( 'Could not load tasks. Refresh the page to try again.' );
 				return;
