@@ -216,31 +216,35 @@ function ValidateUploadFile() {
 		}
 };
 
-function uploadBulkTask(){
-	let formData = new FormData(document.getElementById("fileinfo"));
-     
-        if (confirm("Are you sure?")) {
-    // your upload code
-            $.ajax({
-				url: postUploadBulkTaskURL,
-				type: "POST",
-				data: formData,
-				"headers": {
-	                "Authorization": accessToken
-              	},
-				cache: false,
-	            contentType: false,
-	            processData: false,
-				success: function (data) {
-				    $('#output').html(data);
-					alert('Task has been uploaded succesfully');
-					window.location = 'dashboard';
-	            },
-	            error: function(data) {
-			      console.log('error', data);
-			    }
-        })
+function uploadBulkTask() {
+    if (!confirm('Are you sure?')) {
+        return false;
     }
-		$('form')[0].reset();
-		return false;
+
+    const form = document.getElementById('fileinfo');
+    const failureMessage = 'Unable to import tasks. Check the workbook and try again.';
+    $.ajax({
+        url: postUploadBulkTaskURL,
+        type: 'POST',
+        data: new FormData(form),
+        headers: { Authorization: accessToken },
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function (response) {
+            if (!response || Number(response.success) !== 200 || response.message !== 'success') {
+                alert(failureMessage);
+                return;
+            }
+
+            form.reset();
+            alert('Tasks uploaded successfully.');
+            window.location = 'dashboard';
+        },
+        error: function () {
+            alert(failureMessage);
+        }
+    });
+
+    return false;
 }
