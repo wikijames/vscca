@@ -4,109 +4,55 @@ $(document).ready(function(){
         $('#fileinfo').hide();
     }
 
-$('.billingClientNameClass').select2({});
-  $.ajax({
-    type: "GET",
-    url:getBillingClientsURL,
-    dataType: "json",
-	 "headers": {
-    	"Content-Type": "application/json",
-		"Authorization": accessToken
-  	},
-    success: function (data) {
-	    $.each(data.body,function(i,obj)
-        {
-			appendTaskOption('.billingClientNameClass', obj.client, obj.client);
-        });
+    $('.billingClientNameClass').select2({});
+    const userLabel = user => user.firstName + ' ' + user.lastName;
+    const dropdowns = [
+        ['.billingClientNameClass', getBillingClientsURL, 'client'],
+        ['#taskType', getTasksURL, 'task'],
+        ['#responsibility', getResponsiblityUsersURL, 'emailId', userLabel],
+        ['#execution', getExecutionUsersURL, 'emailId', userLabel],
+        ['#consulting', getConsultingUsersURL, 'emailId', userLabel],
+        ['#intimation', getIntimationUsersURL, 'emailId', userLabel]
+    ];
+    let pendingOptions = dropdowns.length;
+    let optionsFailed = false;
+
+    function onOptionsLoaded() {
+        pendingOptions -= 1;
+        if (pendingOptions === 0 && !optionsFailed && sessionTaskId !== null) {
+            getViewTaskById();
         }
-  });
+    }
 
-	// populate tasks Type Dropdown
-  $.ajax({
-    type: "GET",
-    url:getTasksURL,
-    dataType: "json",
-    "headers": {
-    	"Content-Type": "application/json",
-		"Authorization": accessToken
-  	},
-	success: function (data) {
-        $.each(data.body,function(i,obj)
-        {
-         appendTaskOption('#taskType', obj.task, obj.task);
-        });
+    function onOptionsFailed() {
+        if (!optionsFailed) {
+            optionsFailed = true;
+            alert('Unable to load task options. Reopen the form and try again.');
         }
-  });
+    }
 
-	// populate responsiblityUsers Dropdown
-	  $.ajax({
-        type: "GET",
-        url:getResponsiblityUsersURL,
-        dataType: "json",
-        "headers": {
-	    	"Content-Type": "application/json",
-			"Authorization": accessToken
-	  	},
-		success: function (data) {
-            $.each(data.body,function(i,obj)
-            {
-             appendTaskOption('#responsibility', obj.emailId, obj.firstName + ' ' + obj.lastName);
-            });
-            }
-      });
-
-// populate executionUsers Dropdown
-  $.ajax({
-    type: "GET",
-    url:getExecutionUsersURL,
-    dataType: "json",
-    "headers": {
-    	"Content-Type": "application/json",
-		"Authorization": accessToken
-  	},
-	success: function (data) {
-        $.each(data.body,function(i,obj)
-        {
-         appendTaskOption('#execution', obj.emailId, obj.firstName + ' ' + obj.lastName);
+    dropdowns.forEach(function ([selector, url, valueField, formatLabel]) {
+        $.ajax({
+            type: 'GET',
+            url,
+            dataType: 'json',
+            headers: { Authorization: accessToken },
+            success: function (response) {
+                if (!response || !Array.isArray(response.body)) {
+                    onOptionsFailed();
+                    return;
+                }
+                response.body.forEach(function (record) {
+                    if (record && record[valueField] != null) {
+                        const value = record[valueField];
+                        appendTaskOption(selector, value, formatLabel ? formatLabel(record) : value);
+                    }
+                });
+                onOptionsLoaded();
+            },
+            error: onOptionsFailed
         });
-        }
-  });
-
-// populate consultingUsers Dropdown
-  $.ajax({
-    type: "GET",
-    url:getConsultingUsersURL,
-    dataType: "json",
-    "headers": {
-    	"Content-Type": "application/json",
-		"Authorization": accessToken
-  	},
-	success: function (data) {
-		$.each(data.body,function(i,obj)
-        {
-         appendTaskOption('#consulting', obj.emailId, obj.firstName + ' ' + obj.lastName);
-        });
-        }
-  });
-
-// populate intimationuser Dropdown
-  $.ajax({
-    type: "GET",
-    url:getIntimationUsersURL,
-    dataType: "json",
-    "headers": {
-    	"Content-Type": "application/json",
-		"Authorization": accessToken
-  	},
-	success: function (data) {
-        $.each(data.body,function(i,obj)
-        {
-         appendTaskOption('#intimation', obj.emailId, obj.firstName + ' ' + obj.lastName);
-        });
-        }
-  });
-
-
+    });
 
     let dueDate;
     $('#endDate').change(function () {
