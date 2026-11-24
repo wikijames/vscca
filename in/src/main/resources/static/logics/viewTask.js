@@ -370,57 +370,44 @@ function dataTableFilterHandler () {
 		],
     	colReorder: true,
         initComplete: function () {
-			this.api().columns([2,4,5,6,7,8,9,11]).every( function () {
-                var column = this;
-                var ddmenu = cbDropdown( $( column.header() ) )
-                    .on( 'change', ':checkbox', function () {
-                        var active;
-                        var vals = $( ':checked', ddmenu ).map( function ( index, element ) {
-                            active = true;
-                            return $.fn.dataTable.util.escapeRegex( $( element ).val() );
-                        } ).toArray().join( '|' );
-
-                        column
-                            .search( vals.length > 0 ? '^(' + vals + ')$' : '', true, false )
-                            .draw();
-
-                        // Highlight the current item if selected.
-                        if ( this.checked ) {
-                            $( this ).closest( 'li' ).addClass( 'active' );
-                        } else {
-                            $( this ).closest( 'li' ).removeClass( 'active' );
-                        }
-
-                        // Highlight the current filter if selected.
-                        var active2 = ddmenu.parent().is( '.active' );
-                        if ( active && !active2 ) {
-                            ddmenu.parent().addClass( 'active' );
-                        } else if ( !active && active2 ) {
-                            ddmenu.parent().removeClass( 'active' );
-                        }
-                    } );
-
-                column.cache( 'search' ).unique().sort().each( function ( d, j ) {
-                    var // wrapped
-                        $label = $( '<label>' ),
-                        $text = $( '<span>', {
-                            text: d
-                        } ),
-                        $cb = $( '<input>', {
-                            type: 'checkbox',
-                            value: d
-                        } );
-
-                    $text.appendTo( $label );
-                    $cb.appendTo( $label );
-
-                    ddmenu.append( $( '<li>' ).append( $label ) );
-                } );
+            this.api().columns([2,4,5,6,7,8,9,11]).every( function () {
+                addTaskColumnFilter( this );
             } );
         },
 
     } );
 };
+
+function buildTaskColumnSearch ( values ) {
+    if ( values.length === 0 ) {
+        return '';
+    }
+
+    const escapedValues = values.map( value => $.fn.dataTable.util.escapeRegex( value ) );
+    return '^(' + escapedValues.join( '|' ) + ')$';
+}
+
+function addTaskColumnFilter ( column ) {
+    const menu = cbDropdown( $( column.header() ) );
+    menu.on( 'change', ':checkbox', function () {
+        const values = menu.find( ':checked' ).map( function () {
+            return this.value;
+        } ).get();
+
+        $( this ).closest( 'li' ).toggleClass( 'active', this.checked );
+        menu.parent().toggleClass( 'active', values.length > 0 );
+        column.search( buildTaskColumnSearch( values ), true, false ).draw();
+    } );
+
+    column.cache( 'search' ).unique().sort().each( function ( value ) {
+        const label = $( '<label>' );
+        label.append(
+            $( '<span>', { text: value } ),
+            $( '<input>', { type: 'checkbox', value: value } )
+        );
+        menu.append( $( '<li>' ).append( label ) );
+    } );
+}
 
 ////$(document).ready(function() {
 //    var buttonCommon = {
