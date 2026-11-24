@@ -113,40 +113,31 @@ function roleBaseAccess () {
     }
 };
 
-function taskNavLoadHandler ( value ) {
-	 if ( (userRole == 'Admin' && value == 'dashboard') || (userRole == 'Manager' && value == 'dashboard')) {
-	    $( '#taskNameChangeHeading' ).text( 'All Tasks' );
-		return populateData( getTaskDetailsURL );
-	}else if ( (userRole != 'Admin' && value == 'dashboard') || (userRole != 'Manager' && value == 'dashboard')){
-        $( '#taskNameChangeHeading' ).text( 'Your Tasks' );
-		return populateData( getTaskDetailsByUserURL );
-	}else if ( value == 'yourTask' ) {
-        $( '#taskNameChangeHeading' ).text( 'Your Tasks' );
-		return populateData( getTaskDetailsByUserURL );
-    } else if ( value == 'today' ) {
-        $( '#taskNameChangeHeading' ).text( "Today's Task" );
-		return populateData(getTaskDetailsByUserTodayURL);
-    } else if ( value == 'week' ) {
-        $( '#taskNameChangeHeading' ).text( "7 Day's Plan" );
-		return populateData(getTaskDetailsByUserWeekURL);
-    } else if ( value == 'overdue' ) {
-        $( '#taskNameChangeHeading' ).text( "Overdue" );
-		return populateData(getTaskDetailsByUserByDueDateURL);
+function taskNavLoadHandler ( view ) {
+    const canViewAll = userRole === 'Admin' || userRole === 'Manager';
+    if ( view === 'dashboard' && canViewAll ) {
+        $( '#taskNameChangeHeading' ).text( 'All Tasks' );
+        return populateData( getTaskDetailsURL );
     }
-};
+
+    const routes = {
+        dashboard: { heading: 'Your Tasks', url: getTaskDetailsByUserURL },
+        yourTask: { heading: 'Your Tasks', url: getTaskDetailsByUserURL },
+        today: { heading: "Today's Task", url: getTaskDetailsByUserTodayURL },
+        week: { heading: "7 Day's Plan", url: getTaskDetailsByUserWeekURL },
+        overdue: { heading: 'Overdue', url: getTaskDetailsByUserByDueDateURL }
+    };
+    if ( Object.prototype.hasOwnProperty.call( routes, view ) ) {
+        const route = routes[view];
+        $( '#taskNameChangeHeading' ).text( route.heading );
+        return populateData( route.url );
+    }
+}
 
 function showTaskbyTypeHandler () {
-	var pathname = window.location.pathname; // Returns path only (/path/example.html)
-	var value = pathname.split('/').filter(e => e).slice(-1);
-	value = value[0];
-	taskNavLoadHandler( value );
-//    if ( ( window.location.href.indexOf( "myProfile" ) > -1 ) || ( window.location.href.indexOf( "password" ) > -1 ) ||  ( window.location.href.indexOf( "reports" ) > -1 ) ) {
-//        window.location = 'dashboard'
-//        taskNavLoadHandler( value );
-//    } else if ( window.location.href.indexOf( "dashboard" ) > -1 ) {
-//        taskNavLoadHandler( value );
-//    }
-};
+    const view = window.location.pathname.split( '/' ).filter( Boolean ).pop();
+    taskNavLoadHandler( view );
+}
 
 function checkFileExtension(filename){
     var fileType = filename.split('.').pop();
