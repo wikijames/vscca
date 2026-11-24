@@ -49,6 +49,7 @@ Checked items have implementation and regression coverage where applicable.
 - [ ] Complete Audit List and DSC Audit. Confirm their intended workflows and API contracts, then replace the placeholder or missing scripts.
 - [x] Share the list request and loading flow for Profiles and Billing Clients.
 - [x] Load the DataTables export scripts and column helpers only on the pages that use them.
+- [x] Share Billing Client create and edit save handling and cover success and failure with mocked requests.
 - [ ] Review remaining request and session code and scope other frontend assets where appropriate.
 - [ ] Review and remove confirmed unused frontend assets.
 
