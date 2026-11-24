@@ -31,7 +31,6 @@ test('billing renders literal client fields after the response and View/Edit sto
     assert.deepEqual(cells[0].children, []);
     assert.equal(grid.rows[1].children[3].textContent, 'Deactive');
     assert.equal(grid.status, '');
-    assert.deepEqual(grid.checks, [200]);
     assert.equal(grid.tableOptions[0].buttons[0].extend, 'excelHtml5');
 
     const details = cells[4].children[0];

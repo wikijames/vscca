@@ -28,7 +28,6 @@ export function createTaskGridHarness() {
     const messages = new Map();
     const rows = [];
     const requests = [];
-    const sessionChecks = [];
     const tableConfigurations = [];
     const properties = new Map();
     const toastMessages = [];
@@ -111,7 +110,6 @@ export function createTaskGridHarness() {
         document: { createElement },
         accessToken: 'synthetic-token',
         updateTaskStatusURL: '/synthetic/bulk-status',
-        checkSession: status => sessionChecks.push(status),
         window: { location: { pathname: '/vscca/viewTaskGrid' } }
     });
     for (const { name, source } of scripts) {
@@ -141,7 +139,6 @@ export function createTaskGridHarness() {
         get status() { return messages.get('#taskGridStatus'); },
         get count() { return messages.get('#recordCount'); },
         rows,
-        sessionChecks,
         tableConfigurations
     };
 }

@@ -22,7 +22,6 @@ function getViewOwnProfile(){
 				"Authorization": accessToken	
 		  	},
 			success: function (data) {
-					checkSession(data.success);
 					var obj = data.body;
 					$('#accessTypeMy').val(obj.accessType);
 					$('#locationMy').val(obj.location);

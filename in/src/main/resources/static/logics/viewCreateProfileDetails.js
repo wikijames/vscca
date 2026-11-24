@@ -24,7 +24,6 @@ function viewProfileByIdHandler(){
 				"Authorization": accessToken
 		  	},
 			success: function (data) {
-				checkSession(data.success);
 					var obj = data.body;
 					$('#accessType').val(obj.accessType);
 					$('#location').val(obj.location);

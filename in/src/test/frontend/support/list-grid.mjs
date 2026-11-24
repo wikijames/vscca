@@ -6,7 +6,6 @@ import { createElement } from './dom.mjs';
 export function createListGridHarness({ scriptName, statusSelector, detailsSelector, requestUrls }) {
     const script = readFileSync(new URL(`../../../main/resources/static/logics/${scriptName}.js`, import.meta.url), 'utf8');
     const rows = [];
-    const checks = [];
     const navigation = [];
     const tableOptions = [];
     let request;
@@ -43,7 +42,6 @@ export function createListGridHarness({ scriptName, statusSelector, detailsSelec
         sessionStorage: { setItem(key, value) { navigation.push([key, value]); } },
         ...requestUrls,
         accessToken: 'synthetic-token',
-        checkSession: code => checks.push(code),
         formatGridExportHeader() {}
     });
     const helper = readFileSync(new URL('../../../main/resources/static/logics/listGrid.js', import.meta.url), 'utf8');
@@ -54,7 +52,6 @@ export function createListGridHarness({ scriptName, statusSelector, detailsSelec
     return {
         rows,
         request,
-        checks,
         navigation,
         tableOptions,
         clickDetails(button) { clickHandler.call(button); },

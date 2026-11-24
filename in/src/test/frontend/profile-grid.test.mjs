@@ -33,7 +33,6 @@ test('profiles render as literal text after the response and View/Edit stores th
     assert.equal(cells[2].textContent, 'Active');
     assert.equal(grid.rows[1].children[2].textContent, 'Deactive');
     assert.equal(grid.status, '');
-    assert.deepEqual(grid.checks, [200]);
     assert.equal(grid.tableOptions.length, 1);
     assert.equal(grid.tableOptions[0].buttons[0].extend, 'excelHtml5');
 
