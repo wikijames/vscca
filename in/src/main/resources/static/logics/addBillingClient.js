@@ -1,35 +1,13 @@
-var isActiveValue;
-$( document ).ready( function () {
-	var sessionBillingId = sessionStorage.getItem('billingId');
-	if(sessionBillingId != null){
-		setTimeout(function(){
-			getViewBillingClientById();
-		},500);	
-	}
-//	
-    if ( $( '#isActive' ).is( ":checked" ) ) {
-            $( this ).val( "1" );
-            isActiveValue = 1;
-//			$( '#isActiveLabel' ).text( 'Client is Activated' );
-        } else {
-            $( this ).val( "0" );
-            isActiveValue = 0;
-//			$( '#isActiveLabel' ).text( 'Client is De-activated' );
-        }
+$(document).ready(function () {
+    const sessionBillingId = sessionStorage.getItem('billingId');
+    $('#isActive').change(function () {
+        updateBillingActiveValue();
+    });
+    updateBillingActiveValue();
 
-    $( "#isActive" ).change( function ( e ) {
-        if ( $( this ).is( ":checked" ) ) {
-            $( this ).val( "1" );
-            isActiveValue = 1;
-//			$( '#isActiveLabel' ).text( 'Client is Activated' );
-        } else {
-            $( this ).val( "0" );
-            isActiveValue = 0;
-//			$( '#isActiveLabel' ).text( 'Client is De-activated' );
-        }
-    } );
-
-
+    if (sessionBillingId !== null) {
+        loadBillingClient(sessionBillingId);
+    }
 
     $('#save').click(function (event) {
         event.preventDefault();
@@ -87,57 +65,39 @@ function saveBillingClient(isEditing) {
     });
 }
 
-function splitClientHandler(value){
-	//console.log('spli', value);
-	var valueSplit = value.split('-');
-//	$('#partyName').val();
-//	$('#ledgerNumber').val(splitClientHandler(obj.client)[1]);
-//	$('#pageNumber').val(splitClientHandler(obj.client)[2]);
-	return valueSplit;
+function updateBillingActiveValue() {
+    const checkbox = $('#isActive');
+    checkbox.val(checkbox.is(':checked') ? '1' : '0');
 }
 
-//function isActiveBilling(value){
-//	if(value == 1){
-//		$( '#isActiveLabel' ).text( 'Client is Activated' );
-//		return 'Active';
-//	}else{
-//		$( '#isActiveLabel' ).text( 'Client is De-activated' );
-//		return 'Deactive'
-//	}
-//}
+function loadBillingClient(id) {
+    const failureMessage = 'Unable to load the billing client. Reopen it and try again.';
+    $.ajax({
+        method: 'GET',
+        url: getBillingByIdURL,
+        data: { id },
+        dataType: 'json',
+        headers: { Authorization: accessToken }
+    }).done(function (response) {
+        const client = response && response.body;
+        if (Number(response && response.success) !== 200 || !client || !client.id || typeof client.client !== 'string') {
+            alert(failureMessage);
+            return;
+        }
 
-function isCheckedActive(value){
-	if(value == 1){
-		$('#isActive').prop("checked", true);
-		$('#isActive').val( "1" );
-		isActiveValue = 1;
-		//console.log('Ints', value);
-	}
-};
-	function getViewBillingClientById(){
-		var id = sessionStorage.getItem('billingId');
-		if(id != null){
-	$.ajax({
-        type: "GET",
-        url:getBillingByIdURL+'?id='+id,
-        dataType: "json",
-        "headers": {
-		    	"Content-Type": "application/json",
-				"Authorization": accessToken
-		  	},
-			success: function (data) {
-					var obj = data.body;
-					$("#save").attr('title', obj.id);
-					$('#billingId').val(obj.id);
-					$('#partyName').val(splitClientHandler(obj.client)[0]);
-					$('#ledgerNumber').val(splitClientHandler(obj.client)[1]);
-					$('#pageNumber').val(splitClientHandler(obj.client)[2]);
-					isCheckedActive(obj.isActive);
-//					$('#isActive').val(obj.isActive);
-				setTimeout(function(){
-					sessionStorage.removeItem('billingId');
-				},3000)
-            }
-      });
-	};
-};
+        const [partyName, ledgerNo, pageNo] = client.client.split('-');
+        $('#billingId').val(client.id);
+        $('#partyName').val(partyName);
+        $('#ledgerNumber').val(ledgerNo);
+        $('#pageNumber').val(pageNo);
+        $('#isActive').prop('checked', Number(client.isActive) === 1);
+        updateBillingActiveValue();
+        $('#save').attr('title', client.id);
+
+        if (sessionStorage.getItem('billingId') === id) {
+            sessionStorage.removeItem('billingId');
+        }
+    }).fail(function () {
+        alert(failureMessage);
+    });
+}
