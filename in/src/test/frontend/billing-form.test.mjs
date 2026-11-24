@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { runInNewContext } from 'node:vm';
+import { mockDeferredAjax } from './support/deferred-ajax.mjs';
 
 const script = readFileSync(new URL('../../main/resources/static/logics/addBillingClient.js', import.meta.url), 'utf8');
 
@@ -9,7 +10,7 @@ function submitBillingClient(id = null) {
     const fields = { '#partyName': 'Example Ltd', '#ledgerNumber': '001', '#pageNumber': '07', '#isActive': '0' };
     const events = [];
     let click;
-    const request = {};
+    const { ajax, requests } = mockDeferredAjax();
     const jquery = selector => ({
         ready: callback => callback(),
         hide() {},
@@ -20,18 +21,7 @@ function submitBillingClient(id = null) {
         attr: () => id,
         0: { reset: () => events.push(['reset']) }
     });
-    jquery.ajax = options => {
-        request.options = options;
-        return {
-            done(callback) {
-                request.resolve = callback;
-                return this;
-            },
-            fail(callback) {
-                request.reject = callback;
-            }
-        };
-    };
+    jquery.ajax = ajax;
     runInNewContext(script, {
         $: jquery,
         document: {},
@@ -45,7 +35,7 @@ function submitBillingClient(id = null) {
     });
     click({ preventDefault: () => events.push(['preventDefault']) });
     assert.deepEqual(events.shift(), ['preventDefault']);
-    return { request, events };
+    return { request: requests[0], events };
 }
 
 for (const [id, endpoint, verb] of [[null, 'add', 'added'], ['17', 'edit', 'updated']]) {

@@ -149,102 +149,67 @@ function validateEmail(){
    }       
 };
 
-function submitData(e){
-	    e.preventDefault();
-		if(validateEmail() != false){
-			//console.log('profileId===',sessionProfileId)
-			if(sessionProfileId != null){
-				updateProfileHandler();	
-				
-			}else{
-				createNewProfileHandler();
-			}
-		} 
-	};
+function submitData(event) {
+    event.preventDefault();
+    if (validateEmail() !== false) {
+        saveProfile(sessionProfileId != null);
+    }
+}
 
-	
-function updateProfileHandler(){
-	var saveProfileId = $("#saveProfile").attr('title');
-	var settings = {
-		    "url": postEditUserDetailsURL,
-			  "method": "POST",
-			  "timeout": 0,
-		"headers": {
-		    	"Content-Type": "application/json",
-				"Authorization": accessToken
-		  	},
-		  "data": JSON.stringify({
-		    "id": saveProfileId,
-			"firstName": $('#firstName').val(),
-		    "lastName": $('#lastName').val(),
-		    "mobileNumber": $('#mobile').val(),
-		    "emailId": $('#email').val(),
-		    "address": $('#address').val(),
-		    "city": $('#city').val(),
-		    "country": $('#country').val(),
-		    "postalCode": $('#postalCode').val(),
-		    "responsibility": responsibilityValue,
-		    "execution": executionValue,
-		    "consulting": consultingValue,
-		    "intimation": intimationValue,
-		    "aboutMe": $('#aboutMe').val(),
-		    "accessType": $('#accessType').val(),
-		    "location": $('#location').val(),
-			"isActive":$( '#isActive' ).val() ,
-		  }),
-		};
-			$.ajax(settings).done(function (response) {
-			if(response.success == 200 ){
-				$("#profileForm")[0].reset();
-				window.location = 'viewProfileGrid';
-				alert('profile has been updated succesfully');
-			}else if(reponse.success === 401 ){
-				sessionStorage.clear();
-			}else{
-				alert('something went wrong.'+ data);
-			}
-		});
-};
-	
-function createNewProfileHandler(){
-	var settings = {
-		    "url": postProfileURL,
-			  "method": "POST",
-			  "timeout": 0,
-		"headers": {
-		    	"Content-Type": "application/json",
-				"Authorization": accessToken
-		  	},
-		  "data": JSON.stringify({
-		    "firstName": $('#firstName').val(),
-		    "lastName": $('#lastName').val(),
-		    "mobileNumber": $('#mobile').val(),
-		    "emailId": $('#email').val(),
-		    "address": $('#address').val(),
-		    "city": $('#city').val(),
-		    "country": $('#country').val(),
-		    "postalCode": $('#postalCode').val(),
-		    "responsibility": responsibilityValue,
-		    "execution": executionValue,
-		    "consulting": consultingValue,
-		    "intimation": intimationValue,
-		    "aboutMe": $('#aboutMe').val(),
-		    "accessType": $('#accessType').val(),
-		    "location": $('#location').val(),
-		  }),
-		};	
-			$.ajax(settings).done(function (response) {
-			if(response.success == 200 ){
-				$("#profileForm")[0].reset();
-				window.location = 'viewProfileGrid';
-				alert('profile has been added succesfully');
-			}else if(reponse.success === 401 ){
-				sessionStorage.clear();
-			}else{
-				alert('something went wrong.'+ data);
-			}
-		});
-};	
+function saveProfile(isEditing) {
+    const payload = {
+        firstName: $('#firstName').val(),
+        lastName: $('#lastName').val(),
+        mobileNumber: $('#mobile').val(),
+        emailId: $('#email').val(),
+        address: $('#address').val(),
+        city: $('#city').val(),
+        country: $('#country').val(),
+        postalCode: $('#postalCode').val(),
+        responsibility: responsibilityValue,
+        execution: executionValue,
+        consulting: consultingValue,
+        intimation: intimationValue,
+        aboutMe: $('#aboutMe').val(),
+        accessType: $('#accessType').val(),
+        location: $('#location').val()
+    };
+    if (isEditing) {
+        payload.id = $('#saveProfile').attr('title');
+        payload.isActive = $('#isActive').val();
+    }
+
+    function showSaveFailure(status) {
+        if (status === 401) {
+            sessionStorage.clear();
+            alert('Your session is no longer authorized. Sign in again before saving.');
+        } else if (status === 403) {
+            alert('You do not have permission to save this profile.');
+        } else {
+            alert('Unable to save the profile.');
+        }
+    }
+
+    $.ajax({
+        url: isEditing ? postEditUserDetailsURL : postProfileURL,
+        method: 'POST',
+        contentType: 'application/json',
+        headers: { Authorization: accessToken },
+        data: JSON.stringify(payload)
+    }).done(function (response) {
+        const status = Number(response && response.success);
+        if (status !== 200) {
+            showSaveFailure(status);
+            return;
+        }
+
+        $('#profileForm')[0].reset();
+        window.location = 'viewProfileGrid';
+        alert(isEditing ? 'Profile updated successfully.' : 'Profile added successfully.');
+    }).fail(function (request) {
+        showSaveFailure(request.status);
+    });
+}
 
 function isCheckedRes(value){
 	if(value == 1){
