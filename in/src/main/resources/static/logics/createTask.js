@@ -203,18 +203,17 @@ function saveTask(isEditing, dueDate) {
 }
 
 function ValidateUploadFile() {
-    var fileInput = document.getElementById("file");
-    var filePath = fileInput.value;
-       if(!filePath){
-			alert('Please select a file');
-		}else if (!checkFileExtension(filePath)) {
-            alert('invalid file type not allowed');
-            fileInput.value = '';
-            return false;
-		}else{
-			uploadBulkTask()	
-		}
-};
+    const fileInput = document.getElementById('file');
+    if (!fileInput.value) {
+        alert('Select a task workbook to upload.');
+        return false;
+    }
+    if (!/\.xlsx$/i.test(fileInput.value)) {
+        alert('Select an XLSX task workbook.');
+        return false;
+    }
+    return uploadBulkTask();
+}
 
 function uploadBulkTask() {
     if (!confirm('Are you sure?')) {
@@ -232,7 +231,12 @@ function uploadBulkTask() {
         contentType: false,
         processData: false,
         success: function (response) {
-            if (!response || Number(response.success) !== 200 || response.message !== 'success') {
+            const status = Number(response && response.success);
+            if (status === 400) {
+                alert('Upload a readable XLSX task workbook containing Sheet1.');
+                return;
+            }
+            if (status !== 200 || response.message !== 'success') {
                 alert(failureMessage);
                 return;
             }

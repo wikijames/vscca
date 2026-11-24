@@ -6,11 +6,11 @@ import { mockDeferredAjax } from './support/deferred-ajax.mjs';
 
 const script = readFileSync(new URL('../../main/resources/static/logics/createTask.js', import.meta.url), 'utf8');
 
-function uploadTasks(confirmed = true) {
+function uploadTasks(confirmed = true, filename = 'synthetic.xlsx') {
     const events = [];
     const form = { reset: () => events.push(['reset']) };
     const { ajax, requests } = mockDeferredAjax();
-    const file = { value: 'synthetic.xlsx' };
+    const file = { value: filename };
     const jquery = () => ({ ready() {} });
     jquery.ajax = ajax;
     const context = {
@@ -19,7 +19,6 @@ function uploadTasks(confirmed = true) {
         FormData: class {
             constructor(formElement) { this.form = formElement; }
         },
-        checkFileExtension: filename => filename.endsWith('.xlsx'),
         confirm: () => confirmed,
         alert: message => events.push(['alert', message]),
         window: { set location(path) { events.push(['navigate', path]); } },
@@ -63,3 +62,26 @@ for (const [label, handler, response] of [
         assert.deepEqual(events, [['alert', 'Unable to import tasks. Check the workbook and try again.']]);
     });
 }
+
+
+test('task upload accepts XLSX filenames regardless of case', () => {
+    assert.equal(uploadTasks(true, 'TASKS.XLSX').requests.length, 1);
+});
+
+for (const [filename, message] of [
+    ['', 'Select a task workbook to upload.'],
+    ['tasks.csv', 'Select an XLSX task workbook.'],
+    ['tasks.xls', 'Select an XLSX task workbook.']
+]) {
+    test('task upload blocks ' + (filename || 'an empty selection') + ' before sending a request', () => {
+        const { requests, events } = uploadTasks(true, filename);
+        assert.deepEqual(requests, []);
+        assert.deepEqual(events, [['alert', message]]);
+    });
+}
+
+test('task upload explains the XLSX and Sheet1 requirements after server validation fails', () => {
+    const { requests, events } = uploadTasks();
+    requests[0].options.success({ success: 400 });
+    assert.deepEqual(events, [['alert', 'Upload a readable XLSX task workbook containing Sheet1.']]);
+});
