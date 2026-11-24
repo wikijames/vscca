@@ -44,6 +44,10 @@ export function createTaskGridHarness() {
     const requests = [];
     const sessionChecks = [];
     const tableConfigurations = [];
+    const properties = new Map();
+    const toastMessages = [];
+    const modalActions = [];
+    let reloads = 0;
     let tableInitialized = false;
 
     function jquery(selector) {
@@ -52,6 +56,14 @@ export function createTaskGridHarness() {
         }
 
         return {
+            length: 1,
+            val() {},
+            addClass() {},
+            removeClass() {},
+            prop(name, value) { properties.set(selector + ':' + name, value); },
+            show() { properties.set(selector + ':visible', true); },
+            hide() { properties.set(selector + ':visible', false); },
+            modal(action) { modalActions.push(action); },
             text(value) { messages.set(selector, value); },
             empty() { rows.length = 0; },
             appendTo(target) { rows.push({ target, element: selector }); },
@@ -77,8 +89,8 @@ export function createTaskGridHarness() {
     jquery.each = (items, visit) => items.forEach((item, index) => visit(index, item));
     jquery.ajax = options => {
         let settled = false;
-        let onSuccess;
-        let onFailure;
+        let onSuccess = options.success;
+        let onFailure = options.error;
 
         const request = {
             options,
@@ -88,11 +100,13 @@ export function createTaskGridHarness() {
                 if (settled) return;
                 settled = true;
                 onSuccess(data);
+                options.complete?.();
             },
             reject(reason = 'error') {
                 if (settled) return;
                 settled = true;
                 onFailure({}, reason);
+                options.complete?.();
             },
             abort() {
                 if (settled) return;
@@ -110,19 +124,33 @@ export function createTaskGridHarness() {
         jQuery: jquery,
         document: { createElement },
         accessToken: 'synthetic-token',
+        updateTaskStatusURL: '/synthetic/bulk-status',
         checkSession: status => sessionChecks.push(status),
         window: { location: { pathname: '/vscca/viewTaskGrid' } }
     });
     for (const { name, source } of scripts) {
         runInContext(source, grid, { filename: `${name}.js` });
     }
-    grid.clearSelection = () => {};
+    grid.clearSelection = () => { grid.selectedTaskIds = []; };
+    grid.showStatusToast = (message, type) => toastMessages.push({ message, type });
+    grid.showTaskbyTypeHandler = () => { reloads++; };
 
     return {
         load(url = '/synthetic/tasks') {
             grid.populateData(url);
             return requests.at(-1);
         },
+        selectTask: grid.addSelectedTaskId,
+        submitStatusUpdate(status) {
+            grid.bulkUpdateTaskStatus(Array.from(grid.selectedTaskIds), status);
+            return requests.at(-1);
+        },
+        get selectedTaskIds() { return Array.from(grid.selectedTaskIds); },
+        get requestCount() { return requests.length; },
+        get reloads() { return reloads; },
+        properties,
+        toastMessages,
+        modalActions,
         buildColumnSearch: grid.buildTaskColumnSearch,
         get status() { return messages.get('#taskGridStatus'); },
         get count() { return messages.get('#recordCount'); },

@@ -121,3 +121,53 @@ test('column filters match complete literal values and clear when no values are 
     }
     assert.equal(grid.buildColumnSearch([]), '');
 });
+
+test('bulk status update sends selected IDs once and clears selection after success', () => {
+    const grid = createTaskGridHarness();
+    grid.selectTask('42');
+    grid.selectTask('42');
+    grid.selectTask('17');
+
+    const request = grid.submitStatusUpdate('InProcess');
+    grid.submitStatusUpdate('InProcess');
+
+    assert.equal(grid.requestCount, 1);
+    assert.equal(request.options.type, 'POST');
+    assert.equal(request.options.url, '/synthetic/bulk-status');
+    assert.deepEqual(JSON.parse(request.options.data), { taskIds: ['42', '17'], status: 'InProcess' });
+    assert.equal(grid.properties.get('#loading:visible'), true);
+    assert.equal(grid.properties.get('#confirmStatusUpdateBtn, #statusSelect:disabled'), true);
+
+    request.resolve({ success: 200 });
+
+    assert.deepEqual(grid.selectedTaskIds, []);
+    assert.deepEqual(grid.sessionChecks, [200]);
+    assert.deepEqual(grid.modalActions, ['hide']);
+    assert.deepEqual(grid.toastMessages.map(toast => toast.type), ['success']);
+    assert.equal(grid.reloads, 1);
+    assert.equal(grid.properties.get('#loading:visible'), false);
+});
+
+for (const [name, finish] of [
+    ['an API rejection', request => request.resolve({ success: 401 })],
+    ['a missing response', request => request.resolve(null)],
+    ['an HTTP failure', request => request.reject()]
+]) {
+    test(`bulk status update keeps selection after ${name} and allows retry`, () => {
+        const grid = createTaskGridHarness();
+        grid.selectTask('42');
+        finish(grid.submitStatusUpdate('InProcess'));
+
+        assert.deepEqual(grid.selectedTaskIds, ['42']);
+        assert.deepEqual(grid.toastMessages.map(toast => toast.type), ['danger']);
+        assert.deepEqual(grid.modalActions, []);
+        assert.equal(grid.reloads, 0);
+        assert.equal(grid.properties.get('#loading:visible'), false);
+        assert.equal(grid.properties.get('#confirmStatusUpdateBtn, #statusSelect:disabled'), false);
+
+        const retry = grid.submitStatusUpdate('InProcess');
+        assert.equal(grid.requestCount, 2);
+        retry.resolve({ success: 200 });
+        assert.deepEqual(grid.selectedTaskIds, []);
+    });
+}
