@@ -40,6 +40,7 @@ function submitTask(id = '', dueDate, sessionTaskId = id || null) {
         sessionStorage: { getItem: () => sessionTaskId, clear: () => events.push(['clear']) },
         window: { set location(path) { events.push(['navigate', path]); } },
         alert: message => events.push(['alert', message]),
+        getViewTaskById: () => events.push(['load details']),
         accessToken: 'synthetic-token',
         getBillingClientsURL: '/synthetic/billing',
         getTasksURL: '/synthetic/task-types',
@@ -119,4 +120,27 @@ test('saving while edit details are unavailable sends no create or edit request'
     const { request, events } = submitTask('', undefined, '17');
     assert.equal(request, undefined);
     assert.deepEqual(events, [['alert', 'Task details are unavailable. Reopen the task before saving.']]);
+});
+
+
+test('task edit loads details after all six dropdowns have arrived', () => {
+    const { requests, events } = submitTask('', undefined, '17');
+    events.length = 0;
+    for (const { options } of requests.slice(1).reverse()) {
+        options.success({ body: [] });
+        assert.deepEqual(events, []);
+    }
+    requests[0].options.success({ body: [] });
+    assert.deepEqual(events, [['load details']]);
+});
+
+test('failed dropdowns leave edit details blocked and show one retry message', () => {
+    const { requests, events } = submitTask('', undefined, '17');
+    events.length = 0;
+    requests[0].options.error();
+    requests[1].options.success({ success: 401 });
+    for (const { options } of requests.slice(2)) {
+        options.success({ body: [] });
+    }
+    assert.deepEqual(events, [['alert', 'Unable to load task options. Reopen the form and try again.']]);
 });

@@ -11,9 +11,6 @@ function disableFormInputHandler(){
 	if(taskId != null){
 		$('.taskInformation,.clientInformation').find('input, textarea, button, select').attr('disabled','disabled');
 		$('.taskInformation,.clientInformation').find('input, textarea, button, select').attr('readonly','readonly');
-		setTimeout(function(){
-			getViewTaskById();	
-		},1000);
 
 	}else if(taskCompletedDate != ''){
 
