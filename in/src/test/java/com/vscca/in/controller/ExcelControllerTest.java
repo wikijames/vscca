@@ -2,6 +2,7 @@ package com.vscca.in.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -14,10 +15,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import org.apache.poi.EmptyFileException;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -26,6 +29,8 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.vscca.in.model.TaskInfo;
+import com.vscca.in.model.TaskStatus;
+import com.vscca.in.model.TaskUserDetails;
 import com.vscca.in.serivce.AccountAuthorization;
 import com.vscca.in.serivce.TaskInfoService;
 import com.vscca.in.serivce.TaskStatusService;
@@ -51,6 +56,9 @@ class ExcelControllerTest {
         when(taskInfoService.save(any(TaskInfo.class))).thenAnswer(invocation -> {
             TaskInfo task = invocation.getArgument(0);
             assertEquals("Synthetic project", task.getProjectName());
+            assertEquals("Synthetic review", task.getTaskDescription());
+            assertNull(task.getPartyName());
+            task.setId(17L);
             return task;
         });
 
@@ -61,8 +69,14 @@ class ExcelControllerTest {
                 .andExpect(jsonPath("$.success").value(200))
                 .andExpect(jsonPath("$.message").value("success"));
         verify(taskInfoService).save(any(TaskInfo.class));
-        verify(taskStatusService).save(any());
-        verify(taskUserDetailsService).save(any());
+        ArgumentCaptor<TaskStatus> status = ArgumentCaptor.forClass(TaskStatus.class);
+        ArgumentCaptor<TaskUserDetails> assignment = ArgumentCaptor.forClass(TaskUserDetails.class);
+        verify(taskStatusService).save(status.capture());
+        verify(taskUserDetailsService).save(assignment.capture());
+        assertEquals(17L, status.getValue().getTaskId());
+        assertEquals("In Process", status.getValue().getStatus());
+        assertEquals(17L, assignment.getValue().getTaskId());
+        assertEquals("consultant@example.test", assignment.getValue().getConsulting());
     }
 
     @Test
@@ -91,7 +105,12 @@ class ExcelControllerTest {
         try (XSSFWorkbook workbook = new XSSFWorkbook(); ByteArrayOutputStream bytes = new ByteArrayOutputStream()) {
             Sheet sheet = workbook.createSheet("Sheet1");
             sheet.createRow(0).createCell(0).setCellValue("Project name");
-            sheet.createRow(1).createCell(0).setCellValue("Synthetic project");
+            Row task = sheet.createRow(1);
+            task.createCell(0).setCellValue("Synthetic project");
+            task.createCell(2).setCellValue(3);
+            task.createCell(6).setCellValue("Synthetic review");
+            task.createCell(8).setCellValue("consultant@example.test");
+            sheet.createRow(2);
             workbook.write(bytes);
             return upload(bytes.toByteArray());
         }
