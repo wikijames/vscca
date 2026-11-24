@@ -2,40 +2,35 @@ function checkSession ( value ) {
     return value;
 }
 
-function eraseCookie(name) {   
-    document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-}
+let logoutPending = false;
 
 function Logout () {
-    $.ajax( {
-        type: "GET",
-        url: getLogoutURL,
-        dataType: "json",
-        "headers": {
-            "Content-Type": "application/json",
-            "Authorization": accessToken
-        },
-        success: function () {
-            if ( data.success === 200 ) {
-                sessionStorage.clear();
-				eraseCookie('token');
-                window.location = '/vscca';
-            } else {
-				eraseCookie('token');
-                sessionStorage.clear();
-                window.location = '/vscca';
-            }
+    if ( logoutPending ) {
+        return;
+    }
 
-        },
-        error: function ( e ) {
-			eraseCookie('token');
-            sessionStorage.clear();
-            window.location = '/vscca';
-        }
-    } );
+    logoutPending = true;
+    const token = accessToken;
+    accessToken = null;
     sessionStorage.clear();
-    window.location = '/vscca';
-};
+    document.cookie = 'token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+
+    const returnToLogin = () => { window.location = '/vscca'; };
+    if ( !token ) {
+        returnToLogin();
+        return;
+    }
+
+    $.ajax( {
+        type: 'GET',
+        url: getLogoutURL,
+        dataType: 'json',
+        cache: false,
+        timeout: 5000,
+        headers: { Authorization: token },
+        complete: returnToLogin
+    } );
+}
 
 function topNavUserName () {
     $.ajax( {
