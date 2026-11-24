@@ -50,14 +50,14 @@ function redirectToProfileDetails(id){
 function dataTableFilterHandler () {
     //Data table filter
     $( '#table_id' ).DataTable( {
-        dom: 'Bfrtip',
+        layout: { topStart: 'buttons', topEnd: 'search', bottomEnd: null },
 //        buttons: [
 //             {
 //            extend: 'excelHtml5',
 //            autoFilter: true
 //       		 }
 //        ],
-		"bPaginate": false,
+		paging: false,
 		buttons: [
 			'excel'
 			],

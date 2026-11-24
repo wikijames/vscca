@@ -85,8 +85,7 @@ function dataTableFilterHandler () {
 //    Data table filter
     $( '#table_id' ).DataTable( {
 			destroy: true,
-			"bPaginate": false,
-        dom: 'Bfrtip',
+        layout: { topStart: 'buttons', topEnd: null, bottomEnd: null },
 		buttons: [
 			'excel'
 			],
