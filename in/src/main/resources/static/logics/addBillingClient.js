@@ -32,78 +32,55 @@ $( document ).ready( function () {
 
 
 
-    $( '#save' ).click( function ( e ) {
-		e.preventDefault();
-		if(sessionBillingId != null){
-			 updateBillingClientHandler()
-		}else{
-			addBillingClientHandler()
-		}
+    $('#save').click(function (event) {
+        event.preventDefault();
+        saveBillingClient(sessionBillingId !== null);
     });
+});
 
-} )// jquery end
+function saveBillingClient(isEditing) {
+    const payload = {
+        partyName: $('#partyName').val(),
+        ledgerNo: $('#ledgerNumber').val(),
+        pageNo: $('#pageNumber').val(),
+        isActive: $('#isActive').val()
+    };
+    if (isEditing) {
+        payload.id = $('#save').attr('title');
+    }
 
-function updateBillingClientHandler(){
-	        var savebillingId = $("#save").attr('title');
-			var settings = {
-            "url": postEditBillingClientURL,
-            "method": "POST",
-            "timeout": 0,
-            "headers": {
-                "Content-Type": "application/json",
-                "Authorization": accessToken
-            },
-            "data": JSON.stringify( {
-				"id": savebillingId,
-                "partyName": $( '#partyName' ).val(),
-                "ledgerNo": $( '#ledgerNumber' ).val(),
-                "pageNo": $( '#pageNumber' ).val(),
-                "isActive":$( '#isActive' ).val(),
-            } ),
-        };
+    function showSaveFailure(status) {
+        if (status === 401) {
+            sessionStorage.clear();
+            alert('Your session is no longer authorized. Sign in again before saving.');
+        } else {
+            alert('Unable to save the billing client.');
+        }
+    }
 
-        $.ajax( settings ).done( function ( response ) {
-            if ( response.success == 200 ) {
-                $( "#billingClientForm" )[ 0 ].reset();
-                window.location = 'viewBillingClient';
-                alert( 'Billing client has been added succesfully' );
-            } else if ( reponse.success === 401 ) {
-                sessionStorage.clear();
-            } else {
-                alert( 'something went wrong.' + data );
-            }
-        } );
-};
-function addBillingClientHandler(){
-		 // avoid to execute the actual submit of the form.
-        var settings = {
-            "url": postAddBillingClientURL,
-            "method": "POST",
-            "timeout": 0,
-            "headers": {
-                "Content-Type": "application/json",
-                "Authorization": accessToken
-            },
-            "data": JSON.stringify( {
-				"partyName": $( '#partyName' ).val(),
-                "ledgerNo": $( '#ledgerNumber' ).val(),
-                "pageNo": $( '#pageNumber' ).val(),
-                "isActive":$( '#isActive' ).val() ,
-            } ),
-        };
+    $.ajax({
+        url: isEditing ? postEditBillingClientURL : postAddBillingClientURL,
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: accessToken
+        },
+        data: JSON.stringify(payload)
+    }).done(function (response) {
+        const status = Number(response && response.success);
+        if (status !== 200) {
+            showSaveFailure(status);
+            return;
+        }
 
-        $.ajax( settings ).done( function ( response ) {
-            if ( response.success == 200 ) {
-                $( "#billingClientForm" )[ 0 ].reset();
-                window.location = 'viewBillingClient';
-                alert( 'Billing client has been added succesfully' );
-            } else if ( reponse.success === 401 ) {
-                sessionStorage.clear();
-            } else {
-                alert( 'something went wrong.' + data );
-            }
-        } );
-};
+        $('#billingClientForm')[0].reset();
+        window.location = 'viewBillingClient';
+        alert(isEditing ? 'Billing client updated successfully.' : 'Billing client added successfully.');
+    }).fail(function (request) {
+        showSaveFailure(request.status);
+    });
+}
+
 function splitClientHandler(value){
 	//console.log('spli', value);
 	var valueSplit = value.split('-');
