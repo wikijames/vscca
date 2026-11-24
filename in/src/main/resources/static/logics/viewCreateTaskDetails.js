@@ -131,7 +131,7 @@ function getViewTaskById() {
             $('#weightage').val(task.weightage);
             $('#description').val(task.taskDescription);
             $('#taskType').val(task.taskType);
-            $('#billingClientName').val(task.billingClient).trigger('change.select2');
+            selectTaskBillingClient(task.billingClient);
             $('#responsibility').val(task.responsibility);
             $('#intimation').val(task.intimation);
             $('#execution').val(task.exceution);
@@ -150,6 +150,22 @@ function getViewTaskById() {
         },
         error: showLoadFailure
     });
+}
+
+function selectTaskBillingClient(value) {
+    const select = document.getElementById('billingClientName');
+    if (!select) {
+        return;
+    }
+
+    if (value && !Array.from(select.options).some(option => option.value === value)) {
+        const option = document.createElement('option');
+        option.value = value;
+        option.textContent = value;
+        select.appendChild(option);
+    }
+
+    $(select).val(value).trigger('change.select2');
 }
 
 function getViewTaskDeleteById(){

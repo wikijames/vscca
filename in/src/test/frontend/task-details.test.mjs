@@ -6,10 +6,12 @@ import { mockDeferredAjax } from './support/deferred-ajax.mjs';
 
 const script = readFileSync(new URL('../../main/resources/static/logics/viewCreateTaskDetails.js', import.meta.url), 'utf8');
 
-function loadTask() {
+function loadTask(billingOptions = ['Example Client']) {
+    const options = billingOptions.map(value => ({ value }));
+    const select = { options, appendChild: option => options.push(option) };
     const events = [];
     const { ajax, requests } = mockDeferredAjax();
-    const jquery = selector => ({
+    const jquery = (target, selector = target === select ? '#billingClientName' : target) => ({
         ready() {},
         val(value) {
             events.push([selector, value]);
@@ -21,7 +23,8 @@ function loadTask() {
     });
     jquery.ajax = ajax;
     const context = {
-        $: jquery, document: {},
+        $: jquery,
+        document: { getElementById: () => select, createElement: tagName => ({ tagName }) },
         sessionStorage: { getItem: () => '17', removeItem: key => events.push(['clear', key]) },
         formatDateToUi: value => value,
         alert: message => events.push(['alert', message]),
@@ -29,7 +32,7 @@ function loadTask() {
     };
     runInNewContext(script, context);
     context.getViewTaskById();
-    return { request: requests[0].options, events };
+    return { request: requests[0].options, events, billingOptions: options };
 }
 
 test('task details populate only the requested record before enabling edit saves', () => {
@@ -55,3 +58,14 @@ for (const [name, callback, response] of [
         assert.deepEqual(events, [['alert', 'Unable to load the task. Reopen it and try again.']]);
     });
 }
+
+
+test('task details retain a saved billing client missing from the current dropdown', () => {
+    const { request, events, billingOptions } = loadTask([]);
+    const value = 'Legacy <Client> & Co';
+    request.success({ success: 200, body: [{ taskId: 17, billingClient: value }] });
+    assert.deepEqual(billingOptions, [{ tagName: 'option', value, textContent: value }]);
+    assert.deepEqual(events.filter(([field]) => field === '#billingClientName'), [
+        ['#billingClientName', value], ['#billingClientName', 'change.select2']
+    ]);
+});

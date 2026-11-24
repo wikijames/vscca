@@ -57,6 +57,7 @@ Checked items have implementation and regression coverage where applicable.
 - [x] Share Billing Client create and edit save handling and cover success and failure with mocked requests.
 - [x] Harden password form rendering, validation and request feedback with mocked coverage.
 - [x] Share Profile create and edit save handling and cover permission failures with reusable AJAX mocks.
+- [x] Preserve saved task billing clients that are missing from the current picker.
 - [x] Refresh the task billing client picker after loading the saved selection.
 - [x] Wait for task dropdown requests before loading edit details.
 - [x] Validate task detail responses and report failed loads without enabling edits.
