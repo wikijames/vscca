@@ -212,7 +212,17 @@ function uploadBulkTask() {
     }
 
     const form = document.getElementById('fileinfo');
-    const failureMessage = 'Unable to import tasks. Check the workbook and try again.';
+    function showUploadFailure(status) {
+        if (status === 401) {
+            sessionStorage.clear();
+            alert('Your session is no longer authorized. Sign in again before uploading.');
+        } else if (status === 400) {
+            alert('Upload a readable XLSX task workbook containing Sheet1.');
+        } else {
+            alert('Unable to import tasks. Check the workbook and try again.');
+        }
+    }
+
     $.ajax({
         url: postUploadBulkTaskURL,
         type: 'POST',
@@ -223,12 +233,8 @@ function uploadBulkTask() {
         processData: false,
         success: function (response) {
             const status = Number(response && response.success);
-            if (status === 400) {
-                alert('Upload a readable XLSX task workbook containing Sheet1.');
-                return;
-            }
             if (status !== 200 || response.message !== 'success') {
-                alert(failureMessage);
+                showUploadFailure(status);
                 return;
             }
 
@@ -236,8 +242,8 @@ function uploadBulkTask() {
             alert('Tasks uploaded successfully.');
             window.location = 'dashboard';
         },
-        error: function () {
-            alert(failureMessage);
+        error: function (request) {
+            showUploadFailure(request.status);
         }
     });
 
