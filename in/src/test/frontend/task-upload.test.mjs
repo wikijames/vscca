@@ -4,14 +4,21 @@ import { test } from 'node:test';
 import { runInNewContext } from 'node:vm';
 import { mockDeferredAjax } from './support/deferred-ajax.mjs';
 
-const script = readFileSync(new URL('../../main/resources/static/logics/createTask.js', import.meta.url), 'utf8');
+const script = readFileSync(new URL('../../main/resources/static/logics/task-upload.js', import.meta.url), 'utf8');
 
 function uploadTasks(confirmed = true, filename = 'synthetic.xlsx') {
     const events = [];
     const form = { reset: () => events.push(['reset']) };
     const { ajax, requests } = mockDeferredAjax();
     const file = { value: filename };
-    const uploadButton = { disabled: false };
+    let submit;
+    const uploadButton = {
+        disabled: false,
+        addEventListener(event, callback) {
+            assert.equal(event, 'click');
+            submit = callback;
+        }
+    };
     const jquery = () => ({ ready() {} });
     jquery.ajax = ajax;
     const context = {
@@ -28,8 +35,8 @@ function uploadTasks(confirmed = true, filename = 'synthetic.xlsx') {
         postUploadBulkTaskURL: '/synthetic/upload'
     };
     runInNewContext(script, context);
-    context.ValidateUploadFile();
-    return { requests, events, form, uploadButton, submit: context.ValidateUploadFile };
+    submit();
+    return { requests, events, form, uploadButton, submit };
 }
 
 test('task upload resets its own form and redirects after confirmed import', () => {
@@ -114,4 +121,13 @@ test('task upload blocks a second submission while pending and unlocks after fai
     assert.equal(uploadButton.disabled, false);
     submit();
     assert.equal(requests.length, 2);
+});
+
+test('both bulk task templates load the upload script and provide its button', () => {
+    for (const name of ['createTask.html', 'auditList/addAuditList.html']) {
+        const template = readFileSync(new URL('../../main/resources/templates/' + name, import.meta.url), 'utf8');
+        assert.match(template, /id="uploadTasks"/);
+        assert.match(template, /\/logics\/task-upload\.js/);
+        assert.doesNotMatch(template, /onclick="ValidateUploadFile/);
+    }
 });

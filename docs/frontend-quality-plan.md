@@ -44,6 +44,7 @@ Checked items have implementation and regression coverage where applicable.
 
 ### Frontend
 
+- [x] Load the bulk task upload script on the pages with the upload control and bind the click handler locally.
 - [x] Prevent repeat bulk task submissions while an upload is pending.
 - [x] Give bulk task uploads distinct feedback when the session is unauthorized.
 - [x] Align task upload file selection and validation feedback with the XLSX importer.
