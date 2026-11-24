@@ -16,6 +16,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -47,6 +48,7 @@ public class ExcelController {
 	@Autowired
 	TaskUserDetailsService taskUserDetailsService;
 
+	@Transactional
 	@PostMapping("/upload")
 	public ResponseDto uploadFile(HttpServletRequest request, @RequestParam("file") MultipartFile file) {
 		ResponseDto response = new ResponseDto();
@@ -69,9 +71,6 @@ public class ExcelController {
 
 	public String excelToTutorials(InputStream is) {
 		try (Workbook workbook = new XSSFWorkbook(is)) {
-			String[] HEADERs = {"project name", "party name", "weighted", "created at", "due Date", "billing client",
-					"task type", "task description", "billing client", "responsibility", "consulting", "execution",
-					"intimation"};
 			String SHEET = "Sheet1";
 			Sheet sheet = workbook.getSheet(SHEET);
 			Iterator<Row> rows = sheet.iterator();
@@ -85,16 +84,17 @@ public class ExcelController {
 				}
 
 				Iterator<Cell> cellsInRow = currentRow.iterator();
+				if (!cellsInRow.hasNext()) {
+					continue;
+				}
 				TaskInfo taskInfo = new TaskInfo();
-				TaskInfo taskId = new TaskInfo();
 				TaskUserDetails taskUserDetail = new TaskUserDetails();
 				TaskStatus taskStatus = new TaskStatus();
 				SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 				Date date = new Date();
-				int cellIdx = 0;
 				while (cellsInRow.hasNext()) {
 					Cell currentCell = cellsInRow.next();
-					switch (cellIdx) {
+					switch (currentCell.getColumnIndex()) {
 					case 0:
 						taskInfo.setProjectName(currentCell.getStringCellValue());
 						break;
@@ -136,31 +136,22 @@ public class ExcelController {
 						taskUserDetail.setIntimation(currentCell.getStringCellValue());
 						
 						break;
-//		          case 13:
-//		        	  try {
-//		        	  taskStatus.setEndDate(formatter.parse(formatter.format(currentCell.getStringCellValue())));
-//		        	  }catch (Exception e) {
-//						// TODO: handle exception
-//					}
-//		        	 
-//			            break;
 					default:
 						break;
 					}
-					cellIdx++;
-					taskId = taskInfoService.save(taskInfo);
-					taskUserDetail.setTaskId(taskId.getId());
-					taskStatus.setTaskId(taskId.getId());
-					try {
-						taskStatus.setEndDate(formatter.parse(formatter.format(date)));
-					} catch (ParseException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					taskStatus.setStatus("In Process");
-					taskUserDetailsService.save(taskUserDetail);
-					taskStatusService.save(taskStatus);
 				}
+
+				TaskInfo savedTask = taskInfoService.save(taskInfo);
+				taskUserDetail.setTaskId(savedTask.getId());
+				taskStatus.setTaskId(savedTask.getId());
+				try {
+					taskStatus.setEndDate(formatter.parse(formatter.format(date)));
+				} catch (ParseException e) {
+					throw new IllegalStateException("Could not set the imported task date", e);
+				}
+				taskStatus.setStatus("In Process");
+				taskUserDetailsService.save(taskUserDetail);
+				taskStatusService.save(taskStatus);
 			}
 			return "success";
 		} catch (IOException e) {
