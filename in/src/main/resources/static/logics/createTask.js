@@ -1,17 +1,9 @@
 $(document).ready(function(){
-	var sessionTaskId = sessionStorage.getItem('taskId');
-	var responsibilityStatus = false;
-	var executionStatus = false;
-	var consulting = false;
-	var intimationStatus = false;
-	
-	if(sessionTaskId != null){
-		$('#fileinfo').hide();
-		if(responsibilityStatus && executionStatus && consulting && intimationStatus ){
-		 getViewTaskById();
-		}	
-	}
-	
+    const sessionTaskId = sessionStorage.getItem('taskId');
+    if (sessionTaskId != null) {
+        $('#fileinfo').hide();
+    }
+
 $('.billingClientNameClass').select2({});
   $.ajax({
     type: "GET",
@@ -56,7 +48,6 @@ $('.billingClientNameClass').select2({});
 			"Authorization": accessToken
 	  	},
 		success: function (data) {
-			responsibilityStatus = true;
             $.each(data.body,function(i,obj)
             {
              appendTaskOption('#responsibility', obj.emailId, obj.firstName + ' ' + obj.lastName);
@@ -74,7 +65,6 @@ $('.billingClientNameClass').select2({});
 		"Authorization": accessToken
   	},
 	success: function (data) {
-		executionStatus = true;
         $.each(data.body,function(i,obj)
         {
          appendTaskOption('#execution', obj.emailId, obj.firstName + ' ' + obj.lastName);
@@ -92,7 +82,6 @@ $('.billingClientNameClass').select2({});
 		"Authorization": accessToken
   	},
 	success: function (data) {
-		consulting = true;
 		$.each(data.body,function(i,obj)
         {
          appendTaskOption('#consulting', obj.emailId, obj.firstName + ' ' + obj.lastName);
@@ -110,7 +99,6 @@ $('.billingClientNameClass').select2({});
 		"Authorization": accessToken
   	},
 	success: function (data) {
-        intimationStatus = true;
         $.each(data.body,function(i,obj)
         {
          appendTaskOption('#intimation', obj.emailId, obj.firstName + ' ' + obj.lastName);
@@ -127,7 +115,12 @@ $('.billingClientNameClass').select2({});
 
     $('#save').click(function (event) {
         event.preventDefault();
-        saveTask($('#save').attr('title') !== '', dueDate);
+        const taskId = $('#save').attr('title');
+        if (sessionTaskId != null && !taskId) {
+            alert('Task details are unavailable. Reopen the task before saving.');
+            return;
+        }
+        saveTask(Boolean(taskId), dueDate);
     });
 });
 

@@ -7,7 +7,7 @@ import { mockDeferredAjax } from './support/deferred-ajax.mjs';
 
 const script = readFileSync(new URL('../../main/resources/static/logics/createTask.js', import.meta.url), 'utf8');
 
-function submitTask(id = '', dueDate) {
+function submitTask(id = '', dueDate, sessionTaskId = id || null) {
     const fields = {
         '#projectName': 'Example', '#partyName': 'Example Ltd', '#description': 'Review',
         '#execution': 'user@example.test', '#taskId': id, '#status': 'Done', '#remarks': 'Reviewed',
@@ -37,7 +37,7 @@ function submitTask(id = '', dueDate) {
     jquery.each = (items, callback) => items.forEach((item, index) => callback(index, item));
     runInNewContext(script, {
         $: jquery, document: { createElement },
-        sessionStorage: { getItem: () => id || null, clear: () => events.push(['clear']) },
+        sessionStorage: { getItem: () => sessionTaskId, clear: () => events.push(['clear']) },
         window: { set location(path) { events.push(['navigate', path]); } },
         alert: message => events.push(['alert', message]),
         accessToken: 'synthetic-token',
@@ -112,4 +112,11 @@ test('task dropdowns render API labels and submitted values as literal text', ()
         assert.equal(option.textContent, text);
         assert.deepEqual(option.children, []);
     }
+});
+
+
+test('saving while edit details are unavailable sends no create or edit request', () => {
+    const { request, events } = submitTask('', undefined, '17');
+    assert.equal(request, undefined);
+    assert.deepEqual(events, [['alert', 'Task details are unavailable. Reopen the task before saving.']]);
 });
