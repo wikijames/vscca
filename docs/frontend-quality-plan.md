@@ -8,7 +8,7 @@ Run the [Node test runner](https://nodejs.org/api/test.html) on a supported Node
 node --test in/src/test/frontend/*.test.mjs
 ```
 
-The task-grid suite loads the shipped browser scripts and imports `createTaskGridHarness` and `makeTask` from `support/task-grid.mjs`. The harness supplies fresh synthetic AJAX and DataTables substitutes per test. Extend these tests for filters, export configuration, selection, and bulk updates as each feature changes. Use browser smoke tests for actual rendering and plugin integration. Add JUnit 5 tests for role behavior and the 60-day boundary once the Java build runs.
+The task-grid suite loads the shipped browser scripts and imports `createTaskGridHarness` and `makeTask` from `support/task-grid.mjs`. The harness supplies fresh synthetic AJAX and DataTables substitutes per test. Extend these tests for filters, export configuration, selection, and bulk updates as each feature changes. Use browser smoke tests for actual rendering and plugin integration. Frontend navigation tests cover the dashboard roles and personal task endpoints. JUnit 5 executes the repository visibility queries against synthetic data in an in-memory H2 schema. This covers the cutoff, task assignments, and completed-task exclusions. The current DATETIME comparison includes midnight on day 59 and excludes later times that day. Run the focused repository test with `mvnw.cmd -Dtest=TaskVisibilityRepositoryTest test` from `in`. Verify the queries against the deployed MySQL version separately.
 
 ## Phase 2 Dependency findings and focused patches
 
