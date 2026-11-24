@@ -69,7 +69,11 @@ export function createTaskGridHarness() {
         };
     }
 
-    jquery.fn = { dataTable: { isDataTable: () => tableInitialized } };
+    jquery.fn = {
+        dataTable: {
+            isDataTable: () => tableInitialized,            util: { escapeRegex: value => value.replace(/[\^$.*+?()[\]{}|\\]/g, match => '\\' + match) }
+        }
+    };
     jquery.each = (items, visit) => items.forEach((item, index) => visit(index, item));
     jquery.ajax = options => {
         let settled = false;
@@ -119,6 +123,7 @@ export function createTaskGridHarness() {
             grid.populateData(url);
             return requests.at(-1);
         },
+        buildColumnSearch: grid.buildTaskColumnSearch,
         get status() { return messages.get('#taskGridStatus'); },
         get count() { return messages.get('#recordCount'); },
         rows,

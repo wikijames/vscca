@@ -107,3 +107,17 @@ test('cancels the previous request and only renders the latest results', () => {
     assert.equal(grid.rows[0].element.children[1].textContent, 'Latest project');
     assert.equal(grid.status, '');
 });
+
+test('column filters match complete literal values and clear when no values are selected', () => {
+    const grid = createTaskGridHarness();
+    const values = ['Client (North)+', 'West | Central', 'Client [South]'];
+    const search = new RegExp(grid.buildColumnSearch(values), 'i');
+
+    for (const value of values) {
+        assert.equal(search.test(value), true, value);
+    }
+    for (const value of ['Client North', 'West', 'Client [South] Annex', '']) {
+        assert.equal(search.test(value), false, value);
+    }
+    assert.equal(grid.buildColumnSearch([]), '');
+});
