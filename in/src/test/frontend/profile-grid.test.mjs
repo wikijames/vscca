@@ -1,65 +1,14 @@
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
-import { runInNewContext } from 'node:vm';
-import { createElement } from './support/dom.mjs';
-
-const script = readFileSync(new URL('../../main/resources/static/logics/viewProfile.js', import.meta.url), 'utf8');
+import { createListGridHarness } from './support/list-grid.mjs';
 
 function createProfileGridHarness() {
-    const rows = [];
-    const checks = [];
-    const navigation = [];
-    const tableOptions = [];
-    let request;
-    let clickHandler;
-    let ready;
-    let status;
-
-    function jquery(selector) {
-        if (typeof selector === 'function') {
-            ready = selector;
-            return;
-        }
-        if (selector === '#profileGridStatus') {
-            return { text(value) { status = value; } };
-        }
-        if (selector === '#populateGrid') {
-            return { append(row) { rows.push(row); } };
-        }
-        return {
-            on(event, selector, handler) {
-                assert.equal(event, 'click');
-                assert.equal(selector, '.profile-details');
-                clickHandler = handler;
-            },
-            DataTable(options) { tableOptions.push(options); }
-        };
-    }
-    jquery.ajax = options => { request = options; };
-
-    const context = {
-        $: jquery,
-        document: { createElement },
-        window: { set location(path) { navigation.push(['location', path]); } },
-        sessionStorage: { setItem(key, value) { navigation.push([key, value]); } },
-        getUsersProfileURL: '/synthetic/profiles',
-        accessToken: 'synthetic-token',
-        checkSession: code => checks.push(code),
-        formatGridExportHeader() {}
-    };
-    runInNewContext(script, context, { filename: 'viewProfile.js' });
-    ready();
-
-    return {
-        rows,
-        request,
-        checks,
-        navigation,
-        tableOptions,
-        clickDetails(button) { clickHandler.call(button); },
-        get status() { return status; }
-    };
+    return createListGridHarness({
+        scriptName: 'viewProfile',
+        statusSelector: '#profileGridStatus',
+        detailsSelector: '.profile-details',
+        requestUrls: { getUsersProfileURL: '/synthetic/profiles' }
+    });
 }
 
 test('profiles render as literal text after the response and View/Edit stores the profile ID', () => {
