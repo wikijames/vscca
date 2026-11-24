@@ -7,6 +7,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -15,7 +17,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,24 +25,18 @@ import com.vscca.in.dto.ResponseDto;
 import com.vscca.in.model.TaskInfo;
 import com.vscca.in.model.TaskStatus;
 import com.vscca.in.model.TaskUserDetails;
-import com.vscca.in.serivce.BillingClientService;
+import com.vscca.in.serivce.AccountAuthorization;
 import com.vscca.in.serivce.TaskInfoService;
 import com.vscca.in.serivce.TaskStatusService;
-import com.vscca.in.serivce.TaskTypeService;
 import com.vscca.in.serivce.TaskUserDetailsService;
 import com.vscca.in.utill.ExcelHelper;
+import com.vscca.in.utill.VsccaConstants;
 
 @RestController
 public class ExcelController {
 
-	// @Autowired
-	// ExcelService fileService;
-
 	@Autowired
-	TaskTypeService taskTypeService;
-
-	@Autowired
-	BillingClientService billingClientService;
+	AccountAuthorization accountAuthorization;
 
 	@Autowired
 	TaskInfoService taskInfoService;
@@ -53,9 +48,13 @@ public class ExcelController {
 	TaskUserDetailsService taskUserDetailsService;
 
 	@PostMapping("/upload")
-	public ResponseDto uploadFile(@RequestBody MultipartFile file) {
-		String message = "";
+	public ResponseDto uploadFile(HttpServletRequest request, @RequestParam("file") MultipartFile file) {
 		ResponseDto response = new ResponseDto();
+		if (!accountAuthorization.isActiveAccount(request.getHeader(VsccaConstants.TOKEN_HEADER))) {
+			response.setSuccess(401);
+			response.setMessage("Unauthorized");
+			return response;
+		}
 		if (ExcelHelper.hasExcelFormat(file)) {
 			try {
 				response.setMessage(excelToTutorials(file.getInputStream()));
