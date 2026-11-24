@@ -131,7 +131,7 @@ function getViewTaskById() {
             $('#weightage').val(task.weightage);
             $('#description').val(task.taskDescription);
             $('#taskType').val(task.taskType);
-            $('#billingClientName').val(task.billingClient);
+            $('#billingClientName').val(task.billingClient).trigger('change.select2');
             $('#responsibility').val(task.responsibility);
             $('#intimation').val(task.intimation);
             $('#execution').val(task.exceution);

@@ -11,7 +11,11 @@ function loadTask() {
     const { ajax, requests } = mockDeferredAjax();
     const jquery = selector => ({
         ready() {},
-        val: value => events.push([selector, value]),
+        val(value) {
+            events.push([selector, value]);
+            return this;
+        },
+        trigger: event => events.push([selector, event]),
         prop() {},
         attr: (key, value) => events.push([selector, key, value])
     });
@@ -32,8 +36,11 @@ test('task details populate only the requested record before enabling edit saves
     const { request, events } = loadTask();
     assert.equal(request.url, '/synthetic/details');
     assert.equal(request.data.taskId, '17');
-    request.success({ success: 200, body: [{ taskId: 18 }, { taskId: 17, projectName: 'Example' }] });
+    request.success({ success: 200, body: [{ taskId: 18 }, { taskId: 17, projectName: 'Example', billingClient: 'Example Client' }] });
     assert.deepEqual(events.find(([field]) => field === '#projectName'), ['#projectName', 'Example']);
+    assert.deepEqual(events.filter(([field]) => field === '#billingClientName'), [
+        ['#billingClientName', 'Example Client'], ['#billingClientName', 'change.select2']
+    ]);
     assert.deepEqual(events.slice(-2), [['#save', 'title', 17], ['clear', 'taskId']]);
 });
 
