@@ -23,6 +23,27 @@ test('shows loading and renders task data when the request succeeds', () => {
     assert.match(grid.rows[0].markup, /data-order="2">Processing/);
 });
 
+test('sorts due dates by displayed calendar day and leaves unusable dates blank', () => {
+    const grid = createTaskGridHarness();
+    grid.load().resolve({
+        success: 200,
+        body: [
+            makeTask({ dueDate: '2026-10-31T23:30:00' }),
+            makeTask({ dueDate: '2026-11-01T18:00:00' }),
+            makeTask({ dueDate: '2026-11-01T08:00:00' }),
+            makeTask({ dueDate: null }),
+            makeTask({ dueDate: 'invalid' })
+        ]
+    });
+
+    assert.match(grid.rows[0].markup, /data-order="20261031">31-10-2026</);
+    assert.match(grid.rows[1].markup, /data-order="20261101">01-11-2026</);
+    assert.match(grid.rows[2].markup, /data-order="20261101">01-11-2026</);
+    for (const row of grid.rows.slice(3)) {
+        assert.ok(row.markup.includes('<td data-order="' + Number.MAX_SAFE_INTEGER + '"></td>'));
+    }
+});
+
 test('replaces previous rows and configures the empty grid message', () => {
     const grid = createTaskGridHarness();
     grid.load().resolve({ success: 200, body: [makeTask()] });

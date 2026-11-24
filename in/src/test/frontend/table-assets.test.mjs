@@ -25,6 +25,7 @@ test('the shared dashboard script fragment loads one local Excel export stack in
         assert.ok(existsSync(new URL('static/' + script, resources)), script);
     }
     assert.doesNotMatch(fragment, /<script src="https?:\/\//);
+    assert.equal(scripts.some(script => /moment/i.test(script)), false);
 });
 
 test('table pages inherit the shared stack without loading another DataTables instance', () => {

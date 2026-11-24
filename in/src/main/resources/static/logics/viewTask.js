@@ -198,6 +198,11 @@ function truncateText( text, maxLength ) {
 
 function renderTaskRow ( obj ) {
 	var statusSortOrder = getStatusSortOrder( obj.status );
+	var dueDate = obj.dueDate ? new Date( obj.dueDate ) : null;
+	var dueDateText = formatDateToUi( dueDate );
+	var dueDateSortOrder = dueDateText
+		? dueDate.getFullYear() * 10000 + ( dueDate.getMonth() + 1 ) * 100 + dueDate.getDate()
+		: Number.MAX_SAFE_INTEGER;
 	return '<tr>'
 		+ '<td><input type="checkbox" class="row-select" value="' + obj.taskId + '"></td>'
 		+ '<td>' + obj.projectName + '</td>'
@@ -208,7 +213,7 @@ function renderTaskRow ( obj ) {
 		+ '<td>' + truncateText(obj.consultingName) + '</td>'
 		+ '<td>' + truncateText(obj.intimationName) + '</td>'
 		+ '<td>' + obj.taskType+ '</td>'
-		+ '<td>' + formatDateToUi( obj.dueDate ) + '</td>'
+		+ '<td data-order="' + dueDateSortOrder + '">' + dueDateText + '</td>'
 		+ '<td>' + isTaskDescription( obj.taskDescription ) + '</td>'
 		+ '<td data-order="' + statusSortOrder + '">' + sortStatusText(obj.status) + '</td>'
 		+ '</tr>';
@@ -298,7 +303,6 @@ function dataTableFilterHandler () {
 //		
 
     //Data table filter
-    $.fn.dataTable.moment( 'D-M-YYYY');
     $( '#table_id' ).DataTable( {
         language: { emptyTable: 'No tasks found.' },
 	columnDefs: [
