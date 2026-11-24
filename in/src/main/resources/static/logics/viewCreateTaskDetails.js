@@ -1,0 +1,184 @@
+
+$(document).ready(function(){
+	disableFormInputHandler();
+	$('#finalWeightage').attr('disabled','disabled');
+	$('#finalWeightage').attr('readonly','readonly');
+})// ready ends
+
+function disableFormInputHandler(){
+	var taskId = sessionStorage.getItem('taskId');
+	var taskCompletedDate = $('#completedDate').val();
+	if(taskId != null){
+		$('.taskInformation,.clientInformation').find('input, textarea, button, select').attr('disabled','disabled');
+		$('.taskInformation,.clientInformation').find('input, textarea, button, select').attr('readonly','readonly');
+		setTimeout(function(){
+			getViewTaskById();	
+		},1000);
+
+	}else if(taskCompletedDate != ''){
+
+		$('.taskInformation,.clientInformation,.commentsSection').find('input, textarea, button, select').attr('disabled','disabled');
+		$('.taskInformation,.clientInformation,.commentsSection').find('input, textarea, button, select').attr('readonly','readonly');
+		$('#save').remove();
+		$('#deleteTaskBtn').remove();
+
+	}else if(taskId == null &&  taskCompletedDate == ''){
+		$('.commentsSection').remove();
+		$('#deleteTaskBtn').remove();
+		$("#createForm")[0].reset();
+						
+	}
+	if(userRole.toLowerCase() == 'teammember' && ($.trim($('#remarks').val()).length <= 0)){
+		$('.remarksColumn').addClass('hide');
+		$('#deleteTaskBtn').remove();
+	}
+	disableEnableHandler();
+};
+
+function createTaskElementsEnabled(){
+	// Use .prop for boolean attributes so fields are
+	// correctly enabled/disabled for each role.
+	$('.taskInformation,.clientInformation,.commentsSection')
+		.find('input, textarea, button, select')
+		.prop('disabled', false)
+		.prop('readonly', false);
+}
+
+function createTaskElementsDisabled(){
+	$('.taskInformation,.clientInformation,.commentsSection')
+		.find('input, textarea, button, select')
+		.prop('disabled', true)
+		.prop('readonly', true);
+}
+
+function enableElements(element) {
+	$(element)
+		.prop('disabled', false)
+		.prop('readonly', false);
+}
+
+function disableElements(element) {
+	$(element)
+		.prop('disabled', true)
+		.prop('readonly', true);
+}
+
+function disableEnableHandler(){
+	var taskId = sessionStorage.getItem('taskId');
+	 if ( userRole == 'Admin' ){
+    	createTaskElementsEnabled(); 	
+    }else if(taskId && userRole == 'Manager'){
+		createTaskElementsEnabled();
+		/*$('#deleteTaskBtn').remove();*/
+		$('#projectName, #billingClientName').attr('disabled', true);
+		$('#projectName, #billingClientName').attr('readonly', true);
+	}else if(userRole == 'Supervisor'){
+		 $('#fileinfo').remove();
+		 $('#deleteTaskBtn').remove();
+		 // Allow Supervisor to edit description, reason for delay
+		 // and due date (endDate)
+		 enableElements('#description, #reasonForDelay, #endDate');
+	 	 $("#status option[value='Done']").hide();
+	}else if(taskId && userRole == 'Supervisor'){
+		createTaskElementsDisabled();
+		$('#deleteTaskBtn').remove();
+		// When opening an existing task, Supervisor can still
+		// adjust description, reason for delay and due date.
+		enableElements('#description, #reasonForDelay, #endDate');
+	}else if (userRole == 'TeamMember') {
+		$('#deleteTaskBtn').remove();
+		enableElements('#description');
+		/*disableElements('#reasonForDelay');*/
+        //$('.remarksColumn').addClass('hide');
+    }else if ( userRole == null || userRole == undefined){
+        sessionStorage.clear();
+        window.location = '/vscca';
+    }
+}
+function convertDate(value,name){
+	// Use shared date utility to keep formatting
+	// consistent with list views.
+	const formattedDate = formatDateToUi( value );
+	$('#'+name).prop('type','text');
+	$('#'+name).val(formattedDate);
+}
+
+	function getViewTaskById(){
+		var id = sessionStorage.getItem('taskId');
+		if(id != null){
+	$.ajax({
+        type: "GET",
+        url:getTaskDetailsByIdURL+'?taskId='+id,
+        dataType: "json",
+        "headers": {
+		    	"Content-Type": "application/json",
+				"Authorization": accessToken
+		  	},
+			success: function (data) {
+				checkSession(data.success);
+				$.each(data.body,function(i,obj)
+                {
+//					console.log('data.body', data.body);
+					$("#save").attr('title', obj.taskId);
+					$('#taskId').val(obj.taskId);
+					$('#projectName').val(obj.projectName);
+					$('#partyName').val(obj.partyName);
+					$('#weightage').val(obj.weightage);
+					$('#description').val(obj.taskDescription);
+					$('#taskType').val(obj.taskType);
+					$('#billingClientName').val(obj.billingClient);
+					$('#responsibility').val(obj.responsibility);
+					$('#intimation').val(obj.intimation);
+					$('#execution').val(obj.exceution);
+					$('#consulting').val(obj.consulting);
+					$('#status').val(obj.status);
+					$('#reasonForDelay').val(obj.delayReason);
+					$('#completedDate').val(obj.endDate);
+					$('#remarks').val(obj.remarks);
+					$('#finalWeightage').val(obj.finalWeightage);
+					convertDate(obj.dueDate,'endDate');
+					convertDate(obj.endDate,'completedDate');
+				});
+				setTimeout(function(){
+					sessionStorage.removeItem('taskId');
+				},3000)
+            }
+      });
+	};
+};
+
+function getViewTaskDeleteById(){
+		var id = $("#save").attr('title');
+		if(id != null){
+			if (confirm("Are you sure?")) {
+        // your deletion code
+
+	$.ajax({
+        type: "GET",
+        url: getDeleteTaskDetailsByIdURL+'?taskId='+id,
+        dataType: "json",
+        "headers": {
+		    	"Content-Type": "application/json",
+				"Authorization": accessToken
+		  	},
+			success: function (data) {
+				alert('Task has been deleted succesfully');
+				window.location = 'dashboard';
+            }
+      });
+
+    }
+    return false;
+
+	};
+};
+function fileUploadValidation(){
+	//var empty = document.getElementById("taskFile").value = null;
+	//var inputFile = document.getElementById("taskFile").value;
+	//var fileType = accept=".xlsx, .xls, .csv"
+	//if(!inputFile ){
+		//alert('its null');
+	//}
+	
+}
+
