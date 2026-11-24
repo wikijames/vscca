@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { runInNewContext } from 'node:vm';
+import { createElement } from './support/dom.mjs';
 import { mockDeferredAjax } from './support/deferred-ajax.mjs';
 
 const script = readFileSync(new URL('../../main/resources/static/logics/createTask.js', import.meta.url), 'utf8');
@@ -13,6 +14,7 @@ function submitTask(id = '', dueDate) {
         '#reasonForDelay': '', '#endDate': dueDate
     };
     const events = [];
+    const optionsBySelector = new Map();
     const { ajax, requests } = mockDeferredAjax();
     let click;
     let changeDate;
@@ -20,6 +22,11 @@ function submitTask(id = '', dueDate) {
         ready: callback => callback(),
         select2() {},
         hide() {},
+        each(callback) {
+            const options = [];
+            optionsBySelector.set(selector, options);
+            callback.call({ appendChild: option => options.push(option) });
+        },
         change: callback => { changeDate = callback; },
         click: callback => { click = callback; },
         attr: () => id,
@@ -27,8 +34,9 @@ function submitTask(id = '', dueDate) {
         0: { reset: () => events.push(['reset']) }
     });
     jquery.ajax = ajax;
+    jquery.each = (items, callback) => items.forEach((item, index) => callback(index, item));
     runInNewContext(script, {
-        $: jquery, document: {},
+        $: jquery, document: { createElement },
         sessionStorage: { getItem: () => id || null, clear: () => events.push(['clear']) },
         window: { set location(path) { events.push(['navigate', path]); } },
         alert: message => events.push(['alert', message]),
@@ -45,7 +53,7 @@ function submitTask(id = '', dueDate) {
     if (dueDate !== undefined) changeDate.call('#endDate');
     click({ preventDefault: () => events.push(['prevented']) });
     assert.deepEqual(events.shift(), ['prevented']);
-    return { request: requests.find(({ options }) => options.method === 'POST'), events };
+    return { request: requests.find(({ options }) => options.method === 'POST'), events, requests, optionsBySelector };
 }
 
 for (const [id, endpoint, action, dueDate] of [
@@ -83,3 +91,25 @@ for (const [label, handler, response, message, clearsSession] of [
         assert.deepEqual(events, clearsSession ? [['clear'], ['alert', message]] : [['alert', message]]);
     });
 }
+
+
+test('task dropdowns render API labels and submitted values as literal text', () => {
+    const { requests, optionsBySelector } = submitTask();
+    const label = 'Example <Review> & Co';
+    const email = 'user@example.test';
+    for (const [endpoint, selector, record, value, text] of [
+        ['billing', '.billingClientNameClass', { client: label }, label, label],
+        ['task-types', '#taskType', { task: label }, label, label],
+        ...['responsibility', 'execution', 'consulting', 'intimation'].map(role => [
+            role, '#' + role, { emailId: email, firstName: label, lastName: 'User' }, email, label + ' User'
+        ])
+    ]) {
+        const { options } = requests.find(request => request.options.url === '/synthetic/' + endpoint);
+        options.success({ body: [record] });
+        const [option] = optionsBySelector.get(selector);
+        assert.equal(option.tagName, 'option');
+        assert.equal(option.value, value);
+        assert.equal(option.textContent, text);
+        assert.deepEqual(option.children, []);
+    }
+});

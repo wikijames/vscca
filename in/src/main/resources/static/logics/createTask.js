@@ -33,8 +33,7 @@ $('.billingClientNameClass').select2({});
     success: function (data) {
 	    $.each(data.body,function(i,obj)
         {
-			var div_data="<option value="+obj.client+">"+obj.client+"</option>";
-        $(div_data).appendTo('.billingClientNameClass');
+			appendTaskOption('.billingClientNameClass', obj.client, obj.client);
         });
         }
   });
@@ -51,8 +50,7 @@ $('.billingClientNameClass').select2({});
 	success: function (data) {
         $.each(data.body,function(i,obj)
         {
-         var div_data="<option value="+obj.task+">"+obj.task+"</option>";
-        $(div_data).appendTo('#taskType');
+         appendTaskOption('#taskType', obj.task, obj.task);
         });
         }
   });
@@ -70,8 +68,7 @@ $('.billingClientNameClass').select2({});
 			responsibilityStatus = true;
             $.each(data.body,function(i,obj)
             {
-             var div_data="<option value="+obj.emailId+">"+obj.firstName+" "+obj.lastName+"</option>";
-            $(div_data).appendTo('#responsibility');
+             appendTaskOption('#responsibility', obj.emailId, obj.firstName + ' ' + obj.lastName);
             });
             }
       });
@@ -89,8 +86,7 @@ $('.billingClientNameClass').select2({});
 		executionStatus = true;
         $.each(data.body,function(i,obj)
         {
-         var div_data="<option value="+obj.emailId+">"+obj.firstName+" "+obj.lastName+"</option>";
-        $(div_data).appendTo('#execution');
+         appendTaskOption('#execution', obj.emailId, obj.firstName + ' ' + obj.lastName);
         });
         }
   });
@@ -108,8 +104,7 @@ $('.billingClientNameClass').select2({});
 		consulting = true;
 		$.each(data.body,function(i,obj)
         {
-         var div_data="<option value="+obj.emailId+">"+obj.firstName+" "+obj.lastName+"</option>";
-        $(div_data).appendTo('#consulting');
+         appendTaskOption('#consulting', obj.emailId, obj.firstName + ' ' + obj.lastName);
         });
         }
   });
@@ -127,8 +122,7 @@ $('.billingClientNameClass').select2({});
         intimationStatus = true;
         $.each(data.body,function(i,obj)
         {
-         var div_data="<option value="+obj.emailId+">"+obj.firstName+" "+obj.lastName+"</option>";
-        $(div_data).appendTo('#intimation');
+         appendTaskOption('#intimation', obj.emailId, obj.firstName + ' ' + obj.lastName);
         });
         }
   });
@@ -145,6 +139,15 @@ $('.billingClientNameClass').select2({});
         saveTask($('#save').attr('title') !== '', dueDate);
     });
 });
+
+function appendTaskOption(selector, value, label) {
+    $(selector).each(function () {
+        const option = document.createElement('option');
+        option.value = value;
+        option.textContent = label;
+        this.appendChild(option);
+    });
+}
 
 function saveTask(isEditing, dueDate) {
     const payload = {
