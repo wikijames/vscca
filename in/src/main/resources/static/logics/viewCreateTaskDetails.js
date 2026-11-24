@@ -103,48 +103,57 @@ function convertDate(value,name){
 	$('#'+name).val(formattedDate);
 }
 
-	function getViewTaskById(){
-		var id = sessionStorage.getItem('taskId');
-		if(id != null){
-	$.ajax({
-        type: "GET",
-        url:getTaskDetailsByIdURL+'?taskId='+id,
-        dataType: "json",
-        "headers": {
-		    	"Content-Type": "application/json",
-				"Authorization": accessToken
-		  	},
-			success: function (data) {
-				$.each(data.body,function(i,obj)
-                {
-//					console.log('data.body', data.body);
-					$("#save").attr('title', obj.taskId);
-					$('#taskId').val(obj.taskId);
-					$('#projectName').val(obj.projectName);
-					$('#partyName').val(obj.partyName);
-					$('#weightage').val(obj.weightage);
-					$('#description').val(obj.taskDescription);
-					$('#taskType').val(obj.taskType);
-					$('#billingClientName').val(obj.billingClient);
-					$('#responsibility').val(obj.responsibility);
-					$('#intimation').val(obj.intimation);
-					$('#execution').val(obj.exceution);
-					$('#consulting').val(obj.consulting);
-					$('#status').val(obj.status);
-					$('#reasonForDelay').val(obj.delayReason);
-					$('#completedDate').val(obj.endDate);
-					$('#remarks').val(obj.remarks);
-					$('#finalWeightage').val(obj.finalWeightage);
-					convertDate(obj.dueDate,'endDate');
-					convertDate(obj.endDate,'completedDate');
-				});
-				setTimeout(function(){
-					sessionStorage.removeItem('taskId');
-				},3000)
+function getViewTaskById() {
+    const id = sessionStorage.getItem('taskId');
+    if (id === null) {
+        return;
+    }
+
+    function showLoadFailure() {
+        alert('Unable to load the task. Reopen it and try again.');
+    }
+
+    $.ajax({
+        type: 'GET',
+        url: getTaskDetailsByIdURL,
+        data: { taskId: id },
+        dataType: 'json',
+        headers: { Authorization: accessToken },
+        success: function (response) {
+            const task = response && Array.isArray(response.body)
+                ? response.body.find(record => record && String(record.taskId) === id)
+                : undefined;
+            if (Number(response && response.success) !== 200 || !task) {
+                showLoadFailure();
+                return;
             }
-      });
-	};
-};
+
+            $('#taskId').val(task.taskId);
+            $('#projectName').val(task.projectName);
+            $('#partyName').val(task.partyName);
+            $('#weightage').val(task.weightage);
+            $('#description').val(task.taskDescription);
+            $('#taskType').val(task.taskType);
+            $('#billingClientName').val(task.billingClient);
+            $('#responsibility').val(task.responsibility);
+            $('#intimation').val(task.intimation);
+            $('#execution').val(task.exceution);
+            $('#consulting').val(task.consulting);
+            $('#status').val(task.status);
+            $('#reasonForDelay').val(task.delayReason);
+            $('#remarks').val(task.remarks);
+            $('#finalWeightage').val(task.finalWeightage);
+            convertDate(task.dueDate, 'endDate');
+            convertDate(task.endDate, 'completedDate');
+            $('#save').attr('title', task.taskId);
+
+            if (sessionStorage.getItem('taskId') === id) {
+                sessionStorage.removeItem('taskId');
+            }
+        },
+        error: showLoadFailure
+    });
+}
 
 function getViewTaskDeleteById(){
 		var id = $("#save").attr('title');
