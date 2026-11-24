@@ -135,106 +135,69 @@ $('.billingClientNameClass').select2({});
 
 
 
-var formattedDueDate;
-$("#endDate").change(function(){
-	var dueDate = $(this).val();
-	    var date = new Date(dueDate);
-	    var month = date.getMonth() + 1;
-	    var day = date.getDate();
-	    var year = date.getFullYear();
-		var result = day + "-" + month + "-" + year;
-		formattedDueDate = dueDate;
+    let dueDate;
+    $('#endDate').change(function () {
+        dueDate = $(this).val();
+    });
+
+    $('#save').click(function (event) {
+        event.preventDefault();
+        saveTask($('#save').attr('title') !== '', dueDate);
+    });
 });
 
+function saveTask(isEditing, dueDate) {
+    const payload = {
+        projectName: $('#projectName').val(),
+        partyName: $('#partyName').val(),
+        weightage: $('#weightage').val(),
+        taskDescription: $('#description').val(),
+        taskType: $('#taskType').val(),
+        billingClient: $('#billingClientName').val(),
+        dueDate,
+        responsibility: $('#responsibility').val(),
+        intimation: $('#intimation').val(),
+        exceution: $('#execution').val(),
+        consulting: $('#consulting').val()
+    };
+    if (isEditing) {
+        payload.status = $('#status').val();
+        payload.remarks = $('#remarks').val();
+        payload.delayReason = $('#reasonForDelay').val();
+        payload.taskId = $('#taskId').val();
+    }
 
- // this is the id of the form
-	$("#save").click(function(e) {
-	    e.preventDefault(); // avoid to execute the actual submit of the form.
-		var taskId = $("#save").attr('title');
-//		console.log('task id in edit', taskId);
-		if(taskId !== ''){
-			var settings = {
-		    "url": postEditTaskURL,
-			  "method": "POST",
-			  "timeout": 0,
-			"headers": {
-		    	"Content-Type": "application/json",
-				"Authorization": accessToken
-		  	},
-		  "data": JSON.stringify({
-			"projectName": $('#projectName').val(),
-			    "partyName": $('#partyName').val(),
-			    "weightage": $('#weightage').val(),
-			    "taskDescription": $('#description').val(),
-			    "taskType": $('#taskType').val(),
-			    "billingClient": $('#billingClientName').val(),
-			    //"createdAt": todayDate(),
-			    "dueDate": formattedDueDate,
-			    "responsibility": $('#responsibility').val(),
-			    "intimation": $('#intimation').val(),
-			    "exceution": $('#execution').val(),
-			    "consulting": $('#consulting').val(),
+    function showSaveFailure(status) {
+        if (status === 401) {
+            sessionStorage.clear();
+            alert('Your session is no longer authorized. Sign in again before saving.');
+        } else if (status === 403) {
+            alert('You do not have permission to save this task.');
+        } else {
+            alert('Unable to save the task.');
+        }
+    }
 
-			"status": $('#status').val(),
-			"remarks": $('#remarks').val(),
-			"delayReason": $('#reasonForDelay').val(),
-			"taskId": $('#taskId').val()
-		  }),
-		};
-			$.ajax(settings).done(function (response) {
+    $.ajax({
+        url: isEditing ? postEditTaskURL : postCreateTaskURL,
+        method: 'POST',
+        contentType: 'application/json',
+        headers: { Authorization: accessToken },
+        data: JSON.stringify(payload)
+    }).done(function (response) {
+        const status = Number(response && response.success);
+        if (status !== 200) {
+            showSaveFailure(status);
+            return;
+        }
 
-				//console.log(response);
-				if(response.success == 200 ){
-					$("#createForm")[0].reset();
-					window.location = 'dashboard'
-					alert('Task has been updated succesfully');
-				}else if(reponse.success === 401 ){
-					sessionStorage.clear();
-				}else{
-					alert('something went wrong.'+ data);
-				}
-			});
-		}else{
-			var settings = {
-			    "url": postCreateTaskURL,
-				  "method": "POST",
-				  "timeout": 0,
-				"headers": {
-			    	"Content-Type": "application/json",
-					"Authorization": accessToken
-			  	},
-			  "data": JSON.stringify({
-			    "projectName": $('#projectName').val(),
-			    "partyName": $('#partyName').val(),
-			    "weightage": $('#weightage').val(),
-			    "taskDescription": $('#description').val(),
-			    "taskType": $('#taskType').val(),
-			    "billingClient": $('#billingClientName').val(),
-			    //"createdAt": todayDate(),
-			    "dueDate": formattedDueDate,
-			    "responsibility": $('#responsibility').val(),
-			    "intimation": $('#intimation').val(),
-			    "exceution": $('#execution').val(),
-			    "consulting": $('#consulting').val()
-			  }),
-			};
-				$.ajax(settings).done(function (response) {
-
-					//console.log(response);
-					if(response.success == 200 ){
-						window.location = 'dashboard';
-						$("#createForm")[0].reset();
-						alert('Task has been created succesfully');
-					}else if(reponse.success === 401 ){
-						sessionStorage.clear();
-					}else{
-						alert('something went wrong.'+ data);
-					}
-				});
-		}
-});
-})//ready ends
-
+        $('#createForm')[0].reset();
+        alert(isEditing ? 'Task updated successfully.' : 'Task created successfully.');
+        window.location = 'dashboard';
+    }).fail(function (request) {
+        showSaveFailure(request.status);
+    });
+}
 
 function ValidateUploadFile() {
     var fileInput = document.getElementById("file");
