@@ -1,8 +1,7 @@
 // Shared configuration and helpers for task statuses.
 
 // Map of status code to its metadata.
-// Keep this in sync with templates/fragments/statusOptions.html
-// and CSS row classes in static/css/custom.css.
+// Used by task status dropdowns and grid rows.
 var statusConfig = {
     UrgentProcess: {
         code: 'UrgentProcess',
@@ -104,7 +103,7 @@ function normaliseStatusCode(raw) {
 
 function getStatusSortOrder(code) {
     var normalised = normaliseStatusCode(code);
-    if (statusConfig[normalised]) {
+    if (Object.prototype.hasOwnProperty.call(statusConfig, normalised)) {
         return statusConfig[normalised].sortOrder;
     }
     // Unknown statuses go to the bottom
@@ -113,7 +112,7 @@ function getStatusSortOrder(code) {
 
 function getStatusLabel(code) {
     var normalised = normaliseStatusCode(code);
-    if (statusConfig[normalised]) {
+    if (Object.prototype.hasOwnProperty.call(statusConfig, normalised)) {
         return statusConfig[normalised].label;
     }
     return code;
@@ -131,4 +130,19 @@ function getRowClassFromStatusLabel(label) {
         }
     }
     return null;
+}
+
+function populateTaskStatusOptions() {
+    const statuses = Object.values(statusConfig).sort((first, second) => first.sortOrder - second.sortOrder);
+    document.querySelectorAll('select.createTaskFormStatus').forEach(select => {
+        if (select.options.length > 1) {
+            return;
+        }
+        statuses.forEach(status => {
+            const option = document.createElement('option');
+            option.value = status.code;
+            option.textContent = status.label;
+            select.append(option);
+        });
+    });
 }
