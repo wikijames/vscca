@@ -1,0 +1,162 @@
+<!--
+=========================================================
+* Argon Dashboard - v1.2.0
+=========================================================
+* Product Page: https://www.creative-tim.com/product/argon-dashboard
+
+
+* Copyright  Creative Tim (http://www.creative-tim.com)
+* Coded by www.creative-tim.com
+
+
+
+=========================================================
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vivek Sushil &amp; Co - Reports</title>
+    <div th:replace="fragments/head :: head"></div>
+  </head>
+  <body>
+    <!-- <div th:replace="fragments/nav :: sidenav"></div> -->
+    <!-- Main content -->
+    <div class="main-content" id="panel">
+      <div th:replace="fragments/topNav :: topNav"></div>
+      <div th:replace="fragments/breadcrumb :: breadcrumb"></div>
+      <div class="container-fluid mt--6">
+        <!-- Page content -->
+        <div th:fragment="createTask" class="row">
+          <div class="col">
+            <div class="card">
+              <!-- Card header -->
+              <div class="card-header border-0">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <h3 class="mb-0">Daybook Report</h3>
+                  </div>
+                      <div class="col-lg-4">
+	                  <div class="input-daterange datepicker row align-items-center">
+						    <div class="col">
+						        <div class="form-group">
+						        <label class="form-control-label" for="endDate"
+                            >Due Date</label>
+						            <div class="input-group">
+						                <div class="input-group-prepend">
+						                    <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
+						                </div>
+						                <input id="startDate" class="form-control simple" placeholder="Start date" type="text" value="">
+						            </div>
+						        </div>
+						    </div>
+						    <div class="col">
+						        <div class="form-group">
+						        <label class="form-control-label" for="endDate"
+                            >Due Date</label
+                          >
+						            <div class="input-group">
+						                <div class="input-group-prepend">
+						                    <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
+						                </div>
+						                <input id="endDate" class="form-control simple" placeholder="End date" type="text" value="">
+						            </div>
+						        </div>
+						    </div>
+						 
+						</div>
+					</div>
+					  <div class="col-lg-3">
+					  <label class="form-control-label" 
+                            ></label>
+						   		<button type="button" class="search-btn" id="populateDaybook">Generate Daybook</button>
+						   </div>
+						    
+                </div>
+              </div>
+              <!-- Light table -->
+              <div class="table-responsive">
+                <table
+                  id="table_id"
+                  class="table align-items-center table-flush"
+                >
+                  <thead class="thead-light">
+                    <tr>
+                       <th scope="col" class="sort" data-sort="projectName">
+                        Project Name
+                      </th>
+                      <th scope="col" class="sort" data-sort="partyName">
+                        Party Name
+                      </th>
+                      <th scope="col" class="sort" data-sort="tasktype">
+                        Task Type
+                      </th>
+                      <th scope="col" class="sort" data-sort="billingClient">
+                        Billing Client 
+                      </th>
+                      <th scope="col" class="sort" data-sort="responsibility">
+                        Responsibility
+                      </th>
+                      <th scope="col" class="sort" data-sort="execution">
+                        Execution
+                      </th>
+                      <th scope="col" class="sort" data-sort="consulting">
+                        Consulting
+                      </th>
+                      <th scope="col" class="sort" data-sort="intimation">
+                        Intimation
+                      </th>
+                      <th scope="col" class="sort" data-sort="startDate">
+                        Start Date
+                      </th>
+                      <th scope="col" class="sort" data-sort="dueDate">
+                        Due Date
+                      </th>
+                      <th scope="col" class="sort" data-sort="completedDate">
+                        Completed Date
+                      </th>
+                      <th scope="col" class="sort" data-sort="remarks">
+                        Remarks
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody id="populateGrid" class="list"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- footer -->
+        <div th:replace="fragments/footer :: dashboard-footer"></div>
+      </div>
+    </div>
+    
+    <div th:replace="fragments/footer :: dashboard-scripts"></div>
+    <script th:src="@{/logics/reports.js}"></script>
+    <script>
+      $(document).ready(function () {
+    	  var date = new Date();
+    	  var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
+    	  var optSimple = {
+    	    format: 'mm-dd-yyyy',
+    	    todayHighlight: true,
+    	    orientation: 'bottom right',
+    	    autoclose: true,
+    	    container: '#sandbox'
+    	  };
+    	  $('#simple').datepicker({
+    		    format: 'dd/mm/yyyy'
+    		 });
+    	  
+//     	  $( '#simple' ).datepicker( optSimple );
+        // $.fn.datepicker.defaults.format = "yyyy/dd/mm";
+//         $(".datepicker").datepicker({
+// //           format: "dd-mm-yyyy";
+//         	 startDate: '-1d'
+//         });
+      });
+    </script>
+  </body>
+</html>

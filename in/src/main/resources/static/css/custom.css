@@ -1,0 +1,436 @@
+@charset 'UTF-8';
+
+.bg-primary {
+    background-color: #120958 !important;
+}
+
+.hide {
+  display: none !important;
+}
+.show {
+  display: initial;
+}
+
+.hideNav {
+  display: none !important;
+}
+.showNav {
+  display: initial;
+}
+.pointer {
+  cursor: pointer;
+}
+.show-container {
+  display: none !important;
+}
+
+a:not([href]) {
+  text-decoration: none;
+  color: #120958;
+}
+
+.mainlink {
+  display: flex;
+
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+
+  list-style: none;
+
+  border-radius: 0.25rem;
+  background-color: #e9ecef;
+
+  flex-wrap: wrap;
+}
+
+.mainlink-item + .mainlink-item {
+  padding-left: 0.5rem;
+}
+.mainlink-item + .mainlink-item::before {
+  display: inline-block;
+
+  padding-right: 0.5rem;
+
+  content: "/";
+
+  color: #6c757d;
+}
+
+.mainlink-item + .mainlink-item:hover::before {
+  text-decoration: underline;
+}
+
+.mainlink-item + .mainlink-item:hover::before {
+  text-decoration: none;
+}
+
+.mainlink-item.active {
+  color: #6c757d;
+}
+
+/* Styles for the drop-down. Feel free to change the styles to suit your website. :-) */
+.table thead th {
+  font-size: 0.75rem;
+}
+
+/*.table thead th:first-child > .cb-dropdown-wrap,
+.table thead th:nth-child(9) > .cb-dropdown-wrap, 
+.table thead th:last-child > .cb-dropdown-wrap {
+  display: none;
+}*/
+.dt-button.buttons-excel.buttons-html5, .search-btn{
+	background: #120958;
+    color: white;
+    padding: 5px 20px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: 1px solid #120958;
+}
+
+button.dt-button:hover:not(.disabled), 
+div.dt-button:hover:not(.disabled), 
+a.dt-button:hover:not(.disabled), 
+input.dt-button:hover:not(.disabled), 
+.search-btn:hover{
+	background: #4230cd;
+	box-shadow: 0 2px 2px #ccc;
+}
+
+button.dt-button:active:not(.disabled), 
+button.dt-button.active:not(.disabled), 
+div.dt-button:active:not(.disabled), 
+div.dt-button.active:not(.disabled), 
+a.dt-button:active:not(.disabled), 
+a.dt-button.active:not(.disabled), 
+input.dt-button:active:not(.disabled), 
+input.dt-button.active:not(.disabled){
+	background: #4230cd;
+	box-shadow: 0 2px 2px #ccc;
+}
+
+button.dt-button:focus:not(.disabled), 
+div.dt-button:focus:not(.disabled), 
+a.dt-button:focus:not(.disabled), 
+input.dt-button:focus:not(.disabled){
+	background: #4230cd;
+	box-shadow: 0 2px 2px #ccc;
+}
+
+.search-btn{
+	margin-top: 31px;
+    padding: 12px 34px;
+}
+
+.search-btn:focus{
+	 outline: none;
+}
+
+.cb-dropdown-wrap {
+  max-height: 80px; /* At most, around 3/4 visible items. */
+  position: relative;
+  height: 19px;
+  margin-top: 10px;
+}
+
+.cb-dropdown,
+.cb-dropdown li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  
+}
+.cb-dropdown li:nth-child(1n){
+	background: #fff;
+} 
+.cb-dropdown li:nth-child(2n){
+	background: #e2e7ff;
+} 
+
+.cb-dropdown {
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #e9ecef;
+}
+
+/* For selected filter. */
+.active .cb-dropdown {
+  background: pink;
+  width: 125%;
+}
+
+.cb-dropdown-wrap:hover .cb-dropdown {
+  height: 150px;
+  overflow: auto;
+  transition: 0.2s height ease-in-out;
+}
+
+/* For selected items. */
+.cb-dropdown li.active {
+  background: #ff0;
+}
+
+.cb-dropdown li label {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  line-height: 19px; /* Match height of .cb-dropdown-wrap */
+  margin-bottom:0;
+}
+
+.cb-dropdown li label > input {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 16px;
+  height: 19px;
+}
+
+.cb-dropdown li label > span {
+  display: block;
+  margin-left: 3px;
+  margin-right: 20px; /* At least, width of the checkbox. */
+  font-family: sans-serif;
+  /* font-size: 0.8em; */
+  font-weight: normal;
+  text-align: left;
+  color: #000;
+  display:inline-block;
+  white-space: initial;
+}
+
+/* This fixes the vertical aligning of the sorting icon. */
+table.dataTable thead .sorting,
+table.dataTable thead .sorting_asc,
+table.dataTable thead .sorting_desc,
+table.dataTable thead .sorting_asc_disabled,
+table.dataTable thead .sorting_desc_disabled {
+  background-position: 100% 10px;
+}
+.table th, .table td{
+	padding: 0;
+}
+.card .table td, .card .table th{
+	font-weight: 600;
+}
+.dataTables_info{
+	padding-bottom: 20px;
+}
+.InProcess, .UrgentProcess{
+	background: #ffd2ff;
+}
+.ReadyToCheck, .CAReview{
+	background: #ffffa7;
+}
+.ReadyToUpload, .OnSubmission{
+	background: #ffebd7;
+}
+.DiscussionWithSatishJi{
+	background: #baffff;
+}
+.WorkOnClientEnd, .StuckClient{
+	background: #ffcece;
+}
+.ShortWork, .TPPending, .FollowUp{
+	background: #b8d2ff;
+}
+.Done{
+	background: #c6ffad;
+}
+.FutureWork{
+	background: #45e0eb;
+}
+.whiteRow{
+	background: #fff;
+}
+#loading {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0.95;
+  background-color: #fff;
+  z-index: 99;
+}
+
+.loading-viewport {
+    min-height: 100vh;
+    font-family: Roboto, Arial;
+    color: #ADAFB6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(249, 251, 255,0.6);  
+    }
+.loading-text{
+	position: relative;
+    top: 170px;
+    left: -3%;
+    text-transform: uppercase;
+    font-style: italic;
+}
+.boxes {
+    height: 32px;
+    width: 32px;
+    position: relative;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%;
+    margin-top: 32px;
+    -webkit-transform: rotateX(60deg) rotateZ(45deg) rotateY(0deg) translateZ(0px);
+    transform: rotateX(60deg) rotateZ(45deg) rotateY(0deg) translateZ(0px);
+}
+.boxes .box {
+    width: 32px;
+    height: 32px;
+    top: 0px;
+    left: 0;
+    position: absolute;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+}
+
+#recordCount{
+    padding: 5px 8px;
+    background: #2c1e99;
+    color: #fff;
+    box-shadow: 0px 2px 2px #cdcdcd;
+}
+
+.boxes .box:nth-child(1) {
+    -webkit-transform: translate(100%, 0);
+    transform: translate(100%, 0);
+    -webkit-animation: box1 1s linear infinite;
+    animation: box1 1s linear infinite;
+}
+.boxes .box:nth-child(2) {
+    -webkit-transform: translate(0, 100%);
+    transform: translate(0, 100%);
+    -webkit-animation: box2 1s linear infinite;
+    animation: box2 1s linear infinite;
+}
+.boxes .box:nth-child(3) {
+    -webkit-transform: translate(100%, 100%);
+    transform: translate(100%, 100%);
+    -webkit-animation: box3 1s linear infinite;
+    animation: box3 1s linear infinite;
+}
+.boxes .box:nth-child(4) {
+    -webkit-transform: translate(200%, 0);
+    transform: translate(200%, 0);
+    -webkit-animation: box4 1s linear infinite;
+    animation: box4 1s linear infinite;
+}
+
+/* Inline status controls (dashboard header) */
+.status-inline-controls .form-control {
+  height: calc(2.7em + .5rem + 2px) !important;
+}
+
+#statusUpdateBtn {
+  background: #172b4d;
+  border-color: #172b4d;
+  opacity: 1;
+}
+
+/* Selected row colour override for DataTables */
+table.dataTable tbody > tr.selected,
+table.dataTable tbody > tr.selected > td {
+  background-color: #e9e9e9 !important;
+}
+
+
+
+.boxes .box > div {
+    background: #5C8DF6;
+    --translateZ: 15.5px;
+    --rotateY: 0deg;
+    --rotateX: 0deg;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #5C8DF6;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    left: auto;
+    -webkit-transform: rotateY(var(--rotateY)) rotateX(var(--rotateX)) translateZ(var(--translateZ));
+    transform: rotateY(var(--rotateY)) rotateX(var(--rotateX)) translateZ(var(--translateZ));
+}
+
+.boxes .box > div:nth-child(1) {
+    top: 0;
+    left: 0;
+    background: #5C8DF6;
+}
+.boxes .box > div:nth-child(2) {
+    background: #145af2;
+    right: 0;
+    --rotateY: 90deg;
+}
+.boxes .box > div:nth-child(3) {
+    background: #447cf5;
+    --rotateX: -90deg;
+}
+.boxes .box > div:nth-child(4) {
+    background: #DBE3F4;
+    top: 0;
+    left: 0;
+    --translateZ: -90px;
+}
+
+
+
+
+
+@keyframes box1 {
+    0%,
+    50% {
+        transform: translate(100%, 0);
+    }
+    100% {
+        transform: translate(200%, 0);
+    }
+}
+
+@keyframes box2 {
+    0%{
+        transform: translate(0, 100%);
+    }
+    50% {
+        transform: translate(0, 0);
+    }
+    100% {
+        transform: translate(100%, 0);
+    }
+}
+
+@keyframes box3 {
+    0%,
+    50% {
+        transform: translate(100%, 100%);
+    }
+    100% {
+        transform: translate(0, 100%);
+    }
+}
+
+@keyframes box4 {
+    0%{
+        transform: translate(200%, 0);
+    }
+    50% {
+        transform: translate(200%, 100%);
+    }
+    100% {
+        transform: translate(100%, 100%);
+    }
+}

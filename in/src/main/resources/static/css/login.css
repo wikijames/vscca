@@ -1,0 +1,281 @@
+@charset 'UTF-8';
+
+.hide {
+  display: none !important;
+}
+.show {
+  display: initial;
+}
+
+.hideNav {
+  display: none !important;
+}
+.showNav {
+  display: initial;
+}
+.pointer {
+  cursor: pointer;
+}
+.show-container {
+  display: none !important;
+}
+
+a:not([href]) {
+  text-decoration: none;
+  color: #120958;
+}
+
+.mainlink {
+  display: flex;
+
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+
+  list-style: none;
+
+  border-radius: 0.25rem;
+  background-color: #e9ecef;
+
+  flex-wrap: wrap;
+}
+
+.mainlink-item + .mainlink-item {
+  padding-left: 0.5rem;
+}
+.mainlink-item + .mainlink-item::before {
+  display: inline-block;
+
+  padding-right: 0.5rem;
+
+  content: "/";
+
+  color: #6c757d;
+}
+
+.mainlink-item + .mainlink-item:hover::before {
+  text-decoration: underline;
+}
+
+.mainlink-item + .mainlink-item:hover::before {
+  text-decoration: none;
+}
+
+.mainlink-item.active {
+  color: #6c757d;
+}
+
+/* Styles for the drop-down. Feel free to change the styles to suit your website. :-) */
+.table thead th {
+  font-size: 0.75rem;
+}
+
+/*.table thead th:first-child > .cb-dropdown-wrap,
+.table thead th:nth-child(9) > .cb-dropdown-wrap, 
+.table thead th:last-child > .cb-dropdown-wrap {
+  display: none;
+}*/
+.dt-button.buttons-excel.buttons-html5, .search-btn{
+	background: #120958;
+    color: white;
+    padding: 5px 20px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: 1px solid #354edd;
+}
+
+button.dt-button:hover:not(.disabled), div.dt-button:hover:not(.disabled), a.dt-button:hover:not(.disabled), input.dt-button:hover:not(.disabled), .search-btn:hover{
+	background: #354edd;
+	box-shadow: 0 2px 2px #ccc;
+}
+
+.search-btn{
+	margin-top: 31px;
+    padding: 12px 34px;
+}
+
+.search-btn:focus{
+	 outline: none;
+}
+
+.cb-dropdown-wrap {
+  max-height: 80px; /* At most, around 3/4 visible items. */
+  position: relative;
+  height: 19px;
+  margin-top: 10px;
+}
+
+.cb-dropdown,
+.cb-dropdown li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  
+}
+.cb-dropdown li:nth-child(1n){
+	background: #fff;
+} 
+.cb-dropdown li:nth-child(2n){
+	background: #e2e7ff;
+} 
+
+.cb-dropdown {
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #e9ecef;
+}
+
+/* For selected filter. */
+.active .cb-dropdown {
+  background: pink;
+  width: 125%;
+}
+
+.cb-dropdown-wrap:hover .cb-dropdown {
+  height: 150px;
+  overflow: auto;
+  transition: 0.2s height ease-in-out;
+}
+
+/* For selected items. */
+.cb-dropdown li.active {
+  background: #ff0;
+}
+
+.cb-dropdown li label {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  line-height: 19px; /* Match height of .cb-dropdown-wrap */
+  margin-bottom:0;
+}
+
+.cb-dropdown li label > input {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 16px;
+  height: 19px;
+}
+
+.cb-dropdown li label > span {
+  display: block;
+  margin-left: 3px;
+  margin-right: 20px; /* At least, width of the checkbox. */
+  font-family: sans-serif;
+  /* font-size: 0.8em; */
+  font-weight: normal;
+  text-align: left;
+  color: #000;
+  display:inline-block;
+  white-space: initial;
+}
+
+/* This fixes the vertical aligning of the sorting icon. */
+table.dataTable thead .sorting,
+table.dataTable thead .sorting_asc,
+table.dataTable thead .sorting_desc,
+table.dataTable thead .sorting_asc_disabled,
+table.dataTable thead .sorting_desc_disabled {
+  background-position: 100% 10px;
+}
+.table th, .table td{
+	padding: 0;
+}
+.card .table td, .card .table th{
+	font-weight: 600;
+}
+.dataTables_info{
+	padding-bottom: 20px;
+}
+
+.ShortWork, .TPPending{
+	background: #A9D08E;
+}
+.InProcess, .UrgentProcess, .row:has(td:nth-child(2):contains("Processing")) {
+	background: #F8CBAD;
+}
+.WorkOnClientEnd, .StuckClient{
+	background: #FF0000;
+}
+.Done{
+	background: #c6ffad;
+}
+.ReadyToCheck, .CAReview{
+	background: #FFFF00;
+}
+.DiscussionWithSatishJi{
+	background: #B4C6E7;
+}
+.ReadyToUpload, .OnSubmission{
+	background: #FFC000;
+}
+.FollowUp{
+  background: #fffaac;
+}
+.FutureWork{
+	background: #0070C0;
+}
+.whiteRow{
+	background: #fff;
+}
+
+.login-body{
+	background: url('../img/brand/img-7.jpg') no-repeat center center;
+	background-size: cover;
+}
+
+.login-main-holder{
+	position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-top: 160px;
+    margin-left: -500px;
+    width: 1000px;
+}
+
+.login-heading{
+	text-align: center;
+    color: white;
+    font-family: 'Playfair Display', serif;
+    font-weight: 100;
+    font-size: 2.8rem;
+    text-shadow: 0 3px 3px #000;
+    line-height: 1.25;
+    letter-spacing: -.1rem;
+    text-align:center;
+    color: white
+}
+
+.login-sub-heading{
+	font-size: 1.5rem;
+    background: #fdfeff;
+    width: 100%;
+    display: inline-block;
+    color: #120958;
+    border-radius: 4px;
+    padding: 9px 5px;
+    font-family: 'Playfair Display', serif;
+    line-height: 1.25;
+    letter-spacing: 0.2rem;
+    text-transform: uppercase;
+    font-weight: bolder;
+    border: 1px solid #efecec;
+    box-shadow: 0 2px 2px #05175f1f;
+}
+
+.btn-primary {
+    color: #fff;
+    border-color: #120958;
+    background-color: #120958;
+    box-shadow: 0 4px 6px rgb(50 50 93 / 11%), 0 1px 3px rgb(0 0 0 / 8%);
+}
+
+.btn-primary:hover {
+    color: #fff;
+    border-color: #120958;
+    background-color: #4230cd;
+}
