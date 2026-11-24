@@ -195,6 +195,24 @@ function truncateText( text, maxLength ) {
 	return text.length > limit ? text.substring( 0, limit ) + '...' : text;
 }
 
+function renderTaskRow ( obj ) {
+	var statusSortOrder = getStatusSortOrder( obj.status );
+	return '<tr>'
+		+ '<td><input type="checkbox" class="row-select" value="' + obj.taskId + '"></td>'
+		+ '<td>' + obj.projectName + '</td>'
+		+ '<td>' + obj.partyName + '</td>'
+		+ '<td> <a onClick="redirectToTaskDetails(' + obj.taskId + ')" class="btn pointer">View/Edit</a></td>'
+		+ '<td>' + truncateText(obj.responsibilityName) + '</td>'
+		+ '<td>' + truncateText(obj.exceutionName) + '</td>'
+		+ '<td>' + truncateText(obj.consultingName) + '</td>'
+		+ '<td>' + truncateText(obj.intimationName) + '</td>'
+		+ '<td>' + obj.taskType+ '</td>'
+		+ '<td>' + formatDateToUi( obj.dueDate ) + '</td>'
+		+ '<td>' + isTaskDescription( obj.taskDescription ) + '</td>'
+		+ '<td data-order="' + statusSortOrder + '">' + sortStatusText(obj.status) + '</td>'
+		+ '</tr>';
+}
+
 function populateData ( url ) {
     // Ensure DataTable is clean before reloading data so that
     // row callbacks (createdRow) run again and status colours apply correctly.
@@ -224,25 +242,7 @@ function populateData ( url ) {
             checkSession( data.success );
             let totalRows= 0;
 			$.each( data.body, function ( i, obj ) {
-				/*console.log('obj=>', obj);*/
-				var statusSortOrder = getStatusSortOrder( obj.status );
-				var div_data = '<tr>'
-                    + '<td><input type="checkbox" class="row-select" value="' + obj.taskId + '"></td>'
-                    + '<td>' + obj.projectName + '</td>'
-                    + '<td>' + obj.partyName + '</td>'
-					+ '<td> <a onClick="redirectToTaskDetails(' + obj.taskId + ')" class="btn pointer">View/Edit</a></td>'
-					//+ '<td>' + obj.weightage + '</td>'
-                    + '<td>' + truncateText(obj.responsibilityName) + '</td>'
-					+ '<td>' + truncateText(obj.exceutionName) + '</td>'
-					+ '<td>' + truncateText(obj.consultingName) + '</td>'
-					+ '<td>' + truncateText(obj.intimationName) + '</td>'
-					+ '<td>' + obj.taskType+ '</td>'
-					+ '<td>' + formatDateToUi( obj.dueDate ) + '</td>'
-                    //+ '<td>' + obj.dueDate  + '</td>'
-                    + '<td>' + isTaskDescription( obj.taskDescription ) + '</td>'
-					+ '<td data-order="' + statusSortOrder + '">' + sortStatusText(obj.status) + '</td>'
-                    + '</tr>';
-                $( div_data ).appendTo( '#populateGrid' );
+				$( renderTaskRow( obj ) ).appendTo( '#populateGrid' );
 				totalRows++;
             } );
 			$('#recordCount').text(totalRows);
