@@ -44,6 +44,7 @@ Checked items have implementation and regression coverage where applicable.
 
 ### Frontend
 
+- [x] Report bulk task upload success only after the import is confirmed and retain the selected file on failure.
 - [x] Use one catalog for task status dropdowns and the grid.
 - [ ] Restore the standalone View Tasks assignment selector. Confirm what Responsibility should include before connecting it to an endpoint.
 - [ ] Complete Audit List and DSC Audit. Confirm their intended workflows and API contracts, then replace the placeholder or missing scripts.
