@@ -8,14 +8,11 @@ var isActiveValue;
 $(document).ready(function(){
 	
 	sessionProfileId = sessionStorage.getItem('profileId');
-	if(sessionProfileId != null){
-		setTimeout(function(){
-			viewProfileByIdHandler();
-			$('.messageOnCreateUser').hide();
-		},500);		
-	}else {
-		$('#IsActiveUserHolder').hide();
-	}
+    if (sessionProfileId != null) {
+        $('.messageOnCreateUser').hide();
+    } else {
+        $('#IsActiveUserHolder').hide();
+    }
 //console.log('vprofileId ', sessionProfileId);
 
     if ( $( '#isActive' ).is( ":checked" ) ) {
@@ -98,46 +95,45 @@ $('#saveProfile').click(function(e){
     }
 });
 
-accessType();
-locationType();
-})// jquery end
+    let pendingOptions = 2;
+    function onOptionsLoaded() {
+        pendingOptions -= 1;
+        if (pendingOptions === 0 && sessionProfileId != null) {
+            viewProfileByIdHandler(sessionProfileId);
+        }
+    }
+    loadProfileOptions('accessType', getAccessURL, 'acessType', onOptionsLoaded);
+    loadProfileOptions('location', getLocationURL, 'workLocation', onOptionsLoaded);
+});
 
-
-function accessType(){
-	 $.ajax({
-	        type: "GET",
-	        url:getAccessURL,
-	        dataType: "json",
-			 "headers": {
-		    	"Content-Type": "application/json",
-				"Authorization": accessToken
-		  	},
-	        success: function (data) {
-				$.each(data.body,function(i,obj)
-	            {
-	             var div_data="<option value="+obj.acessType+">"+ obj.acessType +"</option>";
-	            $(div_data).appendTo('#accessType');
-	            });
-	            }
-	      });
-}
-function locationType(){
-	 $.ajax({
-	        type: "GET",
-	        url:getLocationURL,
-	        dataType: "json",
-			 "headers": {
-		    	"Content-Type": "application/json",
-				"Authorization": accessToken
-		  	},
-	        success: function (data) {
-				$.each(data.body,function(i,obj)
-	            {
-					 var div_data="<option value="+obj.workLocation+">"+ obj.workLocation+"</option>";
-	            $(div_data).appendTo('#location');
-	            });
-	            }
-	      });
+function loadProfileOptions(selectId, url, valueField, onLoaded) {
+    function showLoadFailure() {
+        alert('Unable to load profile options. Reopen the form and try again.');
+    }
+    $.ajax({
+        type: 'GET',
+        url,
+        dataType: 'json',
+        headers: { Authorization: accessToken },
+        success: function (response) {
+            if (!response || !Array.isArray(response.body)) {
+                showLoadFailure();
+                return;
+            }
+            const select = document.getElementById(selectId);
+            response.body.forEach(function (entry) {
+                const value = entry && entry[valueField];
+                if (typeof value === 'string') {
+                    const option = document.createElement('option');
+                    option.value = value;
+                    option.textContent = value;
+                    select.appendChild(option);
+                }
+            });
+            onLoaded();
+        },
+        error: showLoadFailure
+    });
 }
 
 function validateEmail(){  
@@ -260,49 +256,45 @@ function isCheckedActive(value){
 };
 
 	
-function viewProfileByIdHandler(){
-		//current user email id 
-//		var emailId = sessionStorage.getItem('emailId');
-		var id = sessionStorage.getItem('profileId');
-		if(id != null){
-	$.ajax({
-        type: "GET",
-        url:getUserDetailByIdURL+'?id='+id,
-        dataType: "json",
-        "headers": {
-		    	"Content-Type": "application/json",
-				"Authorization": accessToken
-		  	},
-			success: function (data) {
-					var obj = data.body;
-					//console.log('get user profile data view', obj);
-					$("#saveProfile").attr('title', obj.id),
-					$('#profileId').val(obj.id);
-					$('#firstName').val(obj.firstName),
-				    $('#lastName').val(obj.lastName),
-				    $('#mobile').val(obj.mobileNumber),
-				    $('#email').val(obj.emailId),
-				    $('#address').val(obj.address),
-				    $('#city').val(obj.city),
-				    $('#country').val(obj.country),
-				    $('#postalCode').val(obj.postalCode),
-//				    $("#responsibility").val(obj.responsibility)
-					$("#execution").val(obj.execution),
-//					$("#consulting").val(obj.consulting),
-//					$("#intimation").val(obj.intimation),
-				    $('#aboutMe').val(obj.aboutMe),
-				    $('#accessType').val(obj.accessType),
-				    $('#location').val(obj.location),
-					isCheckedActive(obj.isActive);
-					isCheckedRes(obj.responsibility);
-				    isCheckedExe(obj.execution); 
-					isCheckedCon(obj.consulting);
-					isCheckedInt(obj.intimation); 
-//				
-				setTimeout(function(){
-					sessionStorage.removeItem('profileId');
-				},3000)
+function viewProfileByIdHandler(id) {
+    const failureMessage = 'Unable to load the profile. Reopen it and try again.';
+    $.ajax({
+        type: 'GET',
+        url: getUserDetailByIdURL,
+        data: { id },
+        dataType: 'json',
+        headers: { Authorization: accessToken },
+        success: function (response) {
+            const profile = response && response.body;
+            if (Number(response && response.success) !== 200 || !profile || !profile.id) {
+                alert(failureMessage);
+                return;
             }
-      });
-	};
-};
+
+            $('#profileId').val(profile.id);
+            $('#firstName').val(profile.firstName);
+            $('#lastName').val(profile.lastName);
+            $('#mobile').val(profile.mobileNumber);
+            $('#email').val(profile.emailId);
+            $('#address').val(profile.address);
+            $('#city').val(profile.city);
+            $('#country').val(profile.country);
+            $('#postalCode').val(profile.postalCode);
+            $('#aboutMe').val(profile.aboutMe);
+            $('#accessType').val(profile.accessType);
+            $('#location').val(profile.location);
+            isCheckedActive(profile.isActive);
+            isCheckedRes(profile.responsibility);
+            isCheckedExe(profile.execution);
+            isCheckedCon(profile.consulting);
+            isCheckedInt(profile.intimation);
+            $('#saveProfile').attr('title', profile.id);
+            if (sessionStorage.getItem('profileId') === id) {
+                sessionStorage.removeItem('profileId');
+            }
+        },
+        error: function () {
+            alert(failureMessage);
+        }
+    });
+}
