@@ -38,6 +38,13 @@ $( document ).ready( function () {
 });
 
 function saveBillingClient(isEditing) {
+    const id = isEditing ? $('#save').attr('title') : null;
+    if (isEditing && !id) {
+        alert('The billing client details are unavailable. Reopen the billing client before saving.');
+        return;
+    }
+
+
     const payload = {
         partyName: $('#partyName').val(),
         ledgerNo: $('#ledgerNumber').val(),
@@ -45,7 +52,7 @@ function saveBillingClient(isEditing) {
         isActive: $('#isActive').val()
     };
     if (isEditing) {
-        payload.id = $('#save').attr('title');
+        payload.id = id;
     }
 
     function showSaveFailure(status) {

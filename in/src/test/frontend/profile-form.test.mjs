@@ -6,7 +6,7 @@ import { mockDeferredAjax } from './support/deferred-ajax.mjs';
 
 const script = readFileSync(new URL('../../main/resources/static/logics/createProfile.js', import.meta.url), 'utf8');
 
-function submitProfile(profileId, email = 'user@example.test') {
+function submitProfile(profileId, email = 'user@example.test', loadedId = profileId) {
     const fields = { '#firstName': 'Example', '#lastName': 'User', '#email': email, '#accessType': 'Supervisor', '#isActive': '0' };
     const events = [];
     const { ajax, requests } = mockDeferredAjax();
@@ -20,7 +20,7 @@ function submitProfile(profileId, email = 'user@example.test') {
         click: callback => { click = callback; },
         find: () => ({ each: callback => callback.call('#firstName') }),
         val: () => fields[selector] ?? '',
-        attr: () => profileId,
+        attr: () => loadedId,
         0: { reset: () => events.push(['reset']) }
     });
     jquery.ajax = ajax;
@@ -77,3 +77,10 @@ for (const [label, handler, response, message, clearSession] of [
         assert.deepEqual(events, clearSession ? [['clear'], ['alert', message]] : [['alert', message]]);
     });
 }
+
+
+test('saving before profile edit details load sends no request', () => {
+    const { request, events } = submitProfile('17', undefined, '');
+    assert.equal(request, undefined);
+    assert.deepEqual(events, [['alert', 'The profile details are unavailable. Reopen the profile before saving.']]);
+});

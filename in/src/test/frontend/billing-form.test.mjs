@@ -6,7 +6,7 @@ import { mockDeferredAjax } from './support/deferred-ajax.mjs';
 
 const script = readFileSync(new URL('../../main/resources/static/logics/addBillingClient.js', import.meta.url), 'utf8');
 
-function submitBillingClient(id = null) {
+function submitBillingClient(id = null, loadedId = id) {
     const fields = { '#partyName': 'Example Ltd', '#ledgerNumber': '001', '#pageNumber': '07', '#isActive': '0' };
     const events = [];
     let click;
@@ -18,7 +18,7 @@ function submitBillingClient(id = null) {
         change() {},
         click: callback => { click = callback; },
         val: () => fields[selector],
-        attr: () => id,
+        attr: () => loadedId,
         0: { reset: () => events.push(['reset']) }
     });
     jquery.ajax = ajax;
@@ -70,3 +70,10 @@ for (const [description, handler, response, unauthorized] of [
             : [['alert', 'Unable to save the billing client.']]);
     });
 }
+
+
+test('saving before billing client edit details load sends no request', () => {
+    const { request, events } = submitBillingClient('17', '');
+    assert.equal(request, undefined);
+    assert.deepEqual(events, [['alert', 'The billing client details are unavailable. Reopen the billing client before saving.']]);
+});
