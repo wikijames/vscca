@@ -38,6 +38,10 @@ jobs:
         with:
           distribution: temurin
           java-version: '8'
+          cache: maven
+          cache-dependency-path: |
+            in/pom.xml
+            .github/maven-settings.xml
       - name: Verify without an external database
         working-directory: in
-        run: mvn --batch-mode --no-transfer-progress -DexcludedGroups=database test
+        run: mvn --settings ../.github/maven-settings.xml --batch-mode --no-transfer-progress -DexcludedGroups=database test
