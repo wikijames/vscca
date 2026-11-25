@@ -45,3 +45,10 @@ jobs:
       - name: Verify without an external database
         working-directory: in
         run: mvn --settings ../.github/maven-settings.xml --batch-mode --no-transfer-progress -DexcludedGroups=database test
+
+      - name: Report resolved Maven dependencies
+        if: ${{ !cancelled() }}
+        working-directory: in
+        run: |
+          mvn --settings ../.github/maven-settings.xml --batch-mode --no-transfer-progress \
+            org.apache.maven.plugins:maven-dependency-plugin:3.8.1:tree
