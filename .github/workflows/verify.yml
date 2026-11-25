@@ -42,9 +42,15 @@ jobs:
           cache-dependency-path: |
             in/pom.xml
             .github/maven-settings.xml
-      - name: Verify without an external database
+      - name: Verify pull request without packaging
+        if: github.event_name == 'pull_request'
         working-directory: in
         run: mvn --settings ../.github/maven-settings.xml --batch-mode --no-transfer-progress -DexcludedGroups=database test
+
+      - name: Test and package the merged commit
+        if: github.event_name == 'push'
+        working-directory: in
+        run: mvn --settings ../.github/maven-settings.xml --batch-mode --no-transfer-progress -DexcludedGroups=database clean package
 
       - name: Report resolved Maven dependencies
         if: ${{ !cancelled() }}
@@ -52,3 +58,28 @@ jobs:
         run: |
           mvn --settings ../.github/maven-settings.xml --batch-mode --no-transfer-progress \
             org.apache.maven.plugins:maven-dependency-plugin:3.8.1:tree
+
+      - name: Name the WAR for the merged commit
+        if: github.event_name == 'push'
+        id: war
+        shell: bash
+        run: |
+          shopt -s nullglob
+          wars=(in/target/*.war)
+          if (( ${#wars[@]} != 1 )); then
+            echo "Expected one WAR, found ${#wars[@]}."
+            exit 1
+          fi
+          name="vscca-development-$GITHUB_SHA"
+          mv -- "${wars[0]}" "in/target/$name.war"
+          echo "name=$name" >> "$GITHUB_OUTPUT"
+
+      - name: Upload the WAR
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: ${{ steps.war.outputs.name }}
+          path: in/target/${{ steps.war.outputs.name }}.war
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 14
