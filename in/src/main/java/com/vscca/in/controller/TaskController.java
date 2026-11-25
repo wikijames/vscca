@@ -14,7 +14,9 @@ import javax.servlet.http.HttpServletRequestWrapper;
 
 import org.hibernate.query.criteria.internal.expression.function.CurrentDateFunction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,6 +34,7 @@ import com.vscca.in.model.TaskStatus;
 import com.vscca.in.model.TaskType;
 import com.vscca.in.model.TaskUserDetails;
 import com.vscca.in.model.UserDetails;
+import com.vscca.in.serivce.AccountAuthorization;
 import com.vscca.in.serivce.BillingClientService;
 import com.vscca.in.serivce.LoginService;
 import com.vscca.in.serivce.TaskInfoService;
@@ -67,6 +70,9 @@ public class TaskController {
 
 	@Autowired
 	UserDetailsService userDetailsService;
+
+	@Autowired
+	AccountAuthorization accountAuthorization;
 
 	public boolean getTokenAuthentication(String token) {
 		if (token != null) {
@@ -1102,26 +1108,34 @@ public class TaskController {
 	}
 
 	@CrossOrigin
-	@GetMapping("/deleteTaskDetailsById")
-	public ResponseDto deleteTaskDetaisById(HttpServletRequest req, @RequestParam String taskId)
-			throws ParseException {
+	@Transactional
+	@DeleteMapping("/deleteTaskDetailsById")
+	public ResponseDto deleteTaskDetailsById(HttpServletRequest request, @RequestParam long taskId) {
 		ResponseDto response = new ResponseDto();
-		String token = req.getHeader(VsccaConstants.TOKEN_HEADER);
-		if (token == null || TokenValidation.getAuthentication(token) != true
-				|| getTokenAuthentication(token) != true) {
+		LoginTable caller = accountAuthorization.authenticatedLogin(request.getHeader(VsccaConstants.TOKEN_HEADER));
+		if (caller == null) {
 			response.setSuccess(401);
 			response.setMessage("Unauthorized");
-		} else {
-			taskStatusService.deleteByTaskId(Long.parseLong(taskId));
-			taskUserDetailsService.deleteByTaskId(Long.parseLong(taskId));
-			taskInfoService.deleteById(Long.parseLong(taskId));
-			response.setSuccess(200);
-			response.setMessage("success");
+			return response;
 		}
+
+		UserDetails profile = userDetailsService.findByEmailId(caller.getUserName());
+		if (profile == null || profile.getIsActive() != 1
+				|| !(AccountAuthorization.isAdministratorRole(profile.getAccessType())
+						|| "Manager".equalsIgnoreCase(profile.getAccessType()))) {
+			response.setSuccess(403);
+			response.setMessage("Forbidden");
+			return response;
+		}
+
+		taskStatusService.deleteByTaskId(taskId);
+		taskUserDetailsService.deleteByTaskId(taskId);
+		taskInfoService.deleteById(taskId);
+		response.setSuccess(200);
+		response.setMessage("success");
 		return response;
 	}
 
-	
 	public String getNameByEmailId(String emailId) {
 		String name = "";
 		UserDetails userDetails = userDetailsService.findByEmailId(emailId);

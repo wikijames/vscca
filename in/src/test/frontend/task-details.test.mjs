@@ -23,20 +23,24 @@ function loadTask(billingOptions = ['Example Client']) {
         },
         trigger: event => events.push([selector, event]),
         prop() {},
-        attr: (key, value) => events.push([selector, key, value])
+        attr: (key, value) => value === undefined ? '17' : events.push([selector, key, value])
     });
     jquery.ajax = ajax;
+    jquery.param = values => new URLSearchParams(values).toString();
     const context = {
         $: jquery,
         document: { getElementById: id => selects.get(id), createElement: tagName => ({ tagName }) },
         sessionStorage: { getItem: () => '17', removeItem: key => events.push(['clear', key]) },
+        confirm: () => true,
+        window: { set location(path) { events.push(['navigate', path]); } },
+        deleteTaskDetailsByIdURL: '/synthetic/delete',
         formatDateToUi: value => value,
         alert: message => events.push(['alert', message]),
         getTaskDetailsByIdURL: '/synthetic/details', accessToken: 'synthetic-token'
     };
     runInNewContext(script, context);
     context.getViewTaskById();
-    return { request: requests[0].options, events, billingOptions: selects.get('billingClientName').options, selects };
+    return { request: requests[0].options, events, billingOptions: selects.get('billingClientName').options, selects, context, requests };
 }
 
 test('task details populate only the requested record before enabling edit saves', () => {
@@ -88,4 +92,23 @@ test('task details preserve saved assignments missing from the current dropdowns
         ]);
         assert.deepEqual(events.filter(([field]) => field === '#' + id), [['#' + id, legacy]]);
     }
+});
+
+
+test('task deletion uses DELETE and redirects only after confirmed success', () => {
+    const { context, requests, events } = loadTask();
+    context.getViewTaskDeleteById();
+    const { options } = requests.at(-1);
+    assert.equal(options.type, 'DELETE');
+    assert.equal(options.url, '/synthetic/delete?taskId=17');
+    assert.equal(options.headers.Authorization, 'synthetic-token');
+    options.success({ success: 200 });
+    assert.deepEqual(events, [['alert', 'Task deleted successfully.'], ['navigate', 'dashboard']]);
+});
+
+test('task deletion permission failures stay on the current page', () => {
+    const { context, requests, events } = loadTask();
+    context.getViewTaskDeleteById();
+    requests.at(-1).options.success({ success: 403 });
+    assert.deepEqual(events, [['alert', 'You do not have permission to delete this task.']]);
 });
