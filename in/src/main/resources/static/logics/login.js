@@ -6,7 +6,6 @@ $(document).ready(function() {
         }
     });
     	
-	// on click Sign In Button checks with the remote server that username =='admin' and password == 'password'
 	$("#login").click(function(e) {
 		e.preventDefault();
 		var userName = $('#email').val();
@@ -36,9 +35,9 @@ $(document).ready(function() {
 	    } else if (userName && password) {
 	        $.ajax(settings).done(function(response) {
 	            if (response.success === 200) {
-	                window.location = 'dashboard';
 	                sessionStorage.setItem('token', response.token);
 	                sessionStorage.setItem('roles', response.body);
+	                window.location = 'dashboard';
 	            } else {
 	                if (response.success === 500) {
 	                    alert('Server error. Please try again later.');
@@ -54,13 +53,3 @@ $(document).ready(function() {
 	
 
 });
-
-function loginResponseHandler(response) {
-    if (response.success === 200) {
-        window.location = 'dashboard';
-        sessionStorage.setItem('token', response.token);
-        sessionStorage.setItem('roles', response.body);
-    } else {
-        alert('Invalid username or password. Please try again.');
-    }
-}

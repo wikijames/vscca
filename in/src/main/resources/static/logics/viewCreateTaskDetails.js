@@ -171,38 +171,42 @@ function selectSavedTaskOption(id, value) {
     }
 }
 
-function getViewTaskDeleteById(){
-		var id = $("#save").attr('title');
-		if(id != null){
-			if (confirm("Are you sure?")) {
-        // your deletion code
-
-	$.ajax({
-        type: "GET",
-        url: getDeleteTaskDetailsByIdURL+'?taskId='+id,
-        dataType: "json",
-        "headers": {
-		    	"Content-Type": "application/json",
-				"Authorization": accessToken
-		  	},
-			success: function (data) {
-				alert('Task has been deleted succesfully');
-				window.location = 'dashboard';
-            }
-      });
-
+function getViewTaskDeleteById() {
+    const taskId = $('#save').attr('title');
+    if (!taskId || !confirm('Delete this task?')) {
+        return false;
     }
+
+    function showDeleteFailure(status) {
+        if (status === 401) {
+            sessionStorage.clear();
+            alert('Your session is no longer authorized. Sign in again before deleting.');
+        } else if (status === 403) {
+            alert('You do not have permission to delete this task.');
+        } else {
+            alert('Unable to delete the task.');
+        }
+    }
+
+    $.ajax({
+        type: 'DELETE',
+        url: deleteTaskDetailsByIdURL + '?' + $.param({ taskId }),
+        dataType: 'json',
+        headers: { Authorization: accessToken },
+        success: function (response) {
+            const status = Number(response && response.success);
+            if (status !== 200) {
+                showDeleteFailure(status);
+                return;
+            }
+
+            alert('Task deleted successfully.');
+            window.location = 'dashboard';
+        },
+        error: function (request) {
+            showDeleteFailure(request.status);
+        }
+    });
+
     return false;
-
-	};
-};
-function fileUploadValidation(){
-	//var empty = document.getElementById("taskFile").value = null;
-	//var inputFile = document.getElementById("taskFile").value;
-	//var fileType = accept=".xlsx, .xls, .csv"
-	//if(!inputFile ){
-		//alert('its null');
-	//}
-	
 }
-

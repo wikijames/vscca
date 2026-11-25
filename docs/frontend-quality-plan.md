@@ -32,6 +32,12 @@ Move Java and Spring Boot in a dedicated migration. A move through Boot 3 requir
 
 The GitHub Actions workflow runs the Node suite and Java 8 regression tests on pull requests to `development` and on pushes to that branch. Maven excludes tests tagged `database` so the run uses synthetic data and needs no external database. The existing application context smoke test carries that tag. Add dependency scanning once the browser asset inventory is reproducible. Review applicable advisories when they are published and on a regular schedule. Keep legacy branches available for reference and target ongoing changes to `development`.
 
+## Consolidated cleanup and security review
+
+The template script inventory covers the shared login and dashboard fragments, table fragments, and page scripts. Shared scripts include jQuery 3.8.0, Bootstrap 4.4.1 (bundled Popper), Argon 1.2.0, jQuery Scrollbar and Scroll Lock 3.1.3. The shared dashboard footer provides Bootstrap Datepicker 1.9.0 and Select2 4.0.13. Task and audit templates no longer load a second copy of Datepicker. Table and export fragments reference DataTables 2.3.8, Buttons 3.2.6, their Bootstrap adapters and JSZip 3.10.2. Check Bootstrap, Select2 and form plugin compatibility in a browser before upgrading their bundles. Reconcile the scrollbar version and any externally hosted styles during closeout.
+
+The Maven declaration review found Spring Boot 2.5.2, JJWT 0.9.1 and POI 5.5.1. Spring Framework 5.3 has ended open-source support and JJWT 0.9.1 is outside its supported range. POI 5.5.1 already includes the earlier OOXML patch discussed above. Keep the framework and JWT upgrades in their migration scope. A JDK and advisory scanner are still required to resolve and scan the actual Maven graph, including JDBC and logging dependencies. [Spring support](https://spring.io/blog/2024/03/01/support-timeline-announcement-for-spring-framework-6-0-x-and-5-3-x/) / [JJWT security policy](https://github.com/jwtk/jjwt/security) / [Apache POI release history](https://poi.apache.org/changes.html)
+
 ## Implementation checklist
 
 Checked items have implementation and regression coverage where applicable.
@@ -79,6 +85,8 @@ Checked items have implementation and regression coverage where applicable.
 - [x] Require an active authenticated account for bulk task imports.
 - [x] Save one task, status and assignment per import row and preserve sparse spreadsheet columns.
 - [x] Reject empty and unreadable task workbooks and require Sheet1 before writing records.
+- [x] Return consistent sign-in failures and reuse session validation for logout.
+- [x] Require active Admin or Manager authorization for task deletion and use DELETE.
 - [ ] Add focused synthetic tests for refactors and security fixes. Confirm whether day 59 should include all timestamps before changing the cutoff.
 - [ ] Inventory active browser assets, scan the resolved Maven dependency graph, and review authentication and authorization code.
 - [ ] Review Java, Spring Boot, and JJWT upgrade options. Use isolated tests for compatibility changes that can be verified locally.
