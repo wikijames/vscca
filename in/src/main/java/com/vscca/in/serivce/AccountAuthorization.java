@@ -4,11 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.vscca.in.model.LoginTable;
 import com.vscca.in.model.UserDetails;
-import com.vscca.in.utill.VsccaConstants;
-
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
+import com.vscca.in.utill.TokenValidation;
 
 @Service
 public class AccountAuthorization {
@@ -21,19 +17,8 @@ public class AccountAuthorization {
     }
 
     public LoginTable authenticatedLogin(String token) {
-        if (token == null || token.trim().isEmpty()) {
-            return null;
-        }
-
-        Claims claims;
-        try {
-            claims = Jwts.parser().setSigningKey(VsccaConstants.secretKey).parseClaimsJws(token).getBody();
-        } catch (JwtException | IllegalArgumentException invalidToken) {
-            return null;
-        }
-
-        String userName = claims.getSubject();
-        if (userName == null || userName.trim().isEmpty() || claims.getExpiration() == null) {
+        String userName = TokenValidation.finadEmailIdByToken(token);
+        if (userName == null) {
             return null;
         }
 

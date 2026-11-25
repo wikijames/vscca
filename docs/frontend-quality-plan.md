@@ -81,11 +81,11 @@ Checked items have implementation and regression coverage where applicable.
 - [x] Block Task, Profile and Billing Client edits until their record IDs are available.
 - [x] Share Task create and edit save handling and cover failed requests with reusable AJAX mocks.
 - [x] Render task form dropdown labels through DOM text properties and preserve option values.
-- [ ] Review remaining request and session code and scope other frontend assets where appropriate.
+- [x] Review the active task, profile, billing, upload, and sign-in request flows and scope the scripts changed in this phase.
 - [x] Remove the hidden Billing Client upload stub that routed spreadsheets to the task importer.
 - [x] Remove the unused Excel format stub and duplicate date formatters left by task import code.
 - [x] Remove the unused audit upload handlers and their shared file extension helper.
-- [ ] Review and remove confirmed unused frontend assets.
+- [ ] Continue the broader vendored asset inventory before removing additional files.
 
 ### Security and verification
 
@@ -95,17 +95,19 @@ Checked items have implementation and regression coverage where applicable.
 - [x] Reject empty and unreadable task workbooks and require Sheet1 before writing records.
 - [x] Return consistent sign-in failures and reuse session validation for logout.
 - [x] Require active Admin or Manager authorization for task deletion and use DELETE.
-- [ ] Add focused synthetic tests for refactors and security fixes. Confirm whether day 59 should include all timestamps before changing the cutoff.
+- [x] Add synthetic regression coverage for the implemented refactors and security fixes.
+- [x] Reject malformed, expired, and incomplete signed sessions through the shared token validator.
 - [x] Record the active browser script inventory and known dependency support gaps.
 - [x] Report the resolved Maven dependency tree in CI.
-- [ ] Scan the resolved tree with an approved advisory tool and prioritize confirmed findings.
+- [ ] Scan the resolved tree and prioritize confirmed findings. CI produced the dependency tree. The external OSV workflow was blocked because it would send resolved package coordinates to a public API, and the current credentials could not read Dependabot alerts.
 - [ ] Continue auditing authentication and authorization beyond the flows covered in this phase.
 - [ ] Review Java, Spring Boot, and JJWT upgrade options. Use isolated tests for compatibility changes that can be verified locally.
 ### Deferred
 
+- [ ] Confirm whether day 59 should include all timestamps before changing the existing cutoff.
 - [ ] Resume bulk Billing Client import when client requirements are available.
 
 - [ ] Run live browser and native MySQL smoke tests.
 - [ ] Verify deployed Tomcat and JDBC versions and apply any runtime patches.
-- [x] Configure CI to generate WAR artifacts after development merges.
+- [x] Verify CI publishes a WAR after a development merge. [First successful WAR run](https://github.com/wikijames/vscca/actions/runs/45556679459).
 - [ ] Verify the generated WAR on the deployment server.
