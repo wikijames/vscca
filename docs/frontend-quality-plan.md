@@ -38,6 +38,14 @@ The template script inventory covers the shared login and dashboard fragments, t
 
 The Maven declaration review found Spring Boot 2.5.2, JJWT 0.9.1 and POI 5.5.1. Spring Framework 5.3 has ended open-source support and JJWT 0.9.1 is outside its supported range. POI 5.5.1 already includes the earlier OOXML patch discussed above. Keep the framework and JWT upgrades in their migration scope. CI now reports the resolved Maven dependency tree, including transitive dependencies and scopes, in the Java job log. Use that inventory for advisory triage. A vulnerability scan of the resolved tree is still pending. Vendored browser assets and the deployed container require separate review. [Spring support](https://spring.io/blog/2024/03/01/support-timeline-announcement-for-spring-framework-6-0-x-and-5-3-x/) / [JJWT security policy](https://github.com/jwtk/jjwt/security) / [Apache POI release history](https://poi.apache.org/changes.html)
 
+## WAR builds from development
+
+Pull requests to development run the frontend and Java regression checks. GitHub Actions packages a WAR only after development is updated. Download the artifact named `vscca-development-<commit>` from the successful development run and extract the WAR. GitHub retains it for 14 days. Deploy manually from the commit you intend to release and use the server's existing WAR naming convention if it determines the application context.
+
+Before deploying the first CI-built WAR, set `VSCCA_DB_URL`, `VSCCA_DB_USERNAME`, `VSCCA_DB_PASSWORD`, and `VSCCA_JWT_SIGNING_KEY` in the Tomcat process environment. The signing key must be Base64-encoded and contain at least 32 random bytes before encoding. Rotate any real values previously committed to the repository. Changing the signing key invalidates existing sessions. Verify startup against the target Tomcat and Java versions.
+
+To package locally with a compatible JDK, run `.\mvnw.cmd -DexcludedGroups=database clean package` from `in`. Maven writes the WAR to `in/target/`.
+
 ## Implementation checklist
 
 Checked items have implementation and regression coverage where applicable.
@@ -99,4 +107,5 @@ Checked items have implementation and regression coverage where applicable.
 
 - [ ] Run live browser and native MySQL smoke tests.
 - [ ] Verify deployed Tomcat and JDBC versions and apply any runtime patches.
-- [ ] Generate WARs, move generated artifacts out of the source tree, and verify deployment.
+- [x] Configure CI to generate WAR artifacts after development merges.
+- [ ] Verify the generated WAR on the deployment server.
