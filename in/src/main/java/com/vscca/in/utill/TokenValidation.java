@@ -1,39 +1,38 @@
 package com.vscca.in.utill;
 
-
-
 import java.util.Date;
 
-
-
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 
-public class TokenValidation {
-	
+public final class TokenValidation {
+    private TokenValidation() {
+    }
 
-	
-	public TokenValidation() {
-		
-	}
-	
-public static boolean getAuthentication(String token) {
-	
-	String emailId= null;
-	
-	if(token != null) {
-		emailId= Jwts.parser().setSigningKey(VsccaConstants.secretKey).parseClaimsJws(token).getBody().getSubject();
-		Date expirationTime = Jwts.parser().setSigningKey(VsccaConstants.secretKey).parseClaimsJws(token).getBody().getExpiration();
-		if(emailId != null && expirationTime.after(new Date(System.currentTimeMillis()))) {
-			return true;
-		}else {
-			return false;
-		}
-	}
-	return false;
-}
+    public static boolean getAuthentication(String token) {
+        return finadEmailIdByToken(token) != null;
+    }
 
-public static String finadEmailIdByToken(String token) {
-	String emailId = Jwts.parser().setSigningKey(VsccaConstants.secretKey).parseClaimsJws(token).getBody().getSubject();
-	return emailId;
-}
+    public static String finadEmailIdByToken(String token) {
+        return validatedSubject(token, VsccaConstants.secretKey);
+    }
+
+    static String validatedSubject(String token, String signingKey) {
+        if (token == null || token.trim().isEmpty() || signingKey == null || signingKey.trim().isEmpty()) {
+            return null;
+        }
+
+        try {
+            Claims claims = Jwts.parser().setSigningKey(signingKey).parseClaimsJws(token).getBody();
+            String subject = claims.getSubject();
+            Date expiration = claims.getExpiration();
+            if (subject == null || subject.trim().isEmpty() || expiration == null || !expiration.after(new Date())) {
+                return null;
+            }
+            return subject;
+        } catch (JwtException | IllegalArgumentException invalidToken) {
+            return null;
+        }
+    }
 }
